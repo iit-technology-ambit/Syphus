@@ -38,5 +38,6 @@ Please use a separate virtual environment by running ` pipenv shell ` and then r
 To install a new dependency, use `pipenv install <pkg-name> `. 
 This will update Pipfile and Pipfile.lock
 
+<<<<<<< HEAD
 To upgrade a package, use ` pipenv update <pkg-name> ` 
 Mention dependency change in the commit message.

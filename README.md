@@ -1,5 +1,5 @@
-# Flask Backend for Ambit
-==============================
+#Flask Backend for Ambit
+
 This is the repo for REST apis to be used.
 We will be using **Flask** with **SQLAlchemy** and **flask_restplus**
 
@@ -29,7 +29,7 @@ This can improved though.
 Collect all similar endpoints in 1 file in ````endpoints```` folder. Use different files for logically dissimilar endpoints.
 
 # Setting up the project locally
-Please use a separate virtual environment. If you use a name other than ````venv````, do add that in ````.gitignore````
+Please use a separate virtual environment. If you use a name other than ````venv````, do add that in ````.gitignore````. 
 Run 
 ````
 pip install requirements.txt

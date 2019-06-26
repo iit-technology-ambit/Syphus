@@ -1,12 +1,11 @@
-#Flask Backend for Ambit
+# Common Backend for Ambit
 
-This is the repo for REST apis to be used.
-We will be using **Flask** with **SQLAlchemy** and **flask_restplus**
+This is the common backend for Tech-Ambit web and android application.
 
 # Directory structure
 ```` 
     .
-    ├──rest_apis/
+    |──rest_apis/
     |    ├── database
     |    │   ├── __init__.py
     |    │   └── models.py
@@ -38,5 +37,12 @@ Please use a separate virtual environment by running ` pipenv shell ` and then r
 To install a new dependency, use `pipenv install <pkg-name> `. 
 This will update Pipfile and Pipfile.lock
 
-To upgrade a package, use ` pipenv update <pkg-name> `.  
+To upgrade a package, use ` pipenv update <pkg-name> `.
+
+# Adding new dependencies to requirements.txt
+
+Whenever a new dependency is used, be sure to run 
+````
+pip freeze > requirements.txt
+````
 Mention dependency change in the commit message.

@@ -1,5 +1,6 @@
+dist: xenial
 language: python
-python: -"3.6"
+python: -"3.7"
 
 # install the dependencies
 install:
@@ -9,4 +10,4 @@ install:
 script:
   - pylama
   - isort -rc --check-only
-  - mypy --check-untyped-defs
+  - mypy

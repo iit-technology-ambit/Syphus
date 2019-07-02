@@ -1,0 +1,12 @@
+language: python
+python: -"3.6"
+
+# install the dependencies
+install:
+  - pip install -r requirements.txt
+
+# run the tests
+script:
+  - pylama
+  - isort -rc --check-only
+  - mypy --check-untyped-defs

@@ -9,7 +9,7 @@ system-packages:
 	pip3 install pipenv
 
 python-packages:
-	pipenv install
+	pipenv install --dev
 
 tests:
 	python3 manage.py test

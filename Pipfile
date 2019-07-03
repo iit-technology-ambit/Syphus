@@ -26,6 +26,7 @@ pylama = "*"
 isort = "*"
 mypy = "*"
 pre-commit = "*"
+daiquiri = "*"
 
 [requires]
 python_version = "3.7"

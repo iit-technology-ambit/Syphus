@@ -39,10 +39,3 @@ This will update Pipfile and Pipfile.lock
 
 To upgrade a package, use ` pipenv update <pkg-name> `.
 
-# Adding new dependencies to requirements.txt
-
-Whenever a new dependency is used, be sure to run 
-````
-pip freeze > requirements.txt
-````
-Mention dependency change in the commit message.

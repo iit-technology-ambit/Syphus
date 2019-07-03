@@ -85,5 +85,5 @@ make all
 
 To build the container, make sure that the Dockerfile is present and run `docker build -t common-backend:latest .` 
 
-To run the application from the docker container, run `docker run common-backend ARG` where `ARG` can be `db`, `run, test`, `shell` or `runserver`.
+To run the application from the docker container, run `docker run common-backend ARG` where `ARG` can be `db`, `run, test`, `shell` or `runserver`.  
 For more information, run `docker run common-backend --help`.

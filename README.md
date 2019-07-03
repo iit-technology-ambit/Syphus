@@ -18,13 +18,14 @@ This is the common backend for Tech-Ambit web and android application.
 │   │   │   ├── __init__.py
 │   │   │   └── user.py
 │   │   ├── service
-│   │   │   ├── auth_service.py
+│   │   │   ├── auth_helper.py
 │   │   │   ├── __init__.py
 │   │   │   └── user_service.py
 │   │   └── util
 │   │       └── __init__.py
 │   └── test
 │       └── __init__.py
+├── manage.py
 ├── Makefile
 ├── Pipfile
 ├── Pipfile.lock
@@ -79,3 +80,10 @@ make run
 ```
 make all
 ```
+
+# Docker Container
+
+To build the container, make sure that the Dockerfile is present and run `docker build -t common-backend:latest .` 
+
+To run the application from the docker container, run `docker run common-backend ARG` where `ARG` can be `db`, `run, test`, `shell` or `runserver`.
+For more information, run `docker run common-backend --help`.

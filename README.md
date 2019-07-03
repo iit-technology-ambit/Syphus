@@ -42,3 +42,26 @@ Whenever a new dependency is used, be sure to run
 pip freeze > requirements.txt
 ````
 Mention dependency change in the commit message.
+
+# Using Makefile
+
+## Initial installation
+
+```
+make install
+```
+
+## To run tests
+```
+make tests
+```
+
+## Run application
+```
+make run
+```
+
+## Run all commands at once
+```
+make all
+```

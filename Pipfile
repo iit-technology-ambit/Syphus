@@ -21,6 +21,8 @@ pytz = "==2019.1"
 six = "==1.12.0"
 sqlalchemy = "==1.3.5"
 werkzeug = "==0.15.4"
+flask-session = "*"
+flask-bcrypt = "*"
 
 [requires]
 python_version = "3.6"

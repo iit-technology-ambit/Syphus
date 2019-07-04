@@ -25,6 +25,7 @@ This is the common backend for Tech-Ambit web and android application.
 │   │       └── __init__.py
 │   └── test
 │       └── __init__.py
+|── .env
 ├── manage.py
 ├── Makefile
 ├── Pipfile
@@ -35,6 +36,8 @@ This is the common backend for Tech-Ambit web and android application.
 ````
 
 Collect all similar endpoints in the `app/controller` folder. Use different files for logically dissimilar endpoints.
+
+NOTE: Most of the general config is loaded into the environment from the .env file which should be created from the provided .env.template
 
 ## Setting up the project locally
 

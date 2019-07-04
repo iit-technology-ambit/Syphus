@@ -27,6 +27,11 @@ isort = "*"
 mypy = "*"
 pre-commit = "*"
 daiquiri = "*"
+flask-bcrypt = "*"
+flask-migrate = "*"
+pyjwt = "*"
+flask-script = "*"
+flask-testing = "*"
 
 [requires]
 python_version = "3.7"

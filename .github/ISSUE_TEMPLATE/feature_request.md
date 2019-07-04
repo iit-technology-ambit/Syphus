@@ -12,3 +12,6 @@ Present a detailed description of the problem to be addressed by this feature re
 
 **Suggest A Solution or Implementation**
 Describe how you want to go about working on the feature request and the packages you will be using.
+
+**Screenshots**
+Attach screenshots that might help us resolve this faster.

@@ -34,56 +34,66 @@ This is the common backend for Tech-Ambit web and android application.
 
 ````
 
-This can improved though.
-
 Collect all similar endpoints in the `app/controller` folder. Use different files for logically dissimilar endpoints.
 
-# Setting up the project locally
-Please use pipenv. To install pipenv
-Run `pip install pipenv`
+## Setting up the project locally
 
-Please use a separate virtual environment by running ` pipenv shell ` and then run `pipenv install` to install all dependencies.
-to install all dependencies.
+Please use pipenv. 
 
-# Adding new dependencies
+To install pipenv run `pip install pipenv`.
 
-To install a new dependency, use `pipenv install <pkg-name> `. 
-This will update Pipfile and Pipfile.lock
+Use a separate virtual environment by running `pipenv shell --three` and then run `pipenv install` to install dependencies.
 
-To upgrade a package, use ` pipenv update <pkg-name> `.
+NOTE: Run `pipenv install --dev` to install all dependencies including development.
 
-Whenever a new dependency is used, be sure to run 
-````
+## Adding new dependencies
+
+To install a new dependency, use `pipenv install <pkg-name>`. This will update Pipfile and Pipfile.lock
+
+NOTE: use the flag `--dev` if it is a development dependency.
+
+To upgrade a package, use `pipenv install --selective-upgrade <pkg-name>`.
+
+Whenever a new dependency is added, be sure to run
+
+```shell
 pip freeze > requirements.txt
-````
+```
+
 Mention dependency change in the commit message.
 
-# Using Makefile
+## Using Makefile
 
-## Initial installation
+We serve most of the common commands collected in a Makefile.
 
-```
+### Initial installation
+
+```shell
 make install
 ```
 
-## To run tests
-```
+### Run tests
+
+```shell
 make tests
 ```
 
-## Run application
-```
+### Run server (not recommended for Production)
+
+```shell
 make run
 ```
 
 ## Run all commands at once
-```
+
+```shell
 make all
 ```
 
-# Docker Container
+## Docker Container
 
-To build the container, make sure that the Dockerfile is present and run `docker build -t common-backend:latest .` 
+To build the container, make sure that the Dockerfile is present and run `docker build -t common-backend:latest .`
 
-To run the application from the docker container, run `docker run common-backend ARG` where `ARG` can be `db`, `run, test`, `shell` or `runserver`.  
+To run the application from the docker container, run `docker run common-backend ARG` where `ARG` can be `db`, `run, test`, `shell` or `runserver`.
+
 For more information, run `docker run common-backend --help`.

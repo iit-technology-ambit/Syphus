@@ -1,0 +1,13 @@
+dist: xenial
+language: python
+python: -"3.7"
+
+# install the dependencies
+install:
+  - pip install -r requirements.txt
+
+# run the tests
+script:
+  - pylama
+  - isort -rc --check-only
+  - mypy

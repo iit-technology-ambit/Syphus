@@ -1,7 +1,11 @@
-"""DB Model for the post table"""
+"""DB Model for the post table
+and Junction Tables connecting to User and Post
+"""
 from . import db
 from enums import PostType
-from tags import tagPostJunction
+from users import User
+from errors import LoginError
+from imgLinks import imgPostJunction
 import datetime
 
 class Post(db.Model):
@@ -27,6 +31,35 @@ class Post(db.Model):
 
     #Relationships
     author = db.relationship('User', backref='posts', lazy=False)
-    tags = db.relationship('Tag', secondary=tagPostJunction, lazy='subquery',
+    tags = db.relationship('Tag', secondary=postTagJunction, lazy='subquery',
                             backref=db.backref('posts', lazy=True))
-    #TODO: user<->post relation
+    savers = db.relationship('User', secondary=postSaves, lazy=True,
+                            backref=db.backref('posts', lazy='subquery'))
+    images = db.relationship('ImgLink', secondary=imgPostJunction,
+                             lazy='subquery')
+    #TODO: Reactions and Ratings
+
+    #Getters and Setters for the fields
+    @property
+    def author_id(self):
+        return self.author
+
+    @author_id.setter
+    def author_id(self, authorId):
+        try:
+            user = User.query.filter(id == authorId).fetchone()
+            if user.last_logout != None:
+                raise LoginError
+        except:
+            #Stub to be handled later
+            print("Get back to login page")
+
+
+postTagJunction = db.Table('postTagJunction',
+                            db.Column('post_id', db.Integer,
+                                      db.ForeignKey('post.post_id'),
+                                      primary_key=True),
+                            db.Column('tag_id', db.Integer,
+                                      db.ForeignKey('tag.id'),
+                                      primary_key=True)
+)

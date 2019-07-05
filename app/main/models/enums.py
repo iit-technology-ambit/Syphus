@@ -1,6 +1,5 @@
 """
-All enums used in the schema are described here. All models should refer
-to this file for finding the enums.
+All enums used in the schema are described here.
 """
 import enum
 

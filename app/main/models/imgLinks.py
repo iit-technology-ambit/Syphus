@@ -2,11 +2,12 @@
 from . import db
 
 class ImgLink(db.Model):
-    """Description of ImgLink Model
+    """
+    Description of ImgLink Model
     Rows
     -----------
-    id int [pk]
-    link varchar (url)
+    :id: int [pk]
+    :link: varchar (url)
     """
     id = db.Column(db.Integer, primary_key=True)
     link = db.Column(db.String(256), nullable=False)

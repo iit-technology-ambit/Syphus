@@ -9,16 +9,17 @@ from imgLinks import imgPostJunction
 import datetime
 
 class Post(db.Model):
-    """Description of Post model.
+    """
+    Description of Post model.
     Rows
     -----------
-    post_id int [pk]
-    authorId varchar [ref: > users.id]
-    title varchar
-    body text
-    post_time timestamp [not null]
-    avg_rating float
-    num_rating int
+    :post_id: int [pk]
+    :authorId: varchar [ref: > users.id]
+    :title: varchar
+    :body: text
+    :post_time: timestamp [not null]
+    :avg_rating: float
+    :num_rating: int
     """
     #Columns
     post_id = db.Column(db.Integer, primary_key=True)

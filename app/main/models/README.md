@@ -1,4 +1,4 @@
-#Model Writing Guidelines
+# Model Writing Guidelines
 
 Keep in mind the following things while creating new models.
     1. Create one Model class in one file only.
@@ -10,7 +10,7 @@ Keep in mind the following things while creating new models.
     6. If you are unsure that one db.relationship is defined in your model's target model or not, define the same in your model. Redundancy must be removed later.
 
 
-#Testing
+# Testing
 
 Always test the model locally and rollback changes in your local db after all tests are complete.
 In no case, use the production database for testing.

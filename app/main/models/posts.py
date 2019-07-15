@@ -1,6 +1,7 @@
 """DB Model for the post table
 and Junction Tables connecting to User and Post
 """
+from sqlalchemy.ext.hybrid import hybrid_property
 from . import db
 from enums import PostType
 from users import User
@@ -23,7 +24,7 @@ class Post(db.Model):
     """
     #Columns
     post_id = db.Column(db.Integer, primary_key=True)
-    author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    _author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     title = db.Column(db.String(128), nullable=False)
     body = db.Column(db.Text, nullable=False)
     post_time = db.Column(db.DateTime, default=datetime.datetime.now())
@@ -41,7 +42,7 @@ class Post(db.Model):
     #TODO: Reactions and Ratings
 
     #Getters and Setters for the fields
-    @property
+    @hybrid_property
     def author_id(self):
         return self.author
 
@@ -51,9 +52,14 @@ class Post(db.Model):
             user = User.query.filter(id == authorId).fetchone()
             if user.last_logout != None:
                 raise LoginError
+            else:
+                self._author_id = authorId
+
         except:
             #Stub to be handled later
             print("Get back to login page")
+
+
 
 
 postTagJunction = db.Table('postTagJunction',

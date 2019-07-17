@@ -3,7 +3,8 @@
 This is the common backend for Tech-Ambit web and android application.
 
 # Directory structure
-```` 
+
+```
 .
 ├── app
 │   ├── __init__.py
@@ -14,6 +15,7 @@ This is the common backend for Tech-Ambit web and android application.
 │   │   │   ├── __init__.py
 │   │   │   └── user_controller.py
 │   │   ├── __init__.py
+|   |   ├── logging_config.py
 │   │   ├── models
 │   │   │   ├── __init__.py
 │   │   │   └── user.py
@@ -33,7 +35,7 @@ This is the common backend for Tech-Ambit web and android application.
 ├── README.md
 └── requirements.txt
 
-````
+```
 
 Collect all similar endpoints in the `app/controller` folder. Use different files for logically dissimilar endpoints.
 
@@ -41,7 +43,7 @@ NOTE: Most of the general config is loaded into the environment from the .env fi
 
 ## Setting up the project locally
 
-Please use pipenv. 
+Please use pipenv.
 
 To install pipenv run `pip install pipenv`.
 

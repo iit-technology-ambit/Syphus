@@ -10,8 +10,10 @@ from flask_script import Manager
 
 from app import blueprint
 from app.main import create_app, db
+from app.main.logging_config import setup_logger
 from app.main.models import user
 
+setup_logger()
 LOG = getLogger(__name__)
 
 app = create_app(os.getenv('BOILERPLATE_ENV') or 'dev')

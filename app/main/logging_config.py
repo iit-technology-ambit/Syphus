@@ -1,23 +1,27 @@
 ''' Logging info, debug with coloredlogs '''
 import logging.config
 
-import coloredlogs
-
-coloredlogs.install()
+from coloredlogs import ColoredFormatter
 
 CONFIG = {
     "version": 1,
     'disable_existing_loggers': False,
     "formatters": {
+        "colored": {
+            "()": ColoredFormatter,
+            'format': "%(asctime)s [%(name)s L%(lineno)s] %(levelname)s:  %(message)s",
+            'datefmt': '%m/%d/%Y %H:%M:%S'
+        },
         "standard": {
-            'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+            'format': "%(asctime)s [%(name)s L%(lineno)s] %(levelname)s: %(message)s",
+            'datefmt': '%m/%d/%Y %H:%M:%S'
         }
     },
     "handlers": {
         "infoHandler": {
             'level': 'INFO',
             'class': 'logging.StreamHandler',
-            'formatter': 'standard',
+            'formatter': 'colored',
             'stream': 'ext://sys.stdout'
         },
         'debugHandler': {
@@ -28,17 +32,13 @@ CONFIG = {
         }
     },
     'loggers': {
-        'debugLogger': {
+        '': {
             'level': 'DEBUG',
-            'handlers': ['debugHandler']
-        },
-        'infoLogger': {
-            'level': 'INFO',
-            'handlers': ['infoHandler']
-        },
+            'handlers': ['debugHandler', 'infoHandler']
+        }
     }
 }
 
-logging.config.dictConfig(CONFIG)
-
-logging.getLogger()
+def setup_logger():
+    """Setup logger with appropriate configuration."""
+    logging.config.dictConfig(CONFIG)

@@ -4,7 +4,6 @@ from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 
-import app.main.logging_config
 from app.main.config import config_by_name
 
 LOG = getLogger(__name__)

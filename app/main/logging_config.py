@@ -9,7 +9,9 @@ CONFIG = {
     "version": 1,
     'disable_existing_loggers': False,
     "formatters": {
-        "standard": '%(asctime)s %(hostname)s %(name)s[%(process)d] %(levelname)s %(message)s in file %(filename)s at line number %(lineno)d',
+        "standard": {
+            'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+        }
     },
     "handlers": {
         "infoHandler": {
@@ -22,18 +24,18 @@ CONFIG = {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'formatter': 'standard',
-            'fileName': 'debug.log',
-        },
-        'loggers': {
-            'debugLogger': {
-                'level': 'DEBUG',
-                'handlers': 'debugHandler',
-            },
-            'infoLogger': {
-                'level': 'INFO',
-                'handlers': 'infoHandler',
-            },
+            'filename': 'debug.log',
         }
+    },
+    'loggers': {
+        'debugLogger': {
+            'level': 'DEBUG',
+            'handlers': ['debugHandler']
+        },
+        'infoLogger': {
+            'level': 'INFO',
+            'handlers': ['infoHandler']
+        },
     }
 }
 

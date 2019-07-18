@@ -1,6 +1,7 @@
 # DB Models for users goes here
 from .. import db, flask_bcrypt
 
+
 class User(db.Model):
 	""" User Model for storing user related details """
 	__tablename__ = "users"
@@ -34,4 +35,3 @@ class User(db.Model):
 
 class imgLinks(db.Model):
 	id=db.Column(db.Integer,primary_key=True)
-

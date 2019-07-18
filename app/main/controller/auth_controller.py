@@ -1,7 +1,7 @@
 # endpoint for login/logout
 # endpoint for user operations
 from flask import request
-from flask_restplus import Resource,Namespace
+from flask_restplus import Namespace, Resource
 
 from ..util.dto import UserDto
 
@@ -11,5 +11,3 @@ from ..util.dto import UserDto
 api = UserDto.api
 api=Namespace('auth',description='Authentication related operations')
 _user = UserDto.user
-
-

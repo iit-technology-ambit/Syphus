@@ -54,7 +54,7 @@ class User(db.Model):
 	#Relationships
 
 	
-
+	
 
 	#Junction Table relating Users and Tags
 	userTagJunction = db.Table('userTagJunction' ,

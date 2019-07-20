@@ -31,6 +31,7 @@ flask-migrate = "*"
 pyjwt = "*"
 flask-script = "*"
 flask-testing = "*"
+coloredlogs = "*"
 
 [requires]
 python_version = "3.7"

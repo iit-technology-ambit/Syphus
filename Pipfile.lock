@@ -539,13 +539,6 @@
             ],
             "version": "==1.4.0"
         },
-        "uuid": {
-            "hashes": [
-                "sha256:1f87cc004ac5120466f36c5beae48b4c48cc411968eed0eaecd3da82aa96193f"
-            ],
-            "index": "pypi",
-            "version": "==1.30"
-        },
         "wrapt": {
             "hashes": [
                 "sha256:565a021fd19419476b9362b05eeaa094178de64f8361e44468f9e9d7843901e1"

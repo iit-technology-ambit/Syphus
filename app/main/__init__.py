@@ -1,8 +1,14 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_bcrypt import Bcrypt
+from logging import getLogger
 
-from .config import config_by_name
+from flask import Flask
+from flask_bcrypt import Bcrypt
+from flask_sqlalchemy import SQLAlchemy
+
+from app.main.config import config_by_name
+
+LOG = getLogger(__name__)
+
+LOG.info('configured logger!')
 
 db = SQLAlchemy()
 flask_bcrypt = Bcrypt()
@@ -11,7 +17,12 @@ flask_bcrypt = Bcrypt()
 def create_app(config_name):
     app = Flask(__name__)
     app.config.from_object(config_by_name[config_name])
+    LOG.info('app loaded with configuration!')
+    
     db.init_app(app)
+    LOG.info('database initialized successfully!')
+    
     flask_bcrypt.init_app(app)
+    LOG.info('flask encryption initialized successfully!')
 
     return app

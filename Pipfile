@@ -5,6 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 pylint = "*"
+uuid = "*"
 
 [packages]
 aniso8601 = "==7.0.0"

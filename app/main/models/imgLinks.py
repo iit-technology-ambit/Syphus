@@ -45,6 +45,7 @@ class ImgLink(db.Model):
 
 
 
+
 imgPostJunction = db.Table('imgPostJunction',
                             db.Column('img_id', db.Integer,
                                       db.ForeignKey('imgLink.id'),

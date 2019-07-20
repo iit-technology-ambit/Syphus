@@ -1,0 +1,37 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pylint = "*"
+
+[packages]
+aniso8601 = "==7.0.0"
+attrs = "==19.1.0"
+click = "==7.0"
+flask = "==1.0.3"
+flask-restplus = "==0.12.1"
+flask-sqlalchemy = "==2.4.0"
+itsdangerous = "==1.1.0"
+jinja2 = "==2.10.1"
+jsonschema = "==3.0.1"
+markupsafe = "==1.1.1"
+pyrsistent = "==0.15.2"
+pytz = "==2019.1"
+six = "==1.12.0"
+sqlalchemy = "==1.3.5"
+werkzeug = "==0.15.4"
+pylama = "*"
+isort = "*"
+mypy = "*"
+pre-commit = "*"
+flask-bcrypt = "*"
+flask-migrate = "*"
+pyjwt = "*"
+flask-script = "*"
+flask-testing = "*"
+coloredlogs = "*"
+
+[requires]
+python_version = "3.7"

@@ -43,6 +43,25 @@ class ImgLink(db.Model):
         db.session.delete(self)
         db.session.commit()
 
+    def update(self, newImgBin):
+        id = self.id
+        self.delete()
+
+        self.id = id
+        fname = datetime.datetime.now() + ".png"
+        file = open(os.path.join(imgdir, fname), "wb")
+        LOG.info("Writing new image to disk, %s", fname)
+        file.write(newImgBin)
+        file.close()
+
+        self.link = os.path.join(imgdir, fname)
+
+        LOG.info("New imgLink added to database.")
+        db.session.add(self)
+        db.session.commit()
+
+
+
 
 
 

@@ -31,3 +31,7 @@ def save_new_user(data):
 def get_all_users():
     """Gets all users"""
     return User.query.all()
+
+def save_changes(data):
+    db.session.add(data)
+    db.session.commit()

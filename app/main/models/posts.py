@@ -24,12 +24,12 @@ class Post(db.Model):
     """
     #Columns
     post_id = db.Column(db.Integer, primary_key=True)
-    _author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    _author_id = db.Column(db.String(256), db.ForeignKey('user.username'), nullable=False)
     title = db.Column(db.String(128), nullable=False)
     body = db.Column(db.Text, nullable=False)
     post_time = db.Column(db.DateTime, default=datetime.datetime.now())
-    avg_rating = db.Column(db.Float, default=0.0)
-    num_rating = db.Column(db.Integer, default=0)
+    # avg_rating = db.Column(db.Float, default=0.0)
+    # num_rating = db.Column(db.Integer, default=0)
 
     #Relationships
     author = db.relationship('User', backref='posts', lazy=False)
@@ -39,7 +39,7 @@ class Post(db.Model):
                             backref=db.backref('posts', lazy='subquery'))
     images = db.relationship('ImgLink', secondary=imgPostJunction,
                              lazy='subquery')
-    #TODO: Reactions and Ratings
+
 
     #Getters and Setters for the fields
     @hybrid_property

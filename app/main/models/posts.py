@@ -28,8 +28,8 @@ class Post(db.Model):
     title = db.Column(db.String(128), nullable=False)
     body = db.Column(db.Text, nullable=False)
     post_time = db.Column(db.DateTime, default=datetime.datetime.now())
-    # avg_rating = db.Column(db.Float, default=0.0)
-    # num_rating = db.Column(db.Integer, default=0)
+    avg_rating = db.Column(db.Float, default=0.0)
+    num_rating = db.Column(db.Integer, default=0)
 
     #Relationships
     author = db.relationship('User', backref='posts', lazy=False)

@@ -54,17 +54,12 @@ class User(db.Model):
 	#Relationships
 
 	
+	
 
-
-	#Junction Table relating Users and Tags
-	userTagJunction = db.Table('userTagJunction' ,
-								db.Column('user_id', db.Integer,
-										  db.ForeignKey(user.id),
-										  primary_key = True) ,
-								db.Column('keyword_id', db.Integer,
-										   db.ForeignKey(tag.id) ,
-										   primary_key = True) ,
-								db.Column('priority' , db.Enum(PriorityType))
-
-
-   )
+#Junction Table relating Users and Tags
+userTagJunction = db.Table('userTagJunction' ,
+	db.Column('user_id', db.Integer,
+		db.ForeignKey(user.id),primary_key = True) ,
+	db.Column('keyword_id', db.Integer,db.ForeignKey(tag.id) ,
+		primary_key = True) ,
+	db.Column('priority' , db.Enum(PriorityType)))

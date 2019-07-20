@@ -2,6 +2,8 @@ import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+#Path for images folder
+imgdir = os.path.join(os.path.expanduser("~"), "ambit-images")
 
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY')

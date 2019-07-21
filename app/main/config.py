@@ -5,6 +5,8 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY')
+    SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
+    FROM_MAIL = ''
     DEBUG = False
 
 
@@ -32,5 +34,3 @@ config_by_name = dict(
     test=TestingConfig,
     prod=ProductionConfig
 )
-
-key = Config.SECRET_KEY

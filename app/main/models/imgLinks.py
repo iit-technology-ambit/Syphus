@@ -1,6 +1,6 @@
 """DB Model for imgLink table"""
 from . import db
-from app.main.config import imgdir
+from app.main.config import Config
 import datetime
 from logging import getLogger
 import os
@@ -24,12 +24,12 @@ class ImgLink(db.Model):
         [Needs to be changed]
         """
         fname = datetime.datetime.now() + ".png"
-        file = open(os.path.join(imgdir, fname), "wb")
+        file = open(os.path.join(Config.IMGDIR, fname), "wb")
         LOG.info("Writing new image to disk, %s", fname)
         file.write(imageBinary)
         file.close()
 
-        self.link = os.path.join(imgdir, fname)
+        self.link = os.path.join(Config.IMGDIR, fname)
 
         LOG.info("New imgLink added to database.")
         db.session.add(self)
@@ -49,12 +49,12 @@ class ImgLink(db.Model):
 
         self.id = id
         fname = datetime.datetime.now() + ".png"
-        file = open(os.path.join(imgdir, fname), "wb")
+        file = open(os.path.join(Config.IMGDIR, fname), "wb")
         LOG.info("Writing new image to disk, %s", fname)
         file.write(newImgBin)
         file.close()
 
-        self.link = os.path.join(imgdir, fname)
+        self.link = os.path.join(Config.IMGDIR, fname)
 
         LOG.info("New imgLink added to database.")
         db.session.add(self)

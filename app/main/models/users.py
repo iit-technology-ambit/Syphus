@@ -32,6 +32,7 @@ class User(db.Model):
 	:profile_picture: int
 	:last_login: timestamp
 	:creation_time: timestamp
+	:is_verified: boolean
 	"""
 
 	#Columns
@@ -52,6 +53,7 @@ class User(db.Model):
 	occupation = db.Column(db.String(255))
 	last_login = db.Column(db.DateTime)
 	creation_time = db.Column(db.DateTime)
+	is_verified = db.Column(db.Boolean)
 
 	#Relationships
 	tags = db.relationship('Tag', secondary=userTagJunction, lazy='subquery',
@@ -76,23 +78,25 @@ class User(db.Model):
 		self.password = newPassword
 		db.session.commit()
 
-	def updateMetaData(self, **kwargs):
-		# TODO
-		pass
-	def getMetaData(self):
-		# TODO
-		pass
+	#We do not need to implement update metadata.
+	#Actually, it can be updated ad hoc by assignment without calling commit.
+	def isVerified(self):
+		return self.is_verified
 
-	# TODO: Do something about isVerifiedEmail 
+	def setVerified(self):
+		self.is_verified = True
+		db.session.commit()
 
 	def setNewTag(self, tag):
 		self.tags.append(tag)
 		db.session.commit()
+
 	def setTagPriority(self, tag, priority):
 		s = userTagJunction.update().\
 			where(user_id=self.id, keyword_id=tag.id).\
 			values(priority=priority)
 		db.session.execute(s)
+
 	def getTagPriority(self, tag):
 		s = select([userTagJunction]).where(keyword_id=tag.id, user_id=self.id)
 		result = db.session.execute(s)

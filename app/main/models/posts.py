@@ -53,7 +53,7 @@ class Post(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
-        
+
     #Getters and Setters for the fields
     @hybrid_property
     def author_id(self):
@@ -62,7 +62,7 @@ class Post(db.Model):
     @author_id.setter
     def author_id(self, authorId):
         try:
-            user = User.query.filter(id == authorId).fetchone()
+            user = User.query.filter_by(id=authorId).first()
             if user.last_logout != None:
                 raise LoginError
             else:
@@ -100,7 +100,7 @@ class Post(db.Model):
 
     @classmethod
     def getArticles(cls, id):
-        return cls.query.filter(cls.post_id == id).fetchone()
+        return cls.query.filter_by(cls.post_id=id).first()
 
 
 

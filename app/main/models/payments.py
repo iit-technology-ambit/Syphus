@@ -1,7 +1,7 @@
 """DB model for payments"""
 
 from . import db
-from app.mail.util.sendgrid import send_mail
+from app.mail.util.sendgrid import async_send_mail
 class Payment(db.Model):
     """
     Description of Payment Model.
@@ -24,12 +24,13 @@ class Payment(db.Model):
         self.amount = amount
         self.api_response = api_response
 
-        send_mail(user.email, "Thanks from Ambit", """
-We are very grateful to you. Blah Blah Blah.""")
+        async_send_mail(user.email, "Thanks from Ambit", """
+We are very grateful to you.""")
 
     def total(self):
-        all_pays = self.query.filter(username == self.username).fetchall()
+        all_pays = self.query.filter_by(username=self.username).all()
         sum = 0
         for pay in all_pays:
             sum += pay.amount
-        
+
+        return sum

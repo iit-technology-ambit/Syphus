@@ -34,7 +34,3 @@ config_by_name = dict(
     test=TestingConfig,
     prod=ProductionConfig
 )
-
-key = Config.SECRET_KEY
-sendgrid_key = Config.SENDGRID_API_KEY
-from_mail = Config.FROM_MAIL

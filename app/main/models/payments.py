@@ -2,6 +2,8 @@
 
 from . import db
 from app.mail.util.sendgrid import async_send_mail
+from flask import current_app
+
 class Payment(db.Model):
     """
     Description of Payment Model.
@@ -24,7 +26,8 @@ class Payment(db.Model):
         self.amount = amount
         self.api_response = api_response
 
-        async_send_mail(user.email, "Thanks from Ambit", """
+        async_send_mail(current_app._get_current_object(), 
+                        user.email, "Thanks from Ambit", """
 We are very grateful to you.""")
 
     def total(self):

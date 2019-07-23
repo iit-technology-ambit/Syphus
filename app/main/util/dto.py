@@ -10,3 +10,20 @@ class UserDto:
         'password': fields.String(required=True, description='user password'),
         'public_id': fields.String(description='user Identifier')
    	})
+
+class PostDto:
+    api = Namespace('article', description='article related operations')
+    article = api.model('article', {
+        'author': fields.String(required=True, description="Author of the post"),
+        'title': fields.String(required=True, description="Title of the post"),
+        'body': fields.String(required=True, description="Body of the post"),
+        'post_time': fields.DateTime(description="Time Created")
+        'imgLinks': fields.List(fields.String, description="ImgLinks")
+    })
+    articleGen = api.model('articleGen', {
+        'author': fields.String(required=True, description="Username author of the post"),
+        'title': fields.String(required=True, description="Title of the post"),
+        'body': fields.String(required=True, description="Body of the post"),
+        'post_time': fields.DateTime(description="Time Created")
+        'images': fields.List(fields.Raw, description="Raw Binary Data for images")
+    })

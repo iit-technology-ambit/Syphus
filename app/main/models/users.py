@@ -53,7 +53,7 @@ class User(db.Model):
 	occupation = db.Column(db.String(255))
 	last_login = db.Column(db.DateTime)
 	creation_time = db.Column(db.DateTime)
-	is_verified = db.Column(db.Boolean)
+	is_verified = db.Column(db.Boolean, default=False)
 
 	#Relationships
 	tags = db.relationship('Tag', secondary=userTagJunction, lazy='subquery',

@@ -1,13 +1,57 @@
-# endpoint for login/logout
-# endpoint for user operations
+'''
+All Endpoints required for authentication
+operations such as login, logout and signup. 
+'''
+
 from flask import request
-from flask_restplus import Namespace, Resource
+from flask_restplus import Resource
 
-from ..util.dto import UserDto
+from app.main.service.auth_service import Authentication
+from ..util.dto import AuthDto
 
-# Import All API Endpoints Needed for user
-# from ..service.user_service import save_new_user, get_all_users, get_a_user
+api = AuthDto.api
+user_auth = AuthDto.user_auth
 
-api = UserDto.api
-api=Namespace('auth',description='Authentication related operations')
-_user = UserDto.user
+@api.route('/login')
+class UserLogin(Resource):
+    """
+        User Login Resource
+    """
+    @api.doc('Endpoint for User Login')
+    @api.expect(user_auth, validate=True)
+    def post(self):
+        # get the post data
+        post_data = request.json
+        return Authentication.login_user(data=post_data)
+
+
+@api.route('/logout')
+class UserLogout(Resource):
+    """
+    Logout Resource
+    """
+    @api.doc('Endpoint for User Logout')
+    def post(self):
+        return Authentication.logout_user()
+
+# Signup
+@api.route('/signup')
+class SignUp(Resource):
+    pass
+
+# Verify Email after signing up
+@api.route('/email_verify')
+class EmailVerify(Resource):
+    pass
+
+
+# Request a reset of Password
+@api.route('/reset/request')
+class ResetRequest(Resource):
+    pass
+
+# Reset Password
+@api.route('/reset/<secure_token>')
+class ResetTokenVerify(Resource):
+    pass
+

@@ -33,6 +33,9 @@ pyjwt = "*"
 flask-script = "*"
 flask-testing = "*"
 coloredlogs = "*"
+pymysql = "*"
+flask-wtf = "*"
+flask-login = "*"
 
 [requires]
 python_version = "3.7"

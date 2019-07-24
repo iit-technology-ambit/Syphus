@@ -69,6 +69,9 @@ class User(db.Model):
 		self.username = username
 		self.password = password
 		self.email = email
+		self.is_authenticated = False
+		self.is_active = False
+		self.is_anonymous = False
 
 		db.session.add(self)
 		db.session.commit()
@@ -78,6 +81,9 @@ class User(db.Model):
 		self.password = newPassword
 		db.session.commit()
 
+	def get_id(self):
+		return self.id
+		
 	#We do not need to implement update metadata.
 	#Actually, it can be updated ad hoc by assignment without calling commit.
 	def isVerified(self):
@@ -86,7 +92,7 @@ class User(db.Model):
 	def setVerified(self):
 		self.is_verified = True
 		db.session.commit()
-
+	
 	def setNewTag(self, tag):
 		self.tags.append(tag)
 		db.session.commit()

@@ -13,7 +13,7 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
     # database URI goes here
-    SQLALCHEMY_DATABASE_URI = ''
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://mukul:mukul@localhost/test'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 

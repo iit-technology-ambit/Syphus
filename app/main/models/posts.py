@@ -42,6 +42,17 @@ class Post(db.Model):
     images = db.relationship('ImgLink', secondary=imgPostJunction,
                              lazy='subquery')
 
+    def __init__(self, author, title, body):
+        self.author = author
+        self.title = title
+        self.body = body
+
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
 
     #Getters and Setters for the fields
     @hybrid_property
@@ -51,7 +62,7 @@ class Post(db.Model):
     @author_id.setter
     def author_id(self, authorId):
         try:
-            user = User.query.filter(id == authorId).fetchone()
+            user = User.query.filter_by(id=authorId).first()
             if user.last_logout != None:
                 raise LoginError
             else:
@@ -60,6 +71,36 @@ class Post(db.Model):
         except:
             #Stub to be handled later
             print("Get back to login page")
+
+    @classmethod
+    def getArticlesByTags(cls, tagList, connector='AND'):
+        """
+        Get all articles that have a tag in tagList.
+        If connector is AND intersection of all posts set for each tag will be
+        returned. If it is OR, union will be returned
+        """
+        if connector == 'AND':
+            posts = set()
+            for tag in tagList:
+                if len(posts) == 0:
+                    posts = set(cls.query.filter(tag in cls.tags))
+                else:
+                    posts.intersection(set(cls.query.filter(tag in cls.tags)))
+
+            return list(posts)
+        elif connector == 'OR':
+            posts = set()
+            for tag in tagList:
+                if len(posts) == 0:
+                    posts = set(cls.query.filter(tag in cls.tags))
+                else:
+                    posts.union(set(cls.query.filter(tag in cls.tags)))
+
+            return list(posts)
+
+    @classmethod
+    def getArticles(cls, id):
+        return cls.query.filter_by(cls.post_id=id).first()
 
 
 

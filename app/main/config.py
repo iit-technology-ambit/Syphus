@@ -2,14 +2,13 @@ import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-#Path for images folder
-imgdir = os.path.join(os.path.expanduser("~"), "ambit-images")
-
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY')
     SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
     FROM_MAIL = ''
     DEBUG = False
+    #Path for images folder
+    IMGDIR = os.path.join(os.path.expanduser("~"), "ambit-images")
 
 
 class DevelopmentConfig(Config):

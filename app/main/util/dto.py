@@ -13,8 +13,6 @@ class UserDto:
 
 
 class PostDto:
-    api = Namespace('article', description='article related operations')
-
     article = api.model('article', {
         'author': fields.String(required=True,
                                 description="Author of the post"),

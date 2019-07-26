@@ -10,9 +10,7 @@ from logging import getLogger
 
 LOG = getLogger(__name__)
 
-bp = Blueprint("article", __name__, url_prefix='/article')
-api = Api(bp)
-api.add_namespace(PostDto.api)
+api = Namespace('article', description='article related operations')
 
 
 @api.route("/<int:post_id>")

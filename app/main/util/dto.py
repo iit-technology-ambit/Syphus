@@ -16,7 +16,7 @@ class PostDto:
     api = Namespace('article', description='article related operations')
 
     article = api.model('article', {
-        'author': fields.String(required=True, 
+        'author': fields.String(required=True,
                                 description="Author of the post"),
         'title': fields.String(required=True, description="Title of the post"),
         'body': fields.String(required=True, description="Body of the post"),
@@ -39,4 +39,3 @@ class PostDto:
     tagList = api.model('tagList', {
         'tags': fields.List(fields.String, description="Tags to searched")
     })
-    

@@ -71,7 +71,8 @@ class ArticleRate(Resource):
     @login_required
     def post(self, post_id):
         p = Post.getArticles(post_id)
-        current_user.ratePost(p, int(request.form["rating"])) 
+        current_user.ratePost(p, int(request.form["rating"]))
+
 
 @api.route("/by_tags")
 class ArticleByTag(Resource):
@@ -91,4 +92,3 @@ class ArticleByTag(Resource):
             data.append(article)
 
         return data
-        

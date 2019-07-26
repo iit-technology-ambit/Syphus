@@ -14,6 +14,7 @@ bp = Blueprint("article", __name__, url_prefix='/article')
 api = Api(bp)
 api.add_namespace(PostDto.api)
 
+
 @api.route("/<int:post_id>")
 class ArticleFetch(Resource):
     @api.marshal_with(PostDto.article)
@@ -25,7 +26,7 @@ class ArticleFetch(Resource):
         p = Post.getArticles(id)
         if p is not None:
             article = {
-                "author" : p.user.first_name + " " + p.user.last_name,
+                "author": p.user.first_name + " " + p.user.last_name,
                 "title": p.title,
                 "body": p.body,
                 "post_time": p.post_time
@@ -34,6 +35,7 @@ class ArticleFetch(Resource):
             return article
         else:
             abort(404)
+
 
 @api.route("/create")
 class ArticleCreator(Resource):
@@ -45,12 +47,14 @@ class ArticleCreator(Resource):
         LOG.info("New Post Created")
         return "Post Created", 201
 
+
 @api.route("/uploadimg")
 class ImageUploader(Resource):
     @api.expect(PostDto.imgGen)
     def post(self):
         img = ImgLink(request.form["image"])
         return f"{ img.link }", 201
+
 
 @api.route("/save/<int:post_id>")
 class ArticleSave(Resource):
@@ -59,6 +63,7 @@ class ArticleSave(Resource):
     def post(self, post_id):
         p = Post.getArticles(post_id)
         current_user.savePost(p)
+
 
 @api.route("/rate/<int:post_id>")
 class ArticleRate(Resource):
@@ -78,19 +83,12 @@ class ArticleByTag(Resource):
         data = list()
         for p in articles:
             article = {
-                "author" : p.user.first_name + " " + p.user.last_name,
+                "author": p.user.first_name + " " + p.user.last_name,
                 "title": p.title,
                 "body": p.body,
                 "post_time": p.post_time
             }
             data.append(article)
-        
+
         return data
-
-
-
-
-
-
-
-
+        

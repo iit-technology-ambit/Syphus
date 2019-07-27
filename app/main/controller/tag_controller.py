@@ -21,7 +21,7 @@ class AllTags(Resource):
 @api.route('/tag/remove/<int:id>')
 class DeleteTag(Resource):
     def delete(self, id):
-        tag = Tag.getTag(id)
+        tag = Tag.query.filter_by(id=id).first()
         if tag is not None:
             tag.delete()
             return "Tag deleted", 201

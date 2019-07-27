@@ -32,7 +32,3 @@ class Tag(db.Model):
         LOG.info("Deleting tag: %s", self.name)
         db.session.delete(self)
         db.session.commit()
-
-    @classmethod
-    def getTag(cls, id):
-        return cls.query.filter_by(cls.id=id).first()

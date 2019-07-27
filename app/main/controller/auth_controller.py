@@ -47,7 +47,7 @@ class SignUp(Resource):
 
 
 # Verify Email after signing up
-@api.route('/email_verify')
+@api.route('/email_verification')
 class SendVerificationEmail(Resource):
      """ Send user verification mail to the user."""
      @api.doc('Endpoint for sending a verification mail to the user')
@@ -60,20 +60,37 @@ class SendVerificationEmail(Resource):
 @api.route('/confirm/<token>')
 class ConfirmToken(Resource):
     """ Confirm the Email Verification Token Sent """
+    @api.doc('Endpoint to Confirm the Email Verification Token Sent ')
     def post(self,token):
         return Authentication.confirm_token(data=token)
 
+# I think we can implement this without this function, remove if redundant
+@api.route('/resend_email_verification')
+class ResendVerificationEmail(Resource):
+    """ Resend the Verification Email """
+    @api.doc('Endpoint to resend the verification email')
+    def post(self):
+        post_data = request.json
+        return Authentication.send_verification(data=post_data)
 
 # Request a reset of Password
-@api.route('/reset/request')
+@api.route('/reset/request', , methods=["GET", "POST"])
 class ResetRequest(Resource):
     """ Send a request to change the password """
+    @api.doc('Endpoint to Send a request to change the password ')
+    def post:
+
+
+
     
 
 # Reset Password
 
 
-@api.route('/reset/<secure_token>')
+@api.route('/reset/<token>' , methods=["GET", "POST"])
 class ResetTokenVerify(Resource):
     """ Confirm the token sent to change the password and set a new password """
-    pass
+    @api.doc('Endpoint to Confirm the token sent to change the password and set a new password')
+    def post(self,token):
+        return Authentication.confirm_reset_token(data=token)
+

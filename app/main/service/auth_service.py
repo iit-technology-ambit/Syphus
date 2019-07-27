@@ -3,6 +3,8 @@
 from app.main.models.users import User
 from app.main.util.sendgrid import async_send_mail
 from app.main.util.email_verification import generate_confirmation_token, confirm_token
+from app.main.util.password_reset import generate_reset_token, confirm_reset_token
+from app.main.util.forms import PasswordForm
 from flask import url_for
 from flask_login import current_user, login_user, logout_user
 from logging import getLogger
@@ -142,4 +144,57 @@ class Authentication:
 			'message' : 'Email Verified Successfully',
 		}
 		return response_object,200
+
+	@staticmethod
+	def reset_password_mail(data):
+		try:
+			user = User.query.filter_by(email=data.get('email')).first()
+			if user is  None:
+				LOG.info('User with email {} isn\'t registered.'.format(data.get('email')))
+				response_object={
+					'status' : 'Invalid',
+					'message' : 'User isn\'t registered. Please sign up first.',
+				}
+				return response_object,300
+
+			if user.isVerified() == False:
+				LOG.info('Can\'t reset password since user email {} isn\'t verified.'.format(data.get('email')))
+				response_object={
+					'status' : 'Fail',
+					'message' : 'User is not verified. Didn\'t send verification email.', 
+				}
+				return response_object,300
+
+			reset_token = generate_reset_token(data.get('email'))
+			subject = "Ah, Dementia! Here's a link to reset your password"
+			reset_url = url_for('ResetTokenVerify.post', token=token, _external=True)
+			async_send_mail(app, data.get('email'), subject, reset_url)
+
+		except:
+			LOG.error('Verification Mail couldn\'t be sent to {}. Please try again'.format(data.get('email')))
+			LOG.debug(traceback.print_exc())
+			response_object = {
+				'status': 'fail',
+				'message': 'Try again',
+			}
+			return response_object, 500
+
+
+	@staticmethod
+	def confirm_reset_token(data):
+		try:
+			email = confirm_reset_token(token)
+		except:
+			LOG.info('The password reset link has expired or is invalid')
+			response_object={
+				'status' : 'Fail',
+				'message' : 'Password Reset link is invalid or has expired',
+			}
+			return response_object,400
+
+		form = PasswordForm()
+
+		if form.validate_on_submit():
+        	user = User.query.filter_by(email=email).first()
+        	user.resetPassword(form.password.data)
 

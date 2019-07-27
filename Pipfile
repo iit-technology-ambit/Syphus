@@ -34,6 +34,7 @@ flask-script = "*"
 flask-testing = "*"
 coloredlogs = "*"
 pymysql = "*"
+flask-wtf = "*"
 
 [requires]
 python_version = "3.7"

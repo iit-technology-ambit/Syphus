@@ -5,6 +5,7 @@ import datetime
 from app.main import db
 from app.main.models.user import User
 
+
 def save_new_user(data):
     """ Creates a new user """
     user = User.query.filter_by(email=data['email']).first()
@@ -28,9 +29,11 @@ def save_new_user(data):
         }
         return response, 409
 
+
 def get_all_users():
     """ Gets all users """
     return User.query.all()
+
 
 def save_changes(data):
     """ Saves changes to the database """

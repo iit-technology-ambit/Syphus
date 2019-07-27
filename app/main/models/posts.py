@@ -8,6 +8,7 @@ from app.main.models.users import User
 from app.main.models.errors import LoginError
 from app.main.models.imgLinks import imgPostJunction
 
+
 class Post(db.Model):
     """
     Description of Post model.
@@ -21,9 +22,10 @@ class Post(db.Model):
     :avg_rating: float
     :num_rating: int
     """
-    #Columns
+    # Columns
     post_id = db.Column(db.Integer, primary_key=True)
-    _author_id = db.Column(db.String(256), db.ForeignKey('user.username'), nullable=False)
+    _author_id = db.Column(db.String(256), db.ForeignKey(
+        'user.username'), nullable=False)
     title = db.Column(db.String(128), nullable=False)
     body = db.Column(db.Text, nullable=False)
     post_time = db.Column(db.DateTime, default=datetime.datetime.now())
@@ -31,13 +33,12 @@ class Post(db.Model):
     avg_rating = db.Column(db.Float, default=0.0)
     num_rating = db.Column(db.Integer, default=0)
 
-
-    #Relationships
+    # Relationships
     author = db.relationship('User', backref='posts', lazy=False)
     tags = db.relationship('Tag', secondary=postTagJunction, lazy='subquery',
-                            backref=db.backref('posts', lazy=True))
+                           backref=db.backref('posts', lazy=True))
     savers = db.relationship('User', secondary=postSaves, lazy=True,
-                            backref=db.backref('posts', lazy='subquery'))
+                             backref=db.backref('posts', lazy='subquery'))
     images = db.relationship('ImgLink', secondary=imgPostJunction,
                              lazy='subquery')
 
@@ -53,7 +54,7 @@ class Post(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    #Getters and Setters for the fields
+    # Getters and Setters for the fields
     @hybrid_property
     def author_id(self):
         return self.author
@@ -68,7 +69,7 @@ class Post(db.Model):
                 self._author_id = authorId
 
         except:
-            #Stub to be handled later
+            # Stub to be handled later
             print("Get back to login page")
 
     @classmethod
@@ -102,13 +103,11 @@ class Post(db.Model):
         return cls.query.filter_by(id=cls.post_id).first()
 
 
-
-
 postTagJunction = db.Table('postTagJunction',
-                            db.Column('post_id', db.Integer,
-                                      db.ForeignKey('post.post_id'),
-                                      primary_key=True),
-                            db.Column('tag_id', db.Integer,
-                                      db.ForeignKey('tag.id'),
-                                      primary_key=True)
-)
+                           db.Column('post_id', db.Integer,
+                                     db.ForeignKey('post.post_id'),
+                                     primary_key=True),
+                           db.Column('tag_id', db.Integer,
+                                     db.ForeignKey('tag.id'),
+                                     primary_key=True)
+                           )

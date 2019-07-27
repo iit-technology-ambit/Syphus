@@ -9,6 +9,7 @@ from manage import app
 
 
 class TestDevelopmentConfig(TestCase):
+
     def create_app(self):
         app.config.from_object('app.main.config.DevelopmentConfig')
         return app
@@ -22,6 +23,7 @@ class TestDevelopmentConfig(TestCase):
 
 
 class TestTestingConfig(TestCase):
+
     def create_app(self):
         app.config.from_object('app.main.config.TestingConfig')
         return app
@@ -35,6 +37,7 @@ class TestTestingConfig(TestCase):
 
 
 class TestProductionConfig(TestCase):
+
     def create_app(self):
         app.config.from_object('app.main.config.ProductionConfig')
         return app

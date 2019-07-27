@@ -7,7 +7,7 @@ class AuthDto:
     user_auth = api.model('auth_details', {
         'email': fields.String(required=True, description='Login Email'),
         'password': fields.String(required=True, description='Login Password'),
-        'remember' : fields.String(description = 'Stay Logged In'), 
+        'remember': fields.String(description='Stay Logged In'),
     })
 
 

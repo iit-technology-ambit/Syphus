@@ -11,7 +11,7 @@ api = UserDto.api
 _user = UserDto.user
 
 
-#DEFINE ROUTES TO API ENDPOINTS
+# DEFINE ROUTES TO API ENDPOINTS
 
 # @api.route('/')
 # class UserList(Resource):

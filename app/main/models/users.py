@@ -3,10 +3,10 @@ DB Model for Users table and
 Junction Table relating
 Users and Tags
 """
-from . import db
-from enums import PriorityType
-from posts import Post
-from tags import Tag
+from app.main import db
+from app.main.models.enums import PriorityType
+from app.main.models.posts import Post
+from app.main.models.tags import Tag
 from sqlalchemy.sql import select
 import datetime
 
@@ -65,7 +65,8 @@ class User(db.Model):
 	#To get all payments done by user, call User.payments
 	#This is defined in payments.py as db.relationship
 
-	def __init__(self, username, password, email):
+	def __init__(self, id, username, password, email):
+		self.id = id
 		self.username = username
 		self.password = password
 		self.email = email

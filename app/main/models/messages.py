@@ -4,9 +4,9 @@ and the relationships connecting
 messages and user
 """	
 
-from . import db
-from users import User
-from errors import LoginError
+from app.main import db
+from app.main.models.users import User
+from app.main.models.errors import LoginError
 import datetime
 
 class Message(db.Model):

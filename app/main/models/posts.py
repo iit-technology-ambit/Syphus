@@ -2,12 +2,11 @@
 and Junction Tables connecting to User and Post
 """
 from sqlalchemy.ext.hybrid import hybrid_property
-from . import db
-from enums import PostType
-from users import User
-from errors import LoginError
-from imgLinks import imgPostJunction
-import datetime
+from app.main import db
+from app.main.models.enums import PostType
+from app.main.models.users import User
+from app.main.models.errors import LoginError
+from app.main.models.imgLinks import imgPostJunction
 
 class Post(db.Model):
     """
@@ -100,7 +99,7 @@ class Post(db.Model):
 
     @classmethod
     def getArticles(cls, id):
-        return cls.query.filter_by(cls.post_id=id).first()
+        return cls.query.filter_by(id=cls.post_id).first()
 
 
 

@@ -1,5 +1,5 @@
 """DB Model for imgLink table"""
-from . import db
+from app.main import db
 from flask import current_app
 import datetime
 from logging import getLogger

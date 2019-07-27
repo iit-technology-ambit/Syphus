@@ -1,5 +1,5 @@
 """DB Model for Tag"""
-from . import db
+from app.main import db
 from logging import getLogger
 
 LOG = getLogger(__name__)

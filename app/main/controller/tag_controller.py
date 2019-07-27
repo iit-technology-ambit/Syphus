@@ -3,6 +3,7 @@ from flask_restplus import Resource
 from flask import request, abort
 from app.main import db
 from app.main.models.tags import Tag
+from app.main.models.users import User
 
 from ..util.tagDto import TagDto
 
@@ -36,3 +37,13 @@ class AddTags(Resource):
         for tag in tag_list:
             new_tag = Tag(tag)
         return "tags added", 201
+
+@api.route('/tag/setPriority/<int:id>')
+class TagPriority(Resource):
+    def post(self, id):
+        tag = Tag.query.filter_by(id=id).first()
+        priority = request.form['priorityLevel']
+        tagId = request.form['tagId']
+        user = User.query.filter_by(id=id).first()
+        user.setTagPriority(tag, priority)
+        return "Tag priority set", 201

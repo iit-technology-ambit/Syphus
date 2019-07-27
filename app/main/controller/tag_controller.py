@@ -41,9 +41,8 @@ class AddTags(Resource):
 @api.route('/tag/setPriority/<int:id>')
 class TagPriority(Resource):
     def post(self, id):
-        tag = Tag.query.filter_by(id=id).first()
-        priority = request.form['priorityLevel']
         tagId = request.form['tagId']
+        priority = request.form['priorityLevel']
         user = User.query.filter_by(id=id).first()
         user.setTagPriority(tag, priority)
         return "Tag priority set", 201

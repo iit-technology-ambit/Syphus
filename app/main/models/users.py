@@ -78,10 +78,18 @@ class User(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def update_col(self, key, value):
+        self.__dict__[key] = value
+        db.session.commit()
+
     def resetPassword(self, newPassword):
         # Pass in a hashed password
         self.password = newPassword
         db.session.commit()
+
+    def addPayment(self, payment):
+        self.payments.append(payment)
+        db.commit()
 
     def get_id(self):
         return self.id

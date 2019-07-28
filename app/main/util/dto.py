@@ -10,6 +10,14 @@ class AuthDto:
         'remember': fields.String(description='Stay Logged In'),
     })
 
+    payment = api.model('payment', {
+        'username': fields.String(required=True,
+                                  description='username of the payee'),
+        'amount': fields.Float(required=True, descripton="Amount paid"),
+        'api_response': fields.String(required=True,
+                                      description="Response returned by vendor")
+    })
+
 
 class UserDto:
     api = Namespace('user', description='user related operations')

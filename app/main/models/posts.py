@@ -83,18 +83,19 @@ class Post(db.Model):
             posts = set()
             for tag in tagList:
                 if len(posts) == 0:
-                    posts = set(cls.query.filter(tag in cls.tags))
+                    posts = set(cls.query.filter(tag in cls.tags).all())
                 else:
-                    posts.intersection(set(cls.query.filter(tag in cls.tags)))
+                    posts.intersection(
+                        set(cls.query.filter(tag in cls.tags).all()))
 
             return list(posts)
         elif connector == 'OR':
             posts = set()
             for tag in tagList:
                 if len(posts) == 0:
-                    posts = set(cls.query.filter(tag in cls.tags))
+                    posts = set(cls.query.filter(tag in cls.tags).all())
                 else:
-                    posts.union(set(cls.query.filter(tag in cls.tags)))
+                    posts.union(set(cls.query.filter(tag in cls.tags).all()))
 
             return list(posts)
 

@@ -106,7 +106,7 @@ class Authentication:
     def send_verification(data):
         try:
             user = User.query.filter_by(email=data.get('email')).first()
-            if user.is_verified == True:
+            if user.isVerified():
                 response_object = {
                     'status': 'Invalid',
                     'message': 'Email is already Verified.',
@@ -202,5 +202,5 @@ class Authentication:
         form = PasswordForm()
 
         if form.validate_on_submit():
-        user = User.query.filter_by(email=email).first()
-        user.resetPassword(form.password.data)
+        	user = User.query.filter_by(email=email).first()
+        	user.resetPassword(form.password.data)

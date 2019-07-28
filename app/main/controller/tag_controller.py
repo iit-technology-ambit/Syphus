@@ -1,6 +1,7 @@
 # endpoint for tag related operations
 from flask_restplus import Resource
 from flask import request, abort
+from flask_login import current_user, login_required
 from app.main import db
 from app.main.models.tags import Tag
 from app.main.models.users import User
@@ -38,12 +39,11 @@ class AddTags(Resource):
             new_tag = Tag(tag)
         return "tags added", 201
 
-@api.route('/tag/setPriority/<int:id>')
+@api.route('/tag/setPriority/<id>')
 class TagPriority(Resource):
+    @login_required
     def post(self, id):
-        tagId = request.form['tagId']
-        tag = Tag.query.filter_by(id=tagId).first()
+        tag = Tag.query.filter_by(id=id).first()
         priority = request.form['priorityLevel']
-        user = User.query.filter_by(id=id).first()
-        user.setTagPriority(tag, priority)
+        current_user.setTagPriority(tag, priority)
         return "Tag priority set", 201

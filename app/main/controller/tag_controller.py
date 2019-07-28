@@ -44,6 +44,6 @@ class TagPriority(Resource):
     @login_required
     def post(self, id):
         tag = Tag.query.filter_by(id=id).first()
-        priority = request.form['priorityLevel']
+        priority = request.headers['priorityLevel']
         current_user.setTagPriority(tag, priority)
         return "Tag priority set", 201

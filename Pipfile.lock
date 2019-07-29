@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "692418911ab966ab268599da1a66754e53c91cb678034e8c2d596322f1a10c72"
+            "sha256": "508c8b670b9ccfb24cc9aa5224882fca62e055d5db60e06b994c77d13849d1be"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -175,6 +175,14 @@
             "index": "pypi",
             "version": "==0.7.1"
         },
+        "flask-wtf": {
+            "hashes": [
+                "sha256:5d14d55cfd35f613d99ee7cba0fc3fbbe63ba02f544d349158c14ca15561cc36",
+                "sha256:d9a9e366b32dcbb98ef17228e76be15702cd2600675668bca23f63a7947fd5ac"
+            ],
+            "index": "pypi",
+            "version": "==0.14.2"
+        },
         "humanfriendly": {
             "hashes": [
                 "sha256:23057b10ad6f782e7bc3a20e3cb6768ab919f619bbdc0dd75691121bbde5591d",
@@ -195,6 +203,14 @@
                 "sha256:cb6ee23b46173539939964df59d3d72c3e0c1b5d54b84f1d8a7e912fe43612db"
             ],
             "version": "==0.18"
+        },
+        "importlib-resources": {
+            "hashes": [
+                "sha256:6e2783b2538bd5a14678284a3962b0660c715e5a0f10243fd5e00a4b5974f50b",
+                "sha256:d3279fd0f6f847cced9f7acc19bd3e5df54d34f93a2e7bb5f238f81545787078"
+            ],
+            "markers": "python_version < '3.7'",
+            "version": "==1.0.2"
         },
         "isort": {
             "hashes": [
@@ -355,6 +371,14 @@
             "index": "pypi",
             "version": "==7.7.1"
         },
+        "pymysql": {
+            "hashes": [
+                "sha256:3943fbbbc1e902f41daf7f9165519f140c4451c179380677e6a848587042561a",
+                "sha256:d8c059dcd81dedb85a9f034d5e22dcb4442c0b201908bede99e306d65ea7c8e7"
+            ],
+            "index": "pypi",
+            "version": "==0.9.3"
+        },
         "pyrsistent": {
             "hashes": [
                 "sha256:16692ee739d42cf5e39cef8d27649a8c1fdb7aa99887098f1460057c5eb75c3a"
@@ -471,6 +495,13 @@
             ],
             "index": "pypi",
             "version": "==0.15.4"
+        },
+        "wtforms": {
+            "hashes": [
+                "sha256:0cdbac3e7f6878086c334aa25dc5a33869a3954e9d1e015130d65a69309b3b61",
+                "sha256:e3ee092c827582c50877cdbd49e9ce6d2c5c1f6561f849b3b068c1b8029626f1"
+            ],
+            "version": "==2.2.1"
         },
         "zipp": {
             "hashes": [

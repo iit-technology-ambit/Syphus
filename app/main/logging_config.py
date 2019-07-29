@@ -39,6 +39,7 @@ CONFIG = {
     }
 }
 
+
 def setup_logger():
     """Setup logger with appropriate configuration."""
     logging.config.dictConfig(CONFIG)

@@ -16,6 +16,7 @@ def authenticate_user(f):
         return f(*args, **kwargs)
     return decorated
 
+
 def authenticate_admin(f):
     @wraps(f)
     def decorated(*args, **kwargs):

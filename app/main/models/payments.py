@@ -1,8 +1,9 @@
 """DB model for payments"""
 
-from . import db
+from app.main import db
 from app.mail.util.sendgrid import async_send_mail
 from flask import current_app
+
 
 class Payment(db.Model):
     """
@@ -15,7 +16,8 @@ class Payment(db.Model):
     :api_response: text [not null]
     """
     pay_id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(256), db.ForeignKey("user.username"), nullable=False)
+    username = db.Column(db.String(256), db.ForeignKey(
+        "user.username"), nullable=False)
     amount = db.Column(db.Float, nullable=False)
     api_response = db.Column(db.Text)
 
@@ -26,7 +28,7 @@ class Payment(db.Model):
         self.amount = amount
         self.api_response = api_response
 
-        async_send_mail(current_app._get_current_object(), 
+        async_send_mail(current_app._get_current_object(),
                         user.email, "Thanks from Ambit", """
 We are very grateful to you.""")
 

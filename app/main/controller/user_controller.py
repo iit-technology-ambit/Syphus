@@ -2,44 +2,68 @@
 from flask import request
 from flask_restplus import Resource
 
-from ..util.dto import UserDto
-
-# Import All API Endpoints Needed for user
-# from ..service.user_service import save_new_user, get_all_users, get_a_user
+from app.main.util.dto import UserDto
+from app.main.service.user_service import UserService
 
 api = UserDto.api
-_user = UserDto.user
+user_auth = AuthDto.user_auth
+user = UserDto.user
+payment = UserDto.payment
+post = PostDto.article
 
 
-#DEFINE ROUTES TO API ENDPOINTS
-
-# @api.route('/')
-# class UserList(Resource):
-#     @api.doc('list_of_registered_users')
-#     @api.marshal_list_with(_user, envelope='data')
-#     def get(self):
-#         """List all registered users"""
-#         return get_all_users()
-
-#     @api.response(201, 'User successfully created.')
-#     @api.doc('create a new user')
-#     @api.expect(_user, validate=True)
-#     def post(self):
-#         """Creates a new User """
-#         data = request.json
-#         return save_new_user(data=data)
+@api.route('/<id>')
+class GetUserDetails(Resource):
+    """ Fetch details of user by id """
+    @api.doc('Endpoint to fetch details of a user by id')
+    @api.marshal_with(user, envelope='resource')
+    def get(self, id):
+        # Fetching the user id
+        return UserService.get_by_id(data=id)
 
 
-# @api.route('/<public_id>')
-# @api.param('public_id', 'The User identifier')
-# @api.response(404, 'User not found.')
-# class User(Resource):
-#     @api.doc('get a user')
-#     @api.marshal_with(_user)
-#     def get(self, public_id):
-#         """get a user given its identifier"""
-#         user = get_a_user(public_id)
-#         if not user:
-#             api.abort(404)
-#         else:
-#             return user
+@api.route('/getFeed')
+class GetUserFeed(Resource):
+    """ Get the user's feed based on priority of tags """
+    @login_required
+    @api.doc('Endpoint to get the user\'s feed based on tag priority')
+    @api.marshal_with(post, envelope='resource')
+    def get(self):
+        return UserService.get_user_feed()
+
+
+@api.route("/update")
+class UpdateUserInfo(Resource):
+    @login_required
+    @api.doc(params={"update_dict": "Key value pairs of all update values"})
+    def post(self):
+        update_dict = request.form['update_dict']
+        return UserService.update_user_info(data=update_dict)
+
+
+@api.route("/payment")
+class Payment(Resource):
+    @login_required
+    @api.expect(payment)
+    def post(self):
+        post_data = request.json
+        return UserService.save_user_payment(data=post_data)
+
+
+@api.route('/get_payment')
+class GetPayment(Resource):
+    """ Getting the payments of user """
+    @login_required
+    @api.doc('Endpoint to get the payments done by a user.')
+    @api.marshal_with(payment, envelope='resource')
+    def get(self):
+        return UserService.get_user_payment()
+
+
+@api.route('/followedTags')
+class FollowedTags(Resource):
+    """ Getting tags followed by user """
+    @login_required
+    @api.doc('Endpoint to get the tags followed by a user')
+    def get(self):
+        return UserService.get_user_tags()

@@ -1,8 +1,9 @@
 """DB Model for Tag"""
-from . import db
+from app.main import db
 from logging import getLogger
 
 LOG = getLogger(__name__)
+
 
 class Tag(db.Model):
     """
@@ -12,10 +13,9 @@ class Tag(db.Model):
     :id: int [pk]
     :name: varchar [not null]
     """
-    #Columns
+    # Columns
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), nullable=False)
-
 
     def __init__(self, name):
         """

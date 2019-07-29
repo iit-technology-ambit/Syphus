@@ -1,6 +1,8 @@
 """DB Model for the post table
 and Junction Tables connecting to User and Post
 """
+import datetime
+
 from sqlalchemy.ext.hybrid import hybrid_property
 from app.main import db
 from app.main.models.enums import PostType

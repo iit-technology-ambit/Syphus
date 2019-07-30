@@ -11,10 +11,6 @@ from app.main.models.tags import Tag
 from app.main import login_manager
 from flask_login import UserMixin
 from sqlalchemy.sql import select
-# from app.main import db
-# from app.main.models.enums import PriorityType
-# from app.main.models.posts import Post
-# from app.main.models.tags import Tag
 
 
 userTagJunction = db.Table('userTagJunction',
@@ -97,8 +93,6 @@ class User(db.Model, UserMixin):
         self.password = password
         self.email = email
         self.is_verified = False
-        # self.is_active = False
-        # self.is_anonymous = False
 
         db.session.add(self)
         db.session.commit()
@@ -171,6 +165,3 @@ class User(db.Model, UserMixin):
                 values(save=False, rating=rating,
                        user_id=self.id, post_id=post.post_id)
             db.session.execute(s)
-
-
-# Junction Table relating Users and Tags

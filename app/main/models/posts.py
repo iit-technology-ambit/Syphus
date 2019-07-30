@@ -1,13 +1,23 @@
 """DB Model for the post table
 and Junction Tables connecting to User and Post
 """
+import datetime
 from sqlalchemy.ext.hybrid import hybrid_property
-from app.main import db
-from app.main.models.enums import PostType
-from app.main.models.users import User
-from app.main.models.errors import LoginError
-from app.main.models.imgLinks import imgPostJunction
+from . import *
+# from app.main import db
+# from app.main.models.enums import PostType
+# from app.main.models.users import User
+# from app.main.models.errors import LoginError
+# from app.main.models.imgLinks import imgPostJunction
 
+postTagJunction = db.Table('postTagJunction',
+                           db.Column('post_id', db.Integer,
+                                     db.ForeignKey('post.post_id'),
+                                     primary_key=True),
+                           db.Column('tag_id', db.Integer,
+                                     db.ForeignKey('tag.id'),
+                                     primary_key=True)
+                           )
 
 class Post(db.Model):
     """
@@ -37,8 +47,8 @@ class Post(db.Model):
     author = db.relationship('User', backref='posts', lazy=False)
     tags = db.relationship('Tag', secondary=postTagJunction, lazy='subquery',
                            backref=db.backref('posts', lazy=True))
-    savers = db.relationship('User', secondary=postSaves, lazy=True,
-                             backref=db.backref('posts', lazy='subquery'))
+    # savers = db.relationship('User', secondary=postSaves, lazy=True,
+    #                          backref=db.backref('posts', lazy='subquery'))
     images = db.relationship('ImgLink', secondary=imgPostJunction,
                              lazy='subquery')
 
@@ -104,11 +114,4 @@ class Post(db.Model):
         return cls.query.filter_by(id=cls.post_id).first()
 
 
-postTagJunction = db.Table('postTagJunction',
-                           db.Column('post_id', db.Integer,
-                                     db.ForeignKey('post.post_id'),
-                                     primary_key=True),
-                           db.Column('tag_id', db.Integer,
-                                     db.ForeignKey('tag.id'),
-                                     primary_key=True)
-                           )
+

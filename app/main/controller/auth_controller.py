@@ -52,8 +52,7 @@ class SendVerificationEmail(Resource):
     """ Send user verification mail to the user."""
     @api.doc('Endpoint for sending a verification mail to the user')
     def post(self):
-        post_data = request.json
-        return Authentication.send_verification(data=post_data)
+        return Authentication.send_verification()
 
 
 # Verify the Email Token

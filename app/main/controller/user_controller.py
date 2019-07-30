@@ -1,9 +1,11 @@
 # endpoint for user operations
 from flask import request
 from flask_restplus import Resource
+from flask_login import login_required 
 
-from app.main.util.dto import UserDto
+from app.main.util.dto import UserDto, AuthDto, PostDto
 from app.main.service.user_service import UserService
+
 
 api = UserDto.api
 user_auth = AuthDto.user_auth
@@ -22,12 +24,12 @@ class GetUserDetails(Resource):
         return UserService.get_by_id(data=id)
 
 
-@api.route('/getFeed')
+@api.route("/getfeed")
 class GetUserFeed(Resource):
     """ Get the user's feed based on priority of tags """
     @login_required
     @api.doc('Endpoint to get the user\'s feed based on tag priority')
-    @api.marshal_with(post, envelope='resource')
+    @api.marshal_list_with(post,envelope='resource')
     def get(self):
         return UserService.get_user_feed()
 

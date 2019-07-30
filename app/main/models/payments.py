@@ -1,7 +1,7 @@
 """DB model for payments"""
-
+from . import *
 from app.main import db
-from app.mail.util.sendgrid import async_send_mail
+from app.main.util.sendgrid import async_send_mail
 from flask import current_app
 
 
@@ -30,7 +30,7 @@ class Payment(db.Model):
 
         async_send_mail(current_app._get_current_object(),
                         user.email, "Thanks from Ambit", """
-We are very grateful to you.""")
+                        We are very grateful to you.""")
 
     def total(self):
         all_pays = self.query.filter_by(username=self.username).all()

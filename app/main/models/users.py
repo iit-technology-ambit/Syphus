@@ -3,15 +3,37 @@ DB Model for Users table and
 Junction Table relating
 Users and Tags
 """
-from app.main import db
-from app.main.models.enums import PriorityType
-from app.main.models.posts import Post
-from app.main.models.tags import Tag
+from . import *
+from flask_login import UserMixin
+from app.main import  *
 from sqlalchemy.sql import select
+# from app.main import db
+# from app.main.models.enums import PriorityType
+# from app.main.models.posts import Post
+# from app.main.models.tags import Tag
+
 import datetime
 
+userTagJunction = db.Table('userTagJunction',
+                           db.Column('user_id', db.Integer,
+                                     db.ForeignKey('user.id'), primary_key=True),
+                           db.Column('keyword_id', db.Integer, db.ForeignKey('tag.id'),
+                                     primary_key=True),
+                           db.Column('priority', db.Enum(PriorityType),
+                                     default=PriorityType.follow)
+                           )
 
-class User(db.Model):
+userPostInteraction = db.Table('userPostInteraction',
+                               db.Column('user_id', db.Integer,
+                                         db.ForeignKey('user.id'), primary_key=True),
+                               db.Column('post_id', db.Integer,
+                                         db.ForeignKey('post.post_id'), primary_key=True),
+                               db.Column('rating', db.Integer, default=0),
+                               db.Column('save', db.Boolean, default=True)
+                               )
+
+
+class User(db.Model, UserMixin):
     """
     Description of User model.
     Columns
@@ -38,12 +60,12 @@ class User(db.Model):
 
     # Columns
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(128), nullable=False)
+    username = db.Column(db.String(128), unique=True, nullable=False)
     password = db.Column(db.String(128), nullable=False)
-    first_name = db.Column(db.String(255), nullable=False)
-    last_name = db.Column(db.String(255), nullable=False)
+    first_name = db.Column(db.String(255))
+    last_name = db.Column(db.String(255))
     dob = db.Column(db.DateTime)
-    email = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(255))
     fb_handle = db.Column(db.String(255))
     g_handle = db.Column(db.String(255))
     medium_handle = db.Column(db.String(255))
@@ -60,8 +82,8 @@ class User(db.Model):
     tags = db.relationship('Tag', secondary=userTagJunction, lazy='subquery',
                            backref=db.backref("users", lazy=True))
 
-    saves = db.relationship('Post', secondary=userPostInteraction, lazy=True,
-                            backref=db.backref("savers", lazy=True))
+    # saves = db.relationship('Post', secondary=userPostInteraction, lazy=True,
+    #                         backref=db.backref("savers", lazy=True))
 
     # To get all payments done by user, call User.payments
     # This is defined in payments.py as db.relationship
@@ -78,9 +100,20 @@ class User(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    @staticmethod
+    @login_manager.user_loader
+    def load_user(id):
+        return User.query.filter_by(id=id).first()
+
     def update_col(self, key, value):
         self.__dict__[key] = value
         db.session.commit()
+
+    def check_password(self, password):
+        if self.password == password:
+            return True
+        else:
+            return False
 
     def resetPassword(self, newPassword):
         # Pass in a hashed password
@@ -138,20 +171,3 @@ class User(db.Model):
 
 
 # Junction Table relating Users and Tags
-userTagJunction = db.Table('userTagJunction',
-                           db.Column('user_id', db.Integer,
-                                     db.ForeignKey(User.id), primary_key=True),
-                           db.Column('keyword_id', db.Integer, db.ForeignKey(Tag.id),
-                                     primary_key=True),
-                           db.Column('priority', db.Enum(PriorityType),
-                                     default=PriorityType.follow)
-                           )
-
-userPostInteraction = db.Table('userPostInteraction',
-                               db.Column('user_id', db.Integer,
-                                         db.ForeignKey(User.id), primary_key=True),
-                               db.Column('post_id', db.Integer,
-                                         db.ForeignKey(Post.post_id), primary_key=True),
-                               db.Column('rating', db.Integer, default=0),
-                               db.Column('save', db.Boolean, default=True)
-                               )

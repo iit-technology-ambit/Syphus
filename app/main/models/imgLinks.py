@@ -1,10 +1,19 @@
 """DB Model for imgLink table"""
-from app.main import db
+from . import *
+# from app.main import db
 from flask import current_app
 import datetime
 from logging import getLogger
 import os
 LOG = getLogger(__name__)
+
+imgPostJunction = db.Table('imgPostJunction',
+                           db.Column('img_id', db.Integer,
+                                     db.ForeignKey('imgLink.id'),
+                                     primary_key=True),
+                           db.Column('post_id', db.Integer,
+                                     db.ForeignKey('post.post_id'))
+                           )
 
 
 class ImgLink(db.Model):
@@ -15,6 +24,8 @@ class ImgLink(db.Model):
     :id: int [pk]
     :link: varchar (url)
     """
+    __tablename__ = 'imgLink' 
+
     id = db.Column(db.Integer, primary_key=True)
     link = db.Column(db.String(256), nullable=False)
 
@@ -62,10 +73,3 @@ class ImgLink(db.Model):
         db.session.commit()
 
 
-imgPostJunction = db.Table('imgPostJunction',
-                           db.Column('img_id', db.Integer,
-                                     db.ForeignKey('imgLink.id'),
-                                     primary_key=True),
-                           db.Column('post_id', db.Integer,
-                                     db.ForeignKey('post.id'))
-                           )

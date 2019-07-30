@@ -24,12 +24,12 @@ class GetUserDetails(Resource):
         return UserService.get_by_id(data=id)
 
 
-@api.route("/getfeed")
+@api.route('/getFeed')
 class GetUserFeed(Resource):
     """ Get the user's feed based on priority of tags """
     @login_required
     @api.doc('Endpoint to get the user\'s feed based on tag priority')
-    @api.marshal_list_with(post,envelope='resource')
+    @api.marshal_with(post, envelope='resource')
     def get(self):
         return UserService.get_user_feed()
 

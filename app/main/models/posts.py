@@ -19,6 +19,14 @@ postTagJunction = db.Table('postTagJunction',
                                      primary_key=True)
                            )
 
+from sqlalchemy.ext.hybrid import hybrid_property
+from app.main import db
+from app.main.models.enums import PostType
+from app.main.models.users import User
+from app.main.models.errors import LoginError
+from app.main.models.imgLinks import imgPostJunction
+
+
 class Post(db.Model):
     """
     Description of Post model.

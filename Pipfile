@@ -6,6 +6,7 @@ verify_ssl = true
 [dev-packages]
 pylint = "*"
 uuid = "*"
+flask-login = "*"
 
 [packages]
 aniso8601 = "==7.0.0"

@@ -1,4 +1,4 @@
-from flask_restplus import Api, Resource, Namespace
+from flask_restplus import Api, Resource
 from flask_login import current_user, login_required
 from flask import Blueprint, request, abort
 from app.main.util.dto import PostDto

@@ -3,9 +3,11 @@ DB Model for Users table and
 Junction Table relating
 Users and Tags
 """
-from . import *
+from app.main import db
+from app.main.models.enums import PriorityType
+from app.main.models.posts import Post
+from app.main.models.tags import Tag
 from flask_login import UserMixin
-from app.main import  *
 from sqlalchemy.sql import select
 # from app.main import db
 # from app.main.models.enums import PriorityType
@@ -13,7 +15,8 @@ from sqlalchemy.sql import select
 # from app.main.models.tags import Tag
 
 import datetime
-
+confirm_url = url_for('api.auth_confirm_token',
+                                  token=token, _external=True)
 userTagJunction = db.Table('userTagJunction',
                            db.Column('user_id', db.Integer,
                                      db.ForeignKey('user.id'), primary_key=True),
@@ -65,7 +68,7 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(255))
     last_name = db.Column(db.String(255))
     dob = db.Column(db.DateTime)
-    email = db.Column(db.String(255))
+    email = db.Column(db.String(255), nullable=False)
     fb_handle = db.Column(db.String(255))
     g_handle = db.Column(db.String(255))
     medium_handle = db.Column(db.String(255))
@@ -82,8 +85,8 @@ class User(db.Model, UserMixin):
     tags = db.relationship('Tag', secondary=userTagJunction, lazy='subquery',
                            backref=db.backref("users", lazy=True))
 
-    # saves = db.relationship('Post', secondary=userPostInteraction, lazy=True,
-    #                         backref=db.backref("savers", lazy=True))
+    saves = db.relationship('Post', secondary=userPostInteraction, lazy=True,
+                            backref=db.backref("savers", lazy=True))
 
     # To get all payments done by user, call User.payments
     # This is defined in payments.py as db.relationship

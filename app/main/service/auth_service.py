@@ -87,6 +87,7 @@ class Authentication:
 
             user = User(data.get('id'), data.get('username'),
                         data.get('password'), data.get('email'))
+            send_verification(data.get('email'))
             response_object = {
                 'status': 'Success',
                 'message': 'User added Successfully',
@@ -104,9 +105,9 @@ class Authentication:
             return response_object, 500
 
     @staticmethod
-    def send_verification():
+    def send_verification(email):
         try:
-            user = User.query.filter_by(email=current_user.email).first()
+            user = User.query.filter_by(email=email).first()
             if user.isVerified():
                 response_object = {
                     'status': 'Invalid',
@@ -114,14 +115,14 @@ class Authentication:
                 }
                 return response_object, 300
 
-            token = generate_confirmation_token(current_user.email)
+            token = generate_confirmation_token(user.email)
             subject = "Hola! To hop onto IIT Tech Ambit, please confirm your email."
-            confirm_url = url_for('api.auth_confirm_token',
+            confirm_url = url_for('ConfirmToken.post',
                                   token=token, _external=True)
-            async_send_mail(current_user.email, subject, confirm_url)
+            async_send_mail(app._get_current_object() ,current_user.email, subject, confirm_url)
 
         except:
-            LOG.error('Verification Mail couldn\'t be sent to {}. Please try again'.format(current_user.email))
+            LOG.error('Verification Mail couldn\'t be sent to {}. Please try again'.format(user.email))
             LOG.debug(traceback.print_exc())
             response_object = {
                 'status': 'fail',
@@ -175,7 +176,7 @@ class Authentication:
             subject = "Ah, Dementia! Here's a link to reset your password"
             reset_url = url_for('ResetTokenVerify.post',
                                 token=token, _external=True)
-            async_send_mail(data.get('email'), subject, reset_url)
+            async_send_mail(app._get_current_object(), data.get('email'), subject, reset_url)
 
         except:
             LOG.error('Verification Mail couldn\'t be sent to {}. Please try again'.format(

@@ -52,7 +52,8 @@ class SendVerificationEmail(Resource):
     """ Send user verification mail to the user."""
     @api.doc('Endpoint for sending a verification mail to the user')
     def post(self):
-        return Authentication.send_verification()
+        post_data = request.json
+        return Authentication.send_verification(data=post_data['email'])
 
 
 # Verify the Email Token
@@ -65,14 +66,6 @@ class ConfirmToken(Resource):
 
 # I think we can implement this without this function, remove if redundant
 
-
-@api.route('/resend_email_verification')
-class ResendVerificationEmail(Resource):
-    """ Resend the Verification Email """
-    @api.doc('Endpoint to resend the verification email')
-    def post(self):
-        post_data = request.json
-        return Authentication.send_verification(data=post_data)
 
 # Request a reset of Password
 

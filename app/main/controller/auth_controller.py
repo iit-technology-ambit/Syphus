@@ -46,14 +46,13 @@ class SignUp(Resource):
         return Authentication.signup_user(data=post_data)
 
 
-# Verify Email after signing up
-@api.route('/email_verification')
-class SendVerificationEmail(Resource):
-    """ Send user verification mail to the user."""
-    @api.doc('Endpoint for sending a verification mail to the user')
-    def post(self):
-        post_data = request.json
-        return Authentication.send_verification(data=post_data['email'])
+# # Verify Email after signing up
+# @api.route('/email_verification')
+# class SendVerificationEmail(Resource):
+#     """ Send user verification mail to the user."""
+#     @api.doc('Endpoint for sending a verification mail to the user')
+#     def post(self):
+#         return Authentication.send_verification()
 
 
 # Verify the Email Token

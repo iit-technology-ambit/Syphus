@@ -16,7 +16,7 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
     # database URI goes here
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://USERNAME:PASSWORD@localhost/DBNAME'
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URI')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 

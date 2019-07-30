@@ -57,32 +57,3 @@ class ImgLink(db.Model):
     def update(self, newImgBin):
         id = self.id
         self.delete()
-@api.route('/resend_email_verification')
-class ResendVerificationEmail(Resource):
-    """ Resend the Verification Email """
-    @api.doc('Endpoint to resend the verification email')
-    def post(self):
-        post_data = request.json
-        return Authentication.send_verification(data=post_data)
-
-        self.id = id
-        fname = datetime.datetime.now() + ".png"
-        file =@api.route('/resend_email_verification')
-class ResendVerificationEmail(Resource):
-    """ Resend the Verification Email """
-    @api.doc('Endpoint to resend the verification email')
-    def post(self):
-        post_data = request.json
-        return Authentication.send_verification(data=post_data)
- open(os.path.join(current_app.config["IMGDIR"], fname), "wb")
-        LOG.info("Writing new image to disk, %s", fname)
-        file.write(newImgBin)
-        file.close()
-
-        self.link = os.path.join(current_app.config["IMGDIR"], fname)
-
-        LOG.info("New imgLink added to database.")
-        db.session.add(self)
-        db.session.commit()
-
-

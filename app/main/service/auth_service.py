@@ -7,7 +7,8 @@ from app.main.util.password_reset import generate_reset_token, confirm_reset_tok
 from app.main.util.forms import PasswordForm
 from flask import url_for
 from flask import current_app as app
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_user
+from flask_login import logout_user as logout
 from logging import getLogger
 
 LOG = getLogger(__name__)
@@ -49,7 +50,7 @@ class Authentication:
             return response_object, 500
 
     @staticmethod
-    def logout_user(data):
+    def logout_user():
         try:
             if not current_user.is_authenticated:
                 response_object = {
@@ -57,7 +58,7 @@ class Authentication:
                     'message': 'Not logged in',
                 }
                 return response_object, 300
-            logout_user()
+            logout()
             response_object = {
                 'status': 'Success',
                 'message': 'Logged Out Successfully',
@@ -87,7 +88,7 @@ class Authentication:
 
             user = User(data.get('id'), data.get('username'),
                         data.get('password'), data.get('email'))
-            send_verification(data.get('email'))
+            Authentication.send_verification(data.get('email'))
             response_object = {
                 'status': 'Success',
                 'message': 'User added Successfully',
@@ -117,7 +118,7 @@ class Authentication:
 
             token = generate_confirmation_token(user.email)
             subject = "Hola! To hop onto IIT Tech Ambit, please confirm your email."
-            confirm_url = url_for('ConfirmToken.post',
+            confirm_url = url_for('api.auth_confirm_token',
                                   token=token, _external=True)
             async_send_mail(app._get_current_object() ,current_user.email, subject, confirm_url)
 

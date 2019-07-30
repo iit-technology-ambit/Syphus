@@ -1,7 +1,7 @@
 """DB model for payments"""
 
 from app.main import db
-from app.mail.util.sendgrid import async_send_mail
+from app.main.util.sendgrid import async_send_mail
 from flask import current_app
 
 

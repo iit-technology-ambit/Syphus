@@ -3,10 +3,12 @@ DB Model for Users table and
 Junction Table relating
 Users and Tags
 """
+import datetime
 from app.main import db
 from app.main.models.enums import PriorityType
 from app.main.models.posts import Post
 from app.main.models.tags import Tag
+from app.main import login_manager
 from flask_login import UserMixin
 from sqlalchemy.sql import select
 # from app.main import db
@@ -14,9 +16,7 @@ from sqlalchemy.sql import select
 # from app.main.models.posts import Post
 # from app.main.models.tags import Tag
 
-import datetime
-confirm_url = url_for('api.auth_confirm_token',
-                                  token=token, _external=True)
+
 userTagJunction = db.Table('userTagJunction',
                            db.Column('user_id', db.Integer,
                                      db.ForeignKey('user.id'), primary_key=True),
@@ -96,9 +96,9 @@ class User(db.Model, UserMixin):
         self.username = username
         self.password = password
         self.email = email
-        self.is_authenticated = False
-        self.is_active = False
-        self.is_anonymous = False
+        self.is_verified = False
+        # self.is_active = False
+        # self.is_anonymous = False
 
         db.session.add(self)
         db.session.commit()

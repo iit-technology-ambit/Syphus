@@ -93,8 +93,6 @@ class User(db.Model, UserMixin):
         self.password = password
         self.email = email
         self.is_verified = False
-        # self.is_active = False
-        # self.is_anonymous = False
 
         db.session.add(self)
         db.session.commit()

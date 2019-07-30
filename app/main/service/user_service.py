@@ -18,7 +18,7 @@ from logging import getLogger
 LOG = getLogger(__name__)
 
 
-def UserService:
+class UserService:
 
     @staticmethod
     def get_by_id(data):

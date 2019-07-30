@@ -1,9 +1,11 @@
 # endpoint for user operations
 from flask import request
 from flask_restplus import Resource
+from flask_login import login_required 
 
-from app.main.util.dto import UserDto
+from app.main.util.dto import UserDto, AuthDto, PostDto
 from app.main.service.user_service import UserService
+
 
 api = UserDto.api
 user_auth = AuthDto.user_auth

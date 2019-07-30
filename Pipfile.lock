@@ -46,7 +46,14 @@
             "version": "==19.1.0"
         },
         "bcrypt": {
-            "hashes": [
+            "hashes": [@api.route('/resend_email_verification')
+                class ResendVerificationEmail(Resource):
+                    """ Resend the Verification Email """
+                    @api.doc('Endpoint to resend the verification email')
+                    def post(self):
+                        post_data = request.json
+                        return Authentication.send_verification(data=post_data)
+                
                 "sha256:0258f143f3de96b7c14f762c770f5fc56ccd72f8a1857a451c1cd9a655d9ac89",
                 "sha256:0b0069c752ec14172c5f78208f1863d7ad6755a6fae6fe76ec2c80d13be41e42",
                 "sha256:19a4b72a6ae5bb467fea018b825f0a7d917789bcfe893e53f15c92805d187294",

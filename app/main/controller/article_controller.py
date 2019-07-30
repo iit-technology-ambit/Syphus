@@ -10,7 +10,7 @@ from logging import getLogger
 
 LOG = getLogger(__name__)
 
-api = Namespace('article', description='article related operations')
+api = PostDto.api
 
 
 @api.route("/<int:post_id>")

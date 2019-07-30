@@ -2,13 +2,24 @@
 and Junction Tables connecting to User and Post
 """
 import datetime
-
 from sqlalchemy.ext.hybrid import hybrid_property
+# from . import *
 from app.main import db
 from app.main.models.enums import PostType
-from app.main.models.users import User
+# from app.main.models.users import User
 from app.main.models.errors import LoginError
 from app.main.models.imgLinks import imgPostJunction
+
+postTagJunction = db.Table('postTagJunction',
+                           db.Column('post_id', db.Integer,
+                                     db.ForeignKey('post.post_id'),
+                                     primary_key=True),
+                           db.Column('tag_id', db.Integer,
+                                     db.ForeignKey('tag.id'),
+                                     primary_key=True)
+                           )
+
+
 
 
 class Post(db.Model):
@@ -39,8 +50,8 @@ class Post(db.Model):
     author = db.relationship('User', backref='posts', lazy=False)
     tags = db.relationship('Tag', secondary=postTagJunction, lazy='subquery',
                            backref=db.backref('posts', lazy=True))
-    savers = db.relationship('User', secondary=postSaves, lazy=True,
-                             backref=db.backref('posts', lazy='subquery'))
+    # savers = db.relationship('User', secondary=postSaves, lazy=True,
+    #                          backref=db.backref('posts', lazy='subquery'))
     images = db.relationship('ImgLink', secondary=imgPostJunction,
                              lazy='subquery')
 
@@ -57,22 +68,22 @@ class Post(db.Model):
         db.session.commit()
 
     # Getters and Setters for the fields
-    @hybrid_property
-    def author_id(self):
-        return self.author
+    # @hybrid_property
+    # def author_id(self):
+    #     return self.author
 
-    @author_id.setter
-    def author_id(self, authorId):
-        try:
-            user = User.query.filter_by(id=authorId).first()
-            if user.last_logout != None:
-                raise LoginError
-            else:
-                self._author_id = authorId
+    # @author_id.setter
+    # def author_id(self, authorId):
+    #     try:
+    #         user = User.query.filter_by(id=authorId).first()
+    #         if user.last_logout != None:
+    #             raise LoginError
+    #         else:
+    #             self._author_id = authorId
 
-        except:
-            # Stub to be handled later
-            print("Get back to login page")
+    #     except:
+    #         # Stub to be handled later
+    #         print("Get back to login page")
 
     @classmethod
     def getArticlesByTags(cls, tagList, connector='AND'):
@@ -106,11 +117,4 @@ class Post(db.Model):
         return cls.query.filter_by(id=cls.post_id).first()
 
 
-postTagJunction = db.Table('postTagJunction',
-                           db.Column('post_id', db.Integer,
-                                     db.ForeignKey('post.post_id'),
-                                     primary_key=True),
-                           db.Column('tag_id', db.Integer,
-                                     db.ForeignKey('tag.id'),
-                                     primary_key=True)
-                           )
+

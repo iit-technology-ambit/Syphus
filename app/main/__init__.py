@@ -3,6 +3,7 @@ from logging import getLogger
 from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
 
 from app.main.config import config_by_name
 
@@ -12,6 +13,7 @@ LOG.info('configured logger!')
 
 db = SQLAlchemy()
 flask_bcrypt = Bcrypt()
+login_manager = LoginManager()
 
 
 def create_app(config_name):
@@ -24,5 +26,8 @@ def create_app(config_name):
     
     flask_bcrypt.init_app(app)
     LOG.info('flask encryption initialized successfully!')
+
+    login_manager.init_app(app)
+    LOG.info('Flask-Login set up successfully!')
 
     return app

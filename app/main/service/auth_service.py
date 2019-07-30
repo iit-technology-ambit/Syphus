@@ -1,12 +1,14 @@
 # for login/logout operations
-
+import traceback
 from app.main.models.users import User
 from app.main.util.sendgrid import async_send_mail
 from app.main.util.email_verification import generate_confirmation_token, confirm_token
 from app.main.util.password_reset import generate_reset_token, confirm_reset_token
 from app.main.util.forms import PasswordForm
 from flask import url_for
-from flask_login import current_user, login_user, logout_user
+from flask import current_app as app
+from flask_login import current_user, login_user
+from flask_login import logout_user as logout
 from logging import getLogger
 
 LOG = getLogger(__name__)
@@ -48,7 +50,7 @@ class Authentication:
             return response_object, 500
 
     @staticmethod
-    def logout_user(data):
+    def logout_user():
         try:
             if not current_user.is_authenticated:
                 response_object = {
@@ -56,7 +58,7 @@ class Authentication:
                     'message': 'Not logged in',
                 }
                 return response_object, 300
-            logout_user()
+            logout()
             response_object = {
                 'status': 'Success',
                 'message': 'Logged Out Successfully',
@@ -86,6 +88,7 @@ class Authentication:
 
             user = User(data.get('id'), data.get('username'),
                         data.get('password'), data.get('email'))
+            Authentication.send_verification(data.get('email'))
             response_object = {
                 'status': 'Success',
                 'message': 'User added Successfully',
@@ -103,9 +106,9 @@ class Authentication:
             return response_object, 500
 
     @staticmethod
-    def send_verification(data):
+    def send_verification(email):
         try:
-            user = User.query.filter_by(email=data.get('email')).first()
+            user = User.query.filter_by(email=email).first()
             if user.isVerified():
                 response_object = {
                     'status': 'Invalid',
@@ -113,15 +116,14 @@ class Authentication:
                 }
                 return response_object, 300
 
-            token = generate_confirmation_token(data.get('email'))
+            token = generate_confirmation_token(user.email)
             subject = "Hola! To hop onto IIT Tech Ambit, please confirm your email."
-            confirm_url = url_for('ConfirmToken.post',
+            confirm_url = url_for('api.auth_confirm_token',
                                   token=token, _external=True)
-            async_send_mail(app, data.get('email'), subject, confirm_url)
+            async_send_mail(app._get_current_object() ,current_user.email, subject, confirm_url)
 
         except:
-            LOG.error('Verification Mail couldn\'t be sent to {}. Please try again'.format(
-                data.get('email')))
+            LOG.error('Verification Mail couldn\'t be sent to {}. Please try again'.format(user.email))
             LOG.debug(traceback.print_exc())
             response_object = {
                 'status': 'fail',
@@ -175,7 +177,7 @@ class Authentication:
             subject = "Ah, Dementia! Here's a link to reset your password"
             reset_url = url_for('ResetTokenVerify.post',
                                 token=token, _external=True)
-            async_send_mail(app, data.get('email'), subject, reset_url)
+            async_send_mail(app._get_current_object(), data.get('email'), subject, reset_url)
 
         except:
             LOG.error('Verification Mail couldn\'t be sent to {}. Please try again'.format(

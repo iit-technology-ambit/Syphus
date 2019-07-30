@@ -165,6 +165,3 @@ class User(db.Model, UserMixin):
                 values(save=False, rating=rating,
                        user_id=self.id, post_id=post.post_id)
             db.session.execute(s)
-
-
-# Junction Table relating Users and Tags

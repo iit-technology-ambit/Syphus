@@ -86,8 +86,7 @@ class User(db.Model, UserMixin):
     # To get all payments done by user, call User.payments
     # This is defined in payments.py as db.relationship
 
-    def __init__(self, id, username, password, email):
-        self.id = id
+    def __init__(self, username, password, email):
         self.username = username
         self.password = password
         self.email = email

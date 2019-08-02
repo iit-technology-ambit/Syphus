@@ -81,13 +81,23 @@ class Authentication:
             if user is not None:
                 response_object = {
                     'status': 'Invalid',
-                    'message': 'User Already Exists',
+                    'message': 'Email Already Registered',
                 }
                 LOG.info(
-                    'User already present in database. Redirect to Login Page')
+                    'Email already present in database. Redirect to Login Page')
+                return response_object, 300
+            
+            user = User.query.filter_by(username=data.get('username')).first()
+            if user is not None:
+                response_object = {
+                    'status': 'Invalid',
+                    'message': 'Username Already Taken',
+                }
+                LOG.info(
+                    'Username already present in database. Ask to choose different username')
                 return response_object, 300
 
-            user = User(data.get('id'), data.get('username'),
+            user = User(data.get('username'),
                         data.get('password'), data.get('email'))
             Authentication.send_verification(data.get('email'))
             response_object = {
@@ -121,7 +131,7 @@ class Authentication:
             subject = "Hola! To hop onto IIT Tech Ambit, please confirm your email."
             confirm_url = url_for('api.auth_confirm_token',
                                   token=token, _external=True)
-            async_send_mail(app._get_current_object() ,current_user.email, subject, confirm_url)
+            async_send_mail(app._get_current_object() ,user.email, subject, confirm_url)
 
         except:
             LOG.error('Verification Mail couldn\'t be sent to {}. Please try again'.format(user.email))

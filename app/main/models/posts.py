@@ -112,9 +112,9 @@ class Post(db.Model):
 
             return list(posts)
 
-    @classmethod
-    def getArticles(cls, id):
-        return cls.query.filter_by(id=cls.post_id).first()
+    @staticmethod
+    def getArticles(post_id):
+        return Post.query.filter_by(post_id=post_id).first()
 
 
 

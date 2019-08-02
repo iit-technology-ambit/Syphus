@@ -32,14 +32,17 @@ class DeleteTag(Resource):
 
 @api.route('/add', methods=['POST'])
 class AddTags(Resource):
-	@api.doc(params={ 'tags': 'List of tags to be added' })
-	@api.marshal_list_with(tag)
+	@api.doc('Endpoint to add a particular tag')
+	@api.expect(tag, validate=True)	
 	def post(self):
-		tag_list = request.json
-		for tag in tag_list:
-			new_tag = Tag(tag)
-		return "tags added", 201
-
+		tag = request.json['name']
+		new_tag = Tag(tag)
+		response_object = {
+			'status' : 'Success',
+			'message' : 'Tag added successfully',
+		}
+		return response_object,200
+		
 @api.route('/setPriority/<id>')
 class TagPriority(Resource):
 	@login_required

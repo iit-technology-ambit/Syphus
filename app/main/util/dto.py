@@ -56,12 +56,12 @@ class PostDto:
 		'tags': fields.List(fields.String, description="Tags to searched"),
 	})
 
+	rating = api.model('rating',  {
+		'score': fields.Integer(required=True, description="Rating of the post")
+	})
+
 class TagDto:
 	api = Namespace('tag', description='for tag related operations')
 	tag = api.model('tag', {
-		'id': fields.Integer(required=True, description='tag id'),
-		'name': fields.List(fields.String(required=True, description='tag name')),
-	})
-	tag_list = api.model('TagList', {
-	'tags': fields.List(fields.Nested(tag)),
+		'name': fields.String(required=True, description='tag name'),
 	})

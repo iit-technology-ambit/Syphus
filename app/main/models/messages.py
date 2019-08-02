@@ -4,10 +4,11 @@ and the relationships connecting
 messages and user
 """
 
-from app.main import db
-from app.main.models.users import User
-from app.main.models.errors import LoginError
 import datetime
+
+from app.main import db
+from app.main.models.errors import LoginError
+from app.main.models.users import User
 
 
 class Message(db.Model):
@@ -41,9 +42,10 @@ class Message(db.Model):
 
 	@sender_id.setter
 	def login_check(self, senderId):
-		 try:
-            user = User.query.filter(id == senderId).fetchone()
-            if user.last_logout != None:
-                raise LoginError
-        except:
-        	# Handle case when sender isn't logged in
+		try:
+			user = User.query.filter(id == senderId).fetchone()
+			if user.last_logout != None:
+				raise LoginError
+		except:
+			# Handle case when sender isn't logged in
+			pass

@@ -5,13 +5,12 @@ Users and Tags
 """
 import datetime
 
-from flask_login import UserMixin
-from sqlalchemy.sql import select
-
 from app.main import db, login_manager
 from app.main.models.enums import PriorityType
 from app.main.models.posts import Post
 from app.main.models.tags import Tag
+from flask_login import UserMixin
+from sqlalchemy.sql import select
 
 userTagJunction = db.Table('userTagJunction',
                            db.Column('user_id', db.Integer,

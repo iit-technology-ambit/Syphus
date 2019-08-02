@@ -5,14 +5,13 @@ import traceback
 from logging import getLogger
 from random import sample
 
-from flask_login import current_user
-
 from app.main import db
 from app.main.models.enums import PriorityType
 from app.main.models.payments import Payment
 from app.main.models.posts import Post
 from app.main.models.tags import Tag
 from app.main.models.users import User, userTagJunction
+from flask_login import current_user
 
 LOG = getLogger(__name__)
 

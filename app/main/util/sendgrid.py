@@ -1,11 +1,10 @@
 import traceback
 from logging import getLogger
 
+from app.main.util.process import make_async
 from flask import Flask, current_app
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
-
-from app.main.util.process import make_async
 
 app = Flask(__name__)
 LOG = getLogger(__name__)

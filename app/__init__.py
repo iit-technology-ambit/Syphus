@@ -1,10 +1,9 @@
-from flask import Blueprint
-from flask_restplus import Api
-
 from app.main.controller.article_controller import api as post_ns
 from app.main.controller.auth_controller import api as auth_ns
 from app.main.controller.tag_controller import api as tag_ns
 from app.main.controller.user_controller import api as user_ns
+from flask import Blueprint
+from flask_restplus import Api
 
 blueprint = Blueprint('api', __name__)
 

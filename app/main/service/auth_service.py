@@ -157,7 +157,7 @@ class Authentication:
             return response_object, 500
 
     @staticmethod
-    def confirm_token(data):
+    def confirm_token_service(token):
         try:
             email = confirm_token(token)
         except:
@@ -169,11 +169,17 @@ class Authentication:
             return response_object, 400
 
         user = User.query.filter_by(email=email).first()
-        user.setVerified()
-        response_object = {
-            'status': 'Success',
-            'message': 'Email Verified Successfully',
-        }
+        if not user.is_verified:
+            user.setVerified()
+            response_object = {
+                'status': 'Success',
+                'message': 'Email Verified Successfully',
+            }
+        else:
+            response_object = {
+                'status': 'Success',
+                'message': 'Email Already Verified',
+            }
         return response_object, 200
 
     @staticmethod

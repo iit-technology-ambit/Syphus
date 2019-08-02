@@ -61,7 +61,7 @@ class ConfirmToken(Resource):
     """ Confirm the Email Verification Token Sent """
     @api.doc('Endpoint to Confirm the Email Verification Token Sent ')
     def post(self, token):
-        return Authentication.confirm_token(data=token)
+        return Authentication.confirm_token_service(token)
 
 # I think we can implement this without this function, remove if redundant
 

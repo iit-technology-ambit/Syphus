@@ -1,5 +1,5 @@
-from itsdangerous import URLSafeTimedSerializer
 from flask import current_app
+from itsdangerous import URLSafeTimedSerializer
 
 
 def generate_reset_token(email):

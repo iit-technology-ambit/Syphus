@@ -1,9 +1,12 @@
 """DB Model for imgLink table"""
-from app.main import db
-from flask import current_app
 import datetime
-from logging import getLogger
 import os
+from logging import getLogger
+
+from flask import current_app
+
+from app.main import db
+
 LOG = getLogger(__name__)
 
 imgPostJunction = db.Table('imgPostJunction',

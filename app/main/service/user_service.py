@@ -2,18 +2,17 @@
 
 import datetime
 import traceback
-
+from logging import getLogger
 from random import sample
 
-from app.main import db
-from app.main.models.users import User, userTagJunction
-from app.main.models.payments import Payment
-from app.main.models.tags import Tag
-from app.main.models.enums import PriorityType
-from app.main.models.posts import Post
-
 from flask_login import current_user
-from logging import getLogger
+
+from app.main import db
+from app.main.models.enums import PriorityType
+from app.main.models.payments import Payment
+from app.main.models.posts import Post
+from app.main.models.tags import Tag
+from app.main.models.users import User, userTagJunction
 
 LOG = getLogger(__name__)
 
@@ -197,7 +196,3 @@ class UserService:
                 'message': 'Try again',
             }
             return response_object, 500
-
-
-
-

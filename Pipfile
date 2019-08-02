@@ -37,6 +37,7 @@ coloredlogs = "*"
 pymysql = "*"
 flask-wtf = "*"
 requests = "*"
+sendgrid = "*"
 
 [requires]
 python_version = "3.7"

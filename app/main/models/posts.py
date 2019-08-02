@@ -2,7 +2,9 @@
 and Junction Tables connecting to User and Post
 """
 import datetime
+
 from sqlalchemy.ext.hybrid import hybrid_property
+
 # from . import *
 from app.main import db
 from app.main.models.enums import PostType
@@ -115,6 +117,3 @@ class Post(db.Model):
     @staticmethod
     def getArticles(post_id):
         return Post.query.filter_by(post_id=post_id).first()
-
-
-

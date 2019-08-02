@@ -1,15 +1,17 @@
 # for login/logout operations
 import traceback
-from app.main.models.users import User
-from app.main.util.sendgrid import async_send_mail
-from app.main.util.email_verification import generate_confirmation_token, confirm_token
-from app.main.util.password_reset import generate_reset_token, confirm_reset_token
-from app.main.util.forms import PasswordForm
-from flask import url_for
+from logging import getLogger
+
 from flask import current_app as app
+from flask import url_for
 from flask_login import current_user, login_user
 from flask_login import logout_user as logout
-from logging import getLogger
+
+from app.main.models.users import User
+from app.main.util.email_verification import confirm_token, generate_confirmation_token
+from app.main.util.forms import PasswordForm
+from app.main.util.password_reset import confirm_reset_token, generate_reset_token
+from app.main.util.sendgrid import async_send_mail
 
 LOG = getLogger(__name__)
 

@@ -1,12 +1,14 @@
-from flask_restplus import Api, Resource
+from logging import getLogger
+
+from flask import Blueprint, abort, request
 from flask_login import current_user, login_required
-from flask import Blueprint, request, abort
-from app.main.util.dto import PostDto
+from flask_restplus import Api, Resource
+
+from app.main.models.errors import LoginError
+from app.main.models.imgLinks import ImgLink
 from app.main.models.posts import Post
 from app.main.models.users import User
-from app.main.models.imgLinks import ImgLink
-from app.main.models.errors import LoginError
-from logging import getLogger
+from app.main.util.dto import PostDto
 
 LOG = getLogger(__name__)
 

@@ -1,13 +1,12 @@
 # endpoint for tag related operations
-from flask_restplus import Resource
-from flask import request, abort
+from flask import abort, request
 from flask_login import current_user, login_required
+from flask_restplus import Resource
+
 from app.main import db
 from app.main.models.tags import Tag
 from app.main.models.users import User
-
 from app.main.util.dto import TagDto
-
 
 api = TagDto.api
 tag = TagDto.tag

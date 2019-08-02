@@ -9,7 +9,10 @@ class AuthDto:
 		'password': fields.String(required=True, description='Login Password'),
 		'remember': fields.String(description='Stay Logged In'),
 	})
-
+	
+	reset_email = api.model('email_details', {
+		'email': fields.String(required=True, description='Login Email')
+	})
 
 
 class UserDto:

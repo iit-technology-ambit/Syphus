@@ -12,6 +12,7 @@ from app.main.util.dto import AuthDto, UserDto
 api = AuthDto.api
 user_auth = AuthDto.user_auth
 user = UserDto.user
+email = AuthDto.reset_email
 
 
 @api.route('/login')
@@ -69,10 +70,11 @@ class ConfirmToken(Resource):
 # Request a reset of Password
 
 
-@api.route('/reset/request', methods=["GET", "POST"])
+@api.route('/reset/request', methods=["POST"])
 class ResetRequest(Resource):
-    """ Send a request to change the password """
+    """Send a request to change the password """
     @api.doc('Endpoint to Send a request to change the password ')
+    @api.expect(email, validate=True)
     def post(self):
         post_data = request.json
         return Authentication.reset_password_mail(data = post_data)

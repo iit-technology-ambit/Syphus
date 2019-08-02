@@ -189,26 +189,22 @@ class Authentication:
             if user is None:
                 LOG.info('User with email {} isn\'t registered.'.format(
                     data.get('email')))
-                response_object = {
-                    'status': 'Invalid',
-                    'message': 'User isn\'t registered. Please sign up first.',
-                }
-                return response_object, 300
+            else:
+                if not user.isVerified():
+                    LOG.info('Can\'t reset password since user email {} isn\'t verified.'.format(
+                        data.get('email')))
+                else:
+                    reset_token = generate_reset_token(data.get('email'))
+                    subject = "Ah, Dementia! Here's a link to reset your password"
+                    reset_url = url_for('api.auth_reset_token_verify',
+                                        token=reset_token, _external=True)
+                    async_send_mail(app._get_current_object(), data.get('email'), subject, reset_url)
 
-            if user.isVerified() == False:
-                LOG.info('Can\'t reset password since user email {} isn\'t verified.'.format(
-                    data.get('email')))
-                response_object = {
-                    'status': 'Fail',
-                    'message': 'User is not verified. Didn\'t send verification email.',
-                }
-                return response_object, 300
-
-            reset_token = generate_reset_token(data.get('email'))
-            subject = "Ah, Dementia! Here's a link to reset your password"
-            reset_url = url_for('ResetTokenVerify.post',
-                                token=token, _external=True)
-            async_send_mail(app._get_current_object(), data.get('email'), subject, reset_url)
+            response_object = {
+                'status': 'Success',
+                'message': 'sent a password reset link on your registered email address.'
+            }
+            return response_object, 200
 
         except:
             LOG.error('Verification Mail couldn\'t be sent to {}. Please try again'.format(

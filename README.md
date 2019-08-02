@@ -102,3 +102,22 @@ To build the container, make sure that the Dockerfile is present and run `docker
 To run the application from the docker container, run `docker run common-backend ARG` where `ARG` can be `db`, `run, test`, `shell` or `runserver`.
 
 For more information, run `docker run common-backend --help`.
+
+## Setting up DB Migrations  
+
+#### First Time With Flask-Migrate
+If this is the first time that flask-migrate is being installed or run alongside existing database, use the 
+following command to create a head stamp in your database:
+`python manage.py db stamp head`  
+
+#### Applying Schema Update On Existing Database
+It is recommeneded to perform Database upgrades, whenever database schema is updated, using the below commands:
+`python manage.py db stamp head`  
+
+#### Removing Last Schema Update On Existing Database
+Remove the last database update using the below commands:
+`python manage.py db stamp head`  
+
+#### Updating Schema
+Whenever a database model's schema is update, run the following command to generate migrations for it.
+`python manage.py db stamp head`  

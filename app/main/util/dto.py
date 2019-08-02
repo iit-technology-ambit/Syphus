@@ -56,9 +56,12 @@ class PostDto:
 		'tags': fields.List(fields.String, description="Tags to searched"),
 	})
 
+	rating = api.model('rating',  {
+		'score': fields.Integer(required=True, description="Rating of the post")
+	})
+
 class TagDto:
-    api = Namespace('tag', description='for tag related operations')
-    tag = api.model('tag', {
-        'id': fields.Integer(required=True, description='tag id'),
-        'name': fields.String(required=True, description='tag name')
-    })
+	api = Namespace('tag', description='for tag related operations')
+	tag = api.model('tag', {
+		'name': fields.String(required=True, description='tag name'),
+	})

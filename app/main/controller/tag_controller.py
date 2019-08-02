@@ -10,40 +10,44 @@ from app.main.util.dto import TagDto
 
 
 api = TagDto.api
-_tag = TagDto.tag
+tag = TagDto.tag
 
 
-@api.route('/tag/getAll')
+@api.route('/getAll')
 class AllTags(Resource):
-    @api.doc('list of all tags')
-    @api.marshal_list_with(_tag)
-    def get(self):
-        return Tag.query.all()
+	@api.doc('list of all tags')
+	@api.marshal_list_with(tag)
+	def get(self):
+		return list(Tag.query.all())
 
-@api.route('/tag/remove/<int:id>')
+@api.route('/remove/<int:id>')
 class DeleteTag(Resource):
-    def delete(self, id):
-        tag = Tag.query.filter_by(id=id).first()
-        if tag is not None:
-            tag.delete()
-            return "Tag deleted", 201
-        else:
-            abort(404)
+	def delete(self, id):
+		tag = Tag.query.filter_by(id=id).first()
+		if tag is not None:
+			tag.delete()
+			return "Tag deleted", 201
+		else:
+			abort(404)
 
-@api.route('/tag/add')
+@api.route('/add', methods=['POST'])
 class AddTags(Resource):
-    @api.doc(params={ 'tags': 'List of tags to be added' })
-    def post(self):
-        tag_list = request.form['tags']
-        for tag in tag_list:
-            new_tag = Tag(tag)
-        return "tags added", 201
-
-@api.route('/tag/setPriority/<id>')
+	@api.doc('Endpoint to add a particular tag')
+	@api.expect(tag, validate=True)	
+	def post(self):
+		tag = request.json['name']
+		new_tag = Tag(tag)
+		response_object = {
+			'status' : 'Success',
+			'message' : 'Tag added successfully',
+		}
+		return response_object,200
+		
+@api.route('/setPriority/<id>')
 class TagPriority(Resource):
-    @login_required
-    def post(self, id):
-        tag = Tag.query.filter_by(id=id).first()
-        priority = request.headers['priorityLevel']
-        current_user.setTagPriority(tag, priority)
-        return "Tag priority set", 201
+	@login_required
+	def post(self, id):
+		tag = Tag.query.filter_by(id=id).first()
+		priority = request.headers['priorityLevel']
+		current_user.setTagPriority(tag, priority)
+		return "Tag priority set", 201

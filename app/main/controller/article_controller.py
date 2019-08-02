@@ -21,10 +21,10 @@ class ArticleFetch(Resource):
         """
         Fetches the article given by the id.
         """
-        p = Post.getArticles(id)
+        p = Post.getArticles(post_id)
         if p is not None:
             article = {
-                "author": p.user.first_name + " " + p.user.last_name,
+                "author": p.author.username,
                 "title": p.title,
                 "body": p.body,
                 "post_time": p.post_time
@@ -37,11 +37,11 @@ class ArticleFetch(Resource):
 
 @api.route("/create")
 class ArticleCreator(Resource):
-    @api.expect(PostDto.articleGen)
+    @login_required
+    @api.expect(PostDto.articleGen, validate=True)
     def post(self):
-        user = User.query.filter_by(username=request.form['author'])
-        p = Post(user, request.form['title'], request.form['body'])
-
+        user = User.query.filter_by(username=request.json['author']).first()
+        p = Post(user, request.json['title'], request.json['body'])
         LOG.info("New Post Created")
         return "Post Created", 201
 
@@ -65,11 +65,12 @@ class ArticleSave(Resource):
 
 @api.route("/rate/<int:post_id>")
 class ArticleRate(Resource):
-    @api.doc(params={"rating": "Rating Value"})
+    @api.expect(PostDto.rating, validate=True)
     @login_required
     def post(self, post_id):
         p = Post.getArticles(post_id)
-        current_user.ratePost(p, int(request.form["rating"]))
+        user = User.query.filter_by(username=current_user.username).first()
+        user.ratePost(p, int(request.json["score"]))
 
 
 @api.route("/by_tags")

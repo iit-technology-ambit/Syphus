@@ -2,15 +2,17 @@
 import traceback
 from logging import getLogger
 
+from flask import current_app as app
+from flask import url_for
+from flask_login import current_user
+from flask_login import login_user as flask_login_user
+from flask_login import logout_user as logout
+
 from app.main.models.users import User
 from app.main.util.email_verification import confirm_token, generate_confirmation_token
 from app.main.util.forms import PasswordForm
 from app.main.util.password_reset import confirm_reset_token, generate_reset_token
 from app.main.util.sendgrid import async_send_mail
-from flask import current_app as app
-from flask import url_for
-from flask_login import current_user, login_user
-from flask_login import logout_user as logout
 
 LOG = getLogger(__name__)
 
@@ -28,12 +30,24 @@ class Authentication:
                 return response_object, 300
             user = User.query.filter_by(email=data.get('email')).first()
             if user and user.check_password(data.get('password')):
-                login_user(user, remember=data.get('remember'))
-                response_object = {
-                    'status': 'Success',
-                    'message': 'Successfully logged in.',
-                }
-                return response_object, 200
+                if user.is_verified:
+                    # convert string to bool
+                    if data.get('remember').lower() == 'true' or data.get('remember').lower() == 'yes':
+                        remem = True
+                    else:
+                        remem = False
+                    flask_login_user(user, remember=remem)
+                    response_object = {
+                        'status': 'Success',
+                        'message': 'Successfully logged in.',
+                    }
+                    return response_object, 200
+                else:
+                    response_object = {
+                        'status': 'fail',
+                        'message': 'Please verify your email before first login',
+                    }
+                    return response_object, 401
             else:
                 response_object = {
                     'status': 'fail',

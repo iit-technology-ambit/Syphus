@@ -3,8 +3,9 @@ import datetime
 import os
 from logging import getLogger
 
-from app.main import db
 from flask import current_app
+
+from app.main import db
 
 LOG = getLogger(__name__)
 

@@ -18,3 +18,5 @@ build/
 .mypy_cache
 *.log
 .env
+
+migrations/versions/*

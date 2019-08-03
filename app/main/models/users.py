@@ -10,6 +10,7 @@ from app.main.models.enums import PriorityType
 from app.main.models.posts import Post
 from app.main.models.tags import Tag
 from flask_login import UserMixin
+from flask_bcrypt import check_password_hash, generate_password_hash
 from sqlalchemy.sql import select
 
 userTagJunction = db.Table('userTagJunction',
@@ -88,7 +89,7 @@ class User(db.Model, UserMixin):
 
     def __init__(self, username, password, email):
         self.username = username
-        self.password = password
+        self.password = generate_password_hash(password)
         self.email = email
         self.is_verified = False
 
@@ -105,14 +106,11 @@ class User(db.Model, UserMixin):
         db.session.commit()
 
     def check_password(self, password):
-        if self.password == password:
-            return True
-        else:
-            return False
+        return check_password_hash(self.password, password)
 
     def resetPassword(self, newPassword):
         # Pass in a hashed password
-        self.password = newPassword
+        self.password = generate_password_hash(newPassword)
         db.session.commit()
 
     def addPayment(self, payment):

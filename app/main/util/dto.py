@@ -13,7 +13,7 @@ class AuthDto:
 	reset_email = api.model('email_details', {
 		'email': fields.String(required=True, description='Login Email')
 	})
-
+ 
 
 class UserDto:
 	api = Namespace('user', description='user related operations')

@@ -3,7 +3,7 @@ import traceback
 from logging import getLogger
 
 from flask import current_app as app
-from flask import url_for
+from flask import make_response, redirect, render_template, url_for
 from flask_login import current_user
 from flask_login import login_user as flask_login_user
 from flask_login import logout_user as logout
@@ -190,15 +190,11 @@ class Authentication:
                 LOG.info('User with email {} isn\'t registered.'.format(
                     data.get('email')))
             else:
-                if not user.isVerified():
-                    LOG.info('Can\'t reset password since user email {} isn\'t verified.'.format(
-                        data.get('email')))
-                else:
-                    reset_token = generate_reset_token(data.get('email'))
-                    subject = "Ah, Dementia! Here's a link to reset your password"
-                    reset_url = url_for('api.auth_reset_token_verify',
-                                        token=reset_token, _external=True)
-                    async_send_mail(app._get_current_object(), data.get('email'), subject, reset_url)
+                reset_token = generate_reset_token(data.get('email'))
+                subject = "Ah, Dementia! Here's a link to reset your password"
+                reset_url = url_for('api.auth_reset_token_verify',
+                                    token=reset_token, _external=True)
+                async_send_mail(app._get_current_object(), data.get('email'), subject, reset_url)
 
             response_object = {
                 'status': 'Success',
@@ -217,7 +213,7 @@ class Authentication:
             return response_object, 500
 
     @staticmethod
-    def confirm_reset_token(data):
+    def confirm_reset_token_service(token):
         try:
             email = confirm_reset_token(token)
         except:
@@ -229,7 +225,36 @@ class Authentication:
             return response_object, 400
 
         form = PasswordForm()
-
+        headers = {'Content-Type': 'text/html'}
+        return make_response(render_template('reset_password.html', form=form, token=token), 200, headers)
+    
+    @staticmethod
+    def reset_password_with_token(token):
+        """
+        Take in password reset form from the user and change password.
+        
+        :param token: validation token
+        :type token: str
+        """
+        try:
+            email = confirm_reset_token(token)
+        except:
+            LOG.info('The password reset link has expired or is invalid')
+            response_object = {
+                'status': 'Fail',
+                'message': 'Password Reset link is invalid or has expired',
+            }
+            return response_object, 400
+        
+        form = PasswordForm()
+    
         if form.validate_on_submit():
-        	user = User.query.filter_by(email=email).first()
-        	user.resetPassword(form.password.data)
+            user = User.query.filter_by(email=email).first()
+            user.resetPassword(form.password.data)
+            response_object = {
+                'status': 'Success',
+                'message': 'Password has been reset successfully',
+            }
+            return response_object, 200
+        
+        return redirect(url_for('api.auth_reset_token_verify'), token=token)

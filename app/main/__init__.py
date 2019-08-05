@@ -17,7 +17,7 @@ login_manager = LoginManager()
 
 
 def create_app(config_name):
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder="../static/templates")
     app.config.from_object(config_by_name[config_name])
     LOG.info('app loaded with configuration!')
     

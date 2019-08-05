@@ -57,11 +57,11 @@ class SignUp(Resource):
 
 
 # Verify the Email Token
-@api.route('/confirm/<token>')
+@api.route('/confirm/<token>', methods=['GET'])
 class ConfirmToken(Resource):
     """ Confirm the Email Verification Token Sent """
     @api.doc('Endpoint to Confirm the Email Verification Token Sent ')
-    def post(self, token):
+    def get(self, token):
         return Authentication.confirm_token_service(token)
 
 # I think we can implement this without this function, remove if redundant
@@ -82,7 +82,10 @@ class ResetRequest(Resource):
 
 @api.route('/reset/<token>', methods=["GET", "POST"])
 class ResetTokenVerify(Resource):
-    """ Confirm the token sent to change the password and set a new password """
+    """Confirm the token sent to change the password and set a new password."""
     @api.doc('Endpoint to Confirm the token sent to change the password and set a new password')
+    def get(self, token):
+        return Authentication.confirm_reset_token_service(token)
+    
     def post(self, token):
-        return Authentication.confirm_reset_token(data=token)
+        return Authentication.reset_password_with_token(token)

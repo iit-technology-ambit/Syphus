@@ -18,6 +18,8 @@ from app.main.models.users import User, userTagJunction
 LOG = getLogger(__name__)
 
 
+TAG_ID_INDEX = 1
+
 class UserService:
 
     @staticmethod
@@ -173,16 +175,19 @@ class UserService:
     def get_user_tags():
         try:
             try:
-                user = db.session.query(userTagJunction).filter(userTagJunction.c.user_id==current_user.id).one()
-                UserTagID = user["keyword_id"]
+                userTagCols = db.session.query(userTagJunction).filter(userTagJunction.c.user_id==current_user.id).all()
+                
             except NoResultFound as _:
                 LOG.debug('No tags found for user %s', current_user.id)
                 UserTagID = []
-
+            UserTagIDs = [row[TAG_ID_INDEX] for row in userTagCols]
             UserTags = []
-            for tagID in UserTagID:
+            for tagID in UserTagIDs:
                 tag = Tag.query.filter_by(id=tagID).first()
-                UserTags.append(tag)
+                UserTags.append({
+                    "id": tag.id,
+                    "name": tag.name
+                })
 
             return UserTags, 200
 

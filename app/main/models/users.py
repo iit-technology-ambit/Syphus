@@ -6,7 +6,7 @@ Users and Tags
 import datetime
 
 from flask_login import UserMixin
-from sqlalchemy.sql import select, and_
+from sqlalchemy.sql import and_, select
 
 from app.main import db, login_manager
 from app.main.models.enums import PriorityType

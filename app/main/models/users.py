@@ -6,7 +6,7 @@ Users and Tags
 import datetime
 
 from flask_login import UserMixin
-from sqlalchemy.sql import select
+from sqlalchemy.sql import select, and_
 
 from app.main import db, login_manager
 from app.main.models.enums import PriorityType
@@ -137,17 +137,30 @@ class User(db.Model, UserMixin):
         db.session.commit()
 
     def setTagPriority(self, tag, priority):
+        result = self.getTagPriority(tag)
+
+        if result is None:
+            self.setNewTag(tag)
+
         s = userTagJunction.update().\
-            where(user_id=self.id, keyword_id=tag.id).\
-            values(priority=priority)
+            values(priority=PriorityType(priority)).\
+            where(and_(
+                userTagJunction.c.user_id==self.id,
+                userTagJunction.c.keyword_id==tag.id))
+
         db.session.execute(s)
-
+        db.session.commit()
+    
     def getTagPriority(self, tag):
-        s = select([userTagJunction]).where(keyword_id=tag.id, user_id=self.id)
-        result = db.session.execute(s)
-
-        return result[0]["priority"]
-
+        s = select([userTagJunction]).where(and_(
+                userTagJunction.c.user_id==self.id,
+                userTagJunction.c.keyword_id==tag.id))
+        result = list(db.session.execute(s))
+        try:
+            return result[0]["priority"]
+        except IndexError:
+            return None
+        
     def savePost(self, post):
         self.saves.append(post)
         db.session.commit()
@@ -164,3 +177,5 @@ class User(db.Model, UserMixin):
                 values(save=False, rating=rating,
                        user_id=self.id, post_id=post.post_id)
             db.session.execute(s)
+        finally:
+            db.session.commit()

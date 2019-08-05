@@ -55,7 +55,7 @@ class UserService:
                 }
                 return response_object, 300
 
-            taglist = current_user.tag
+            taglist = user.tags
             more = []
             less = []
             neutral = []

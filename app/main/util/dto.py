@@ -67,3 +67,7 @@ class TagDto:
 	tag = api.model('tag', {
 		'name': fields.String(required=True, description='tag name'),
 	})
+	priority = api.model('priority', {
+		'tag_id': fields.Integer(required=True, description="id of the concerned tag"),	
+		'value': fields.Integer(required=True, description="priority level of the tag")
+	})

@@ -6,6 +6,7 @@ from logging import getLogger
 from random import sample
 
 from flask_login import current_user
+from sqlalchemy.orm.exc import NoResultFound
 
 from app.main import db
 from app.main.models.enums import PriorityType
@@ -171,22 +172,19 @@ class UserService:
     @staticmethod
     def get_user_tags():
         try:
-            user = userTagJunction.query.filter_by(user_id=current_user.id).first()
-            if user is None:
-                LOG.info('User with id: {} does not exit'.format(current_user.id))
-                response_object ={
-                    'status' :'Invalid',
-                    'message' : 'User does not exist'
-                }
-                return response_object,300
+            try:
+                user = db.session.query(userTagJunction).filter(userTagJunction.c.user_id==current_user.id).one()
+                UserTagID = user["keyword_id"]
+            except NoResultFound as _:
+                LOG.debug('No tags found for user %s', current_user.id)
+                UserTagID = []
 
-            UserTagID = user["keyword_id"]
             UserTags = []
             for tagID in UserTagID:
                 tag = Tag.query.filter_by(id=tagID).first()
                 UserTags.append(tag)
 
-            return UserTags,200
+            return UserTags, 200
 
         except:
             LOG.error('Failed to get tags for user id :{}'.format(current_user.id))

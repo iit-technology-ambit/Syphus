@@ -9,6 +9,7 @@ from app.main.util.dto import AuthDto, PostDto, UserDto
 api = UserDto.api
 user_auth = AuthDto.user_auth
 user = UserDto.user
+userInfo = UserDto.userInfo
 payment = UserDto.payment
 post = PostDto.article
 
@@ -17,10 +18,10 @@ post = PostDto.article
 class GetUserDetails(Resource):
     """ Fetch details of user by id """
     @api.doc('Endpoint to fetch details of a user by id')
-    @api.marshal_with(user, envelope='resource')
+    @api.marshal_with(userInfo, envelope='resource')
     def get(self, id):
         # Fetching the user id
-        return UserService.get_by_id(data=id)
+        return UserService.get_by_id(id=id)
 
 
 @api.route('/getFeed')

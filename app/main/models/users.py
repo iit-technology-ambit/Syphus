@@ -118,7 +118,7 @@ class User(db.Model, UserMixin):
 
     def addPayment(self, payment):
         self.payments.append(payment)
-        db.commit()
+        db.session.commit()
 
     def get_id(self):
         return self.id

@@ -22,6 +22,22 @@ class UserDto:
 		'password': fields.String(required=True, description='user password'),
 		'email': fields.String(required=True, description='user email address'),
 	})
+ 
+	userInfo = api.model('user', {
+		'username': fields.String(required=True, description='user username'),
+		'first_name': fields.String(description='first name', default=""),
+		'last_name': fields.String(description="last name", default=""),
+		'dob': fields.DateTime(dt_format='rfc822', description="date of birth"),
+		'email': fields.String(required=True, description='user email address'),
+		'fb_handle': fields.String(description="facebook handle"),
+		'g_handle': fields.String(description="github handle"),
+		'medium_handle': fields.String(description="medium handle"),
+		'twitter_handle': fields.String(description="twitter handle"),
+		'linkedin_handle': fields.String(description="linkedin handle"),
+		'bio': fields.String(description="biography"),
+		'occupation': fields.String(description="occupation"),
+		'last_login': fields.DateTime(dt_format='rfc822', description="last login time")
+	})
 	
 	payment = api.model('payment', {
 		'username': fields.String(required=True,

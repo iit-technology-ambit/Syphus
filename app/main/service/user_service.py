@@ -23,21 +23,20 @@ TAG_ID_INDEX = 1
 class UserService:
 
     @staticmethod
-    def get_by_id(data):
+    def get_by_id(id):
         try:
-            user = User.query.filter_by(id=data.get('id')).first()
+            user = User.query.filter_by(id=id).first()
             if user is None:
-                LOG.info('User with id: {} does not exit'.format(data.get('id')))
+                LOG.info('User with id: {} does not exit'.format(id))
                 response_object ={
                     'status' :'Invalid',
                     'message' : 'User does not exist'
                 }
                 return response_object, 300
-
-            return user,200
+            return user, 200
 
         except Exception as e:
-            LOG.error('Failed to fetch details for id :{}'.format(data.get('id')))
+            LOG.error('Failed to fetch details for id :{}'.format('id'))
             LOG.debug(traceback.print_exc())
             response_object = {
                 'status': 'fail',

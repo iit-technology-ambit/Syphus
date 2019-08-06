@@ -16,7 +16,7 @@ class Tag(db.Model):
     """
     # Columns
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20), nullable=False)
+    name = db.Column(db.String(20), nullable=False, unique=True)
 
     def __init__(self, name):
         """

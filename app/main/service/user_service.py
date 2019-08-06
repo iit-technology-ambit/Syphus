@@ -5,35 +5,38 @@ import traceback
 from logging import getLogger
 from random import sample
 
+from flask_login import current_user
+from sqlalchemy.orm.exc import NoResultFound
+
 from app.main import db
 from app.main.models.enums import PriorityType
 from app.main.models.payments import Payment
 from app.main.models.posts import Post
 from app.main.models.tags import Tag
 from app.main.models.users import User, userTagJunction
-from flask_login import current_user
 
 LOG = getLogger(__name__)
 
 
+TAG_ID_INDEX = 1
+
 class UserService:
 
     @staticmethod
-    def get_by_id(data):
+    def get_by_id(id):
         try:
-            user = User.query.filter_by(id=data.get('id')).first()
+            user = User.query.filter_by(id=id).first()
             if user is None:
-                LOG.info('User with id: {} does not exit'.format(data.get('id')))
+                LOG.info('User with id: {} does not exit'.format(id))
                 response_object ={
                     'status' :'Invalid',
                     'message' : 'User does not exist'
                 }
                 return response_object, 300
-
-            return user,200
+            return user, 200
 
         except Exception as e:
-            LOG.error('Failed to fetch details for id :{}'.format(data.get('id')))
+            LOG.error('Failed to fetch details for id :{}'.format('id'))
             LOG.debug(traceback.print_exc())
             response_object = {
                 'status': 'fail',
@@ -53,7 +56,7 @@ class UserService:
                 }
                 return response_object, 300
 
-            taglist = current_user.tag
+            taglist = user.tags
             more = []
             less = []
             neutral = []
@@ -170,22 +173,22 @@ class UserService:
     @staticmethod
     def get_user_tags():
         try:
-            user = userTagJunction.query.filter_by(user_id=current_user.id).first()
-            if user is None:
-                LOG.info('User with id: {} does not exit'.format(current_user.id))
-                response_object ={
-                    'status' :'Invalid',
-                    'message' : 'User does not exist'
-                }
-                return response_object,300
-
-            UserTagID = user["keyword_id"]
+            try:
+                userTagCols = db.session.query(userTagJunction).filter(userTagJunction.c.user_id==current_user.id).all()
+                
+            except NoResultFound as _:
+                LOG.debug('No tags found for user %s', current_user.id)
+                UserTagID = []
+            UserTagIDs = [row[TAG_ID_INDEX] for row in userTagCols]
             UserTags = []
-            for tagID in UserTagID:
+            for tagID in UserTagIDs:
                 tag = Tag.query.filter_by(id=tagID).first()
-                UserTags.append(tag)
+                UserTags.append({
+                    "id": tag.id,
+                    "name": tag.name
+                })
 
-            return UserTags,200
+            return UserTags, 200
 
         except:
             LOG.error('Failed to get tags for user id :{}'.format(current_user.id))

@@ -1,10 +1,11 @@
 from logging import getLogger
 
-from app.main.config import config_by_name
 from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+
+from app.main.config import config_by_name
 
 LOG = getLogger(__name__)
 
@@ -16,7 +17,7 @@ login_manager = LoginManager()
 
 
 def create_app(config_name):
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder="../static/templates")
     app.config.from_object(config_by_name[config_name])
     LOG.info('app loaded with configuration!')
     

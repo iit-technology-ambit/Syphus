@@ -12,6 +12,7 @@ from app.main.util.dto import AuthDto, UserDto
 api = AuthDto.api
 user_auth = AuthDto.user_auth
 user = UserDto.user
+email = AuthDto.reset_email
 
 
 @api.route('/login')
@@ -56,12 +57,12 @@ class SignUp(Resource):
 
 
 # Verify the Email Token
-@api.route('/confirm/<token>')
+@api.route('/confirm/<token>', methods=['GET'])
 class ConfirmToken(Resource):
     """ Confirm the Email Verification Token Sent """
     @api.doc('Endpoint to Confirm the Email Verification Token Sent ')
-    def post(self, token):
-        return Authentication.confirm_token(data=token)
+    def get(self, token):
+        return Authentication.confirm_token_service(token)
 
 # I think we can implement this without this function, remove if redundant
 
@@ -69,10 +70,11 @@ class ConfirmToken(Resource):
 # Request a reset of Password
 
 
-@api.route('/reset/request', methods=["GET", "POST"])
+@api.route('/reset/request', methods=["POST"])
 class ResetRequest(Resource):
-    """ Send a request to change the password """
+    """Send a request to change the password """
     @api.doc('Endpoint to Send a request to change the password ')
+    @api.expect(email, validate=True)
     def post(self):
         post_data = request.json
         return Authentication.reset_password_mail(data = post_data)
@@ -80,7 +82,10 @@ class ResetRequest(Resource):
 
 @api.route('/reset/<token>', methods=["GET", "POST"])
 class ResetTokenVerify(Resource):
-    """ Confirm the token sent to change the password and set a new password """
+    """Confirm the token sent to change the password and set a new password."""
     @api.doc('Endpoint to Confirm the token sent to change the password and set a new password')
+    def get(self, token):
+        return Authentication.confirm_reset_token_service(token)
+    
     def post(self, token):
-        return Authentication.confirm_reset_token(data=token)
+        return Authentication.reset_password_with_token(token)

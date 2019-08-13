@@ -1,18 +1,17 @@
 # endpoint for tag related operations
+from flask import abort, request
+from flask_login import current_user, login_required
+from flask_restplus import Resource
+
 from app.main import db
 from app.main.models.tags import Tag
 from app.main.models.users import User
 from app.main.models.enums import PriorityType
 from app.main.util.dto import TagDto
-from flask import abort, request
-from flask_login import current_user, login_required
-from flask_restplus import Resource
-from logging import getLogger
-
-LOG = getLogger(__name__)
 
 api = TagDto.api
 tag = TagDto.tag
+priorityLevel = TagDto.priority
 
 
 @api.route('/getAll')
@@ -45,35 +44,19 @@ class AddTags(Resource):
 		}
 		return response_object,200
 		
-@api.route("/usertagops/<tag_id>")
-class UserTagActions(Resource):
-	@login_required
-	@api.doc(params={'id': 'id of the tag to be added'})
-	def post(self, tag_id):
-		try:
-			tag = Tag.query.filter_by(id=tag_id).first()
-			current_user.setNewTag(tag)
-			return "Success", 201
-		except:
-			LOG.warning("Illegal tag id was requested")
-			return "Invalid", 403
-	
-	@login_required
-	@api.doc(params={'id': 'id of the tag whose priority is to be modified'})
-	@api.expect(TagDto.priority)
-	def put(self, tag_id):
-		try:
-			tag = Tag.query.filter_by(id=tag_id).first()
-			pr = PriorityType.follow
-			if request.form["priority"] < 0:
-				pr = PriorityType.less_of_these
-			elif request.form["priority"] > 0:
-				pr = PriorityType.more_of_these
-
-			current_user.setTagPriority(tag, pr)
-			return "Success", 201
-		except:
-			LOG.warning("Illegal tag id was requested")
-			return "Invalid", 403
-
-
+@api.route('/setPriority')
+class TagPriority(Resource):
+    @login_required
+    @api.doc('Set status of the tag for the logged in user.')
+    @api.expect(priorityLevel, validate=True)
+    def post(self):
+        tag_id = request.json['tag_id']
+        priority = request.json['value']
+        if priority not in [-1, 0, 1]:
+            return "Invalid tag priority value", 400
+        
+        tag = Tag.query.filter_by(id=tag_id).first()
+        if tag is None:
+            return "Tag id not found", 404
+        current_user.setTagPriority(tag, priority)
+        return "Tag priority set", 201

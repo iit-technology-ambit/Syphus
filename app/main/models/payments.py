@@ -1,8 +1,9 @@
 """DB model for payments"""
 
+from flask import current_app
+
 from app.main import db
 from app.main.util.sendgrid import async_send_mail
-from flask import current_app
 
 
 class Payment(db.Model):

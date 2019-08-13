@@ -9,8 +9,11 @@ class AuthDto:
 		'password': fields.String(required=True, description='Login Password'),
 		'remember': fields.String(description='Stay Logged In'),
 	})
-
-
+	
+	reset_email = api.model('email_details', {
+		'email': fields.String(required=True, description='Login Email')
+	})
+ 
 
 class UserDto:
 	api = Namespace('user', description='user related operations')
@@ -18,6 +21,22 @@ class UserDto:
 		'username': fields.String(required=True, description='user username'),
 		'password': fields.String(required=True, description='user password'),
 		'email': fields.String(required=True, description='user email address'),
+	})
+ 
+	userInfo = api.model('user', {
+		'username': fields.String(required=True, description='user username'),
+		'first_name': fields.String(description='first name', default=""),
+		'last_name': fields.String(description="last name", default=""),
+		'dob': fields.DateTime(dt_format='rfc822', description="date of birth"),
+		'email': fields.String(required=True, description='user email address'),
+		'fb_handle': fields.String(description="facebook handle"),
+		'g_handle': fields.String(description="github handle"),
+		'medium_handle': fields.String(description="medium handle"),
+		'twitter_handle': fields.String(description="twitter handle"),
+		'linkedin_handle': fields.String(description="linkedin handle"),
+		'bio': fields.String(description="biography"),
+		'occupation': fields.String(description="occupation"),
+		'last_login': fields.DateTime(dt_format='rfc822', description="last login time")
 	})
 	
 	payment = api.model('payment', {
@@ -65,7 +84,6 @@ class TagDto:
 		'name': fields.String(required=True, description='tag name'),
 	})
 	priority = api.model('priority', {
-		'priority': fields.Integer(required=True, 
-					description="less_of_these=-1, more_of_these=1, follow=0"
-		)
+		'tag_id': fields.Integer(required=True, description="id of the concerned tag"),	
+		'value': fields.Integer(required=True, description="priority level of the tag")
 	})

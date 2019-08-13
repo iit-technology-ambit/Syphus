@@ -88,7 +88,7 @@ class UserService:
 
 
     @staticmethod
-    def update_user_info(data):
+    def update_user_info(update_dict):
         try:
             user = User.query.filter_by(id=current_user.id).first()
             if user is  None:
@@ -100,8 +100,8 @@ class UserService:
                 return response_object, 300
 
             for key in update_dict:
-                if key in current_user.__dict__:
-                    current_user.update_column(key, update_dict[key])
+                if key in user.__dict__:
+                    user.update_col(key, update_dict[key])
 
             response_object ={
                 'status' : 'Success',

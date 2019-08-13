@@ -38,6 +38,7 @@ pymysql = "*"
 flask-wtf = "*"
 requests = "*"
 sendgrid = "*"
+flask-admin = "*"
 
 [requires]
 python_version = "3.7"

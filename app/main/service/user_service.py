@@ -71,9 +71,12 @@ class UserService:
             
             response_list = []
 
-            response_list.append(sample(Post.getArticlesByTags(more, connector="OR"), 12))
-            response_list.append(sample(Post.getArticlesByTags(neutral, connector="OR"), 7))
-            response_list.append(sample(Post.getArticlesByTags(less, connector="OR"), 1))
+            try:
+                response_list.append(sample(Post.getArticlesByTags(more, connector="OR"), 12))
+                response_list.append(sample(Post.getArticlesByTags(neutral, connector="OR"), 7))
+                response_list.append(sample(Post.getArticlesByTags(less, connector="OR"), 1))
+            except:
+                response_list.append(Post.getRandomizedArticles(20))
 
             return response_list, 200
 
@@ -130,7 +133,7 @@ class UserService:
                 }
                 return response_object, 300
 
-            current_user.addPayment(data.get('Payment'))
+            current_user.addPayment(data)
             response_object ={
                 'status' : 'Success',
                 'message': 'Saved the payment into the users information.'

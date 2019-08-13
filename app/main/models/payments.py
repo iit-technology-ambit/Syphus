@@ -22,7 +22,7 @@ class Payment(db.Model):
     amount = db.Column(db.Float, nullable=False)
     api_response = db.Column(db.Text)
 
-    user = db.relationship('User', backref='payments')
+    # user = db.relationship('User', backref='payments')
 
     def __init__(self, user, amount, api_response):
         self.username = user.username

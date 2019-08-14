@@ -38,9 +38,10 @@ class GetUserFeed(Resource):
 class UpdateUserInfo(Resource):
     @login_required
     @api.doc(params={"update_dict": "Key value pairs of all update values"})
+    @api.expect(userInfo)
     def post(self):
-        update_dict = request.form['update_dict']
-        return UserService.update_user_info(data=update_dict)
+        update_dict = request.json
+        return UserService.update_user_info(update_dict)
 
 
 @api.route("/payment")

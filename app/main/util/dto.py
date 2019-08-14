@@ -91,10 +91,8 @@ class TagDto:
 class IssueDto:
 	api = Namespace('issue', description="for issue related operations")
 	issue = api.model('tag', {
-		'id' : fields.Integer(required=True, description="ID of the concerned tag"),
 		'cover' : fields.Integer(required=True, description="Cover image of the concerned issue"),
 		'month' : fields.String(required=True, description="Month of the concerned issue"),
 		'year' : fields.String(required=True, description="Year of the concerned issue"),
-		'issue_tag' : fields.String(required=True, description="Tag associated with the concerned issue"),
 		'link' : fields.String(required=True, description="Link of the concerned issue")
 	})

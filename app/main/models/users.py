@@ -12,6 +12,7 @@ from app.main import db, login_manager
 from app.main.models.enums import PriorityType
 from app.main.models.posts import Post
 from app.main.models.tags import Tag
+from app.main.models.payments import Payment
 from flask_login import UserMixin
 from flask_bcrypt import check_password_hash, generate_password_hash
 from sqlalchemy.sql import select
@@ -87,8 +88,8 @@ class User(db.Model, UserMixin):
     saves = db.relationship('Post', secondary=userPostInteraction, lazy=True,
                             backref=db.backref("savers", lazy=True))
 
-    # To get all payments done by user, call User.payments
-    # This is defined in payments.py as db.relationship
+    payments = db.relationship('Payment', backref='user', lazy=True)
+
 
     def __init__(self, username, password, email):
         self.username = username
@@ -116,8 +117,9 @@ class User(db.Model, UserMixin):
         self.password = generate_password_hash(newPassword)
         db.session.commit()
 
-    def addPayment(self, payment):
-        self.payments.append(payment)
+    def addPayment(self, data):
+        pay = Payment(self, data.get("amount"), data.get("api_response"))
+        self.payments.append(pay)
         db.session.commit()
 
     def get_id(self):

@@ -2,6 +2,7 @@
 and Junction Tables connecting to User and Post
 """
 import datetime
+from random import sample
 
 from sqlalchemy.ext.hybrid import hybrid_property
 
@@ -117,3 +118,7 @@ class Post(db.Model):
     @staticmethod
     def getArticles(post_id):
         return Post.query.filter_by(post_id=post_id).first()
+
+    @staticmethod
+    def getRandomizedArticles(size):
+        return sample(Post.query.all(), size)

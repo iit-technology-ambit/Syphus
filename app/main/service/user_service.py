@@ -71,9 +71,12 @@ class UserService:
             
             response_list = []
 
-            response_list.append(sample(Post.getArticlesByTags(more, connector="OR"), 12))
-            response_list.append(sample(Post.getArticlesByTags(neutral, connector="OR"), 7))
-            response_list.append(sample(Post.getArticlesByTags(less, connector="OR"), 1))
+            try:
+                response_list.append(sample(Post.getArticlesByTags(more, connector="OR"), 12))
+                response_list.append(sample(Post.getArticlesByTags(neutral, connector="OR"), 7))
+                response_list.append(sample(Post.getArticlesByTags(less, connector="OR"), 1))
+            except:
+                response_list.append(Post.getRandomizedArticles(20))
 
             return response_list, 200
 
@@ -88,7 +91,7 @@ class UserService:
 
 
     @staticmethod
-    def update_user_info(data):
+    def update_user_info(update_dict):
         try:
             user = User.query.filter_by(id=current_user.id).first()
             if user is  None:
@@ -100,8 +103,8 @@ class UserService:
                 return response_object, 300
 
             for key in update_dict:
-                if key in current_user.__dict__:
-                    current_user.update_column(key, update_dict[key])
+                if key in user.__dict__:
+                    user.update_col(key, update_dict[key])
 
             response_object ={
                 'status' : 'Success',
@@ -130,7 +133,7 @@ class UserService:
                 }
                 return response_object, 300
 
-            current_user.addPayment(data.get('Payment'))
+            current_user.addPayment(data)
             response_object ={
                 'status' : 'Success',
                 'message': 'Saved the payment into the users information.'

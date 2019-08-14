@@ -23,7 +23,7 @@ class UserDto:
 		'email': fields.String(required=True, description='user email address'),
 	})
  
-	userInfo = api.model('user', {
+	userInfo = api.model('userInfo', {
 		'username': fields.String(required=True, description='user username'),
 		'first_name': fields.String(description='first name', default=""),
 		'last_name': fields.String(description="last name", default=""),

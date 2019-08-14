@@ -38,6 +38,9 @@ pymysql = "*"
 flask-wtf = "*"
 requests = "*"
 sendgrid = "*"
+python-dotenv = "*"
+flask-cors = "*"
+autopep8 = "*"
 
 [requires]
 python_version = "3.7"

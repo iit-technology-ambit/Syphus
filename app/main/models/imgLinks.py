@@ -26,7 +26,7 @@ class ImgLink(db.Model):
     :id: int [pk]
     :link: varchar (url)
     """
-    __tablename__ = 'imgLink' 
+    __tablename__ = 'imgLink'
 
     id = db.Column(db.Integer, primary_key=True)
     link = db.Column(db.String(256), nullable=False)

@@ -20,6 +20,7 @@ LOG = getLogger(__name__)
 
 TAG_ID_INDEX = 1
 
+
 class UserService:
 
     @staticmethod
@@ -28,9 +29,9 @@ class UserService:
             user = User.query.filter_by(id=id).first()
             if user is None:
                 LOG.info('User with id: {} does not exit'.format(id))
-                response_object ={
-                    'status' :'Invalid',
-                    'message' : 'User does not exist'
+                response_object = {
+                    'status': 'Invalid',
+                    'message': 'User does not exist'
                 }
                 return response_object, 300
             return user, 200
@@ -48,11 +49,11 @@ class UserService:
     def get_user_feed():
         try:
             user = User.query.filter_by(id=current_user.id).first()
-            if user is  None:
+            if user is None:
                 LOG.info('User with id: {} does not exit'.format(current_user.id))
-                response_object ={
-                    'status' :'Invalid',
-                    'message' : 'User does not exist'
+                response_object = {
+                    'status': 'Invalid',
+                    'message': 'User does not exist'
                 }
                 return response_object, 300
 
@@ -68,7 +69,7 @@ class UserService:
                     less.append(tag)
                 else:
                     neutral.append(tag)
-            
+
             response_list = []
 
             try:
@@ -89,16 +90,15 @@ class UserService:
             }
             return response_object, 500
 
-
     @staticmethod
     def update_user_info(update_dict):
         try:
             user = User.query.filter_by(id=current_user.id).first()
-            if user is  None:
+            if user is None:
                 LOG.info('User with id: {} does not exit'.format(current_user.id))
-                response_object ={
-                    'status' :'Invalid',
-                    'message' : 'User does not exist'
+                response_object = {
+                    'status': 'Invalid',
+                    'message': 'User does not exist'
                 }
                 return response_object, 300
 
@@ -106,11 +106,11 @@ class UserService:
                 if key in user.__dict__:
                     user.update_col(key, update_dict[key])
 
-            response_object ={
-                'status' : 'Success',
-                'message' : 'Details updated Successfully'
+            response_object = {
+                'status': 'Success',
+                'message': 'Details updated Successfully'
             }
-            return response_object,200
+            return response_object, 200
 
         except Exception as e:
             LOG.error('Failed to update details for id :{}'.format(current_user.id))
@@ -127,18 +127,18 @@ class UserService:
             user = User.query.filter_by(id=current_user.id).first()
             if user is None:
                 LOG.info('User with id: {} does not exit'.format(current_user.id))
-                response_object ={
-                    'status' :'Invalid',
-                    'message' : 'User does not exist'
+                response_object = {
+                    'status': 'Invalid',
+                    'message': 'User does not exist'
                 }
                 return response_object, 300
 
             current_user.addPayment(data)
-            response_object ={
-                'status' : 'Success',
+            response_object = {
+                'status': 'Success',
                 'message': 'Saved the payment into the users information.'
             }
-            return response_object,200
+            return response_object, 200
 
         except:
             LOG.error('Failed to save payment details for id :{}'.format(current_user.id))
@@ -149,20 +149,19 @@ class UserService:
             }
             return response_object, 500
 
-
     @staticmethod
     def get_user_payment():
         try:
             user = User.query.filter_by(id=current_user.id).first()
             if user is None:
                 LOG.info('User with id: {} does not exit'.format(current_user.id))
-                response_object ={
-                    'status' :'Invalid',
-                    'message' : 'User does not exist'
+                response_object = {
+                    'status': 'Invalid',
+                    'message': 'User does not exist'
                 }
-                return response_object,300
+                return response_object, 300
 
-            return current_user.payments,200
+            return current_user.payments, 200
 
         except:
             LOG.error('Failed to get payment details for id :{}'.format(current_user.id))
@@ -177,8 +176,9 @@ class UserService:
     def get_user_tags():
         try:
             try:
-                userTagCols = db.session.query(userTagJunction).filter(userTagJunction.c.user_id==current_user.id).all()
-                
+                userTagCols = db.session.query(userTagJunction).filter(
+                    userTagJunction.c.user_id == current_user.id).all()
+
             except NoResultFound as _:
                 LOG.debug('No tags found for user %s', current_user.id)
                 UserTagID = []

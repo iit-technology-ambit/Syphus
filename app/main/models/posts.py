@@ -23,8 +23,6 @@ postTagJunction = db.Table('postTagJunction',
                            )
 
 
-
-
 class Post(db.Model):
     """
     Description of Post model.

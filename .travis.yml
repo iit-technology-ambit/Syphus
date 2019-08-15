@@ -4,10 +4,10 @@ python: -"3.7"
 
 # install the dependencies
 install:
-  - pip install -r requirements.txt
+  - pip install pipenv
+  - pipenv install
 
 # run the tests
 script:
-  - pylama
-  - isort -rc --check-only
-  - mypy
+  - bash sanity.sh
+  

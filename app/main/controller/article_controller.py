@@ -39,7 +39,7 @@ class ArticleFetch(Resource):
 
 @api.route("/create")
 class ArticleCreator(Resource):
-    #TODO: protect the endpoint from outside access
+    # TODO: protect the endpoint from outside access
     @api.expect(PostDto.articleGen, validate=True)
     def post(self):
         user = User.query.filter_by(username=request.json['author']).first()

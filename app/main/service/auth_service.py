@@ -100,7 +100,6 @@ class Authentication:
                 LOG.info(
                     'Email already present in database. Redirect to Login Page')
                 return response_object, 300
-            
             user = User.query.filter_by(username=data.get('username')).first()
             if user is not None:
                 response_object = {
@@ -145,7 +144,7 @@ class Authentication:
             subject = "Hola! To hop onto IIT Tech Ambit, please confirm your email."
             confirm_url = url_for('api.auth_confirm_token',
                                   token=token, _external=True)
-            async_send_mail(app._get_current_object() ,user.email, subject, confirm_url)
+            async_send_mail(app._get_current_object(), user.email, subject, confirm_url)
 
         except:
             LOG.error('Verification Mail couldn\'t be sent to {}. Please try again'.format(user.email))
@@ -201,7 +200,6 @@ class Authentication:
                 'message': 'sent a password reset link on your registered email address.'
             }
             return response_object, 200
-
         except:
             LOG.error('Verification Mail couldn\'t be sent to {}. Please try again'.format(
                 data.get('email')))
@@ -223,16 +221,15 @@ class Authentication:
                 'message': 'Password Reset link is invalid or has expired',
             }
             return response_object, 400
-
         form = PasswordForm()
         headers = {'Content-Type': 'text/html'}
         return make_response(render_template('reset_password.html', form=form, token=token), 200, headers)
-    
+
     @staticmethod
     def reset_password_with_token(token):
         """
         Take in password reset form from the user and change password.
-        
+
         :param token: validation token
         :type token: str
         """
@@ -245,9 +242,8 @@ class Authentication:
                 'message': 'Password Reset link is invalid or has expired',
             }
             return response_object, 400
-        
+
         form = PasswordForm()
-    
         if form.validate_on_submit():
             user = User.query.filter_by(email=email).first()
             user.resetPassword(form.password.data)
@@ -256,5 +252,5 @@ class Authentication:
                 'message': 'Password has been reset successfully',
             }
             return response_object, 200
-        
+
         return redirect(url_for('api.auth_reset_token_verify'), token=token)

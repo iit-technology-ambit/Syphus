@@ -5,17 +5,15 @@ Users and Tags
 """
 import datetime
 
+from flask_bcrypt import check_password_hash, generate_password_hash
 from flask_login import UserMixin
 from sqlalchemy.sql import and_, select
 
 from app.main import db, login_manager
 from app.main.models.enums import PriorityType
+from app.main.models.payments import Payment
 from app.main.models.posts import Post
 from app.main.models.tags import Tag
-from app.main.models.payments import Payment
-from flask_login import UserMixin
-from flask_bcrypt import check_password_hash, generate_password_hash
-from sqlalchemy.sql import select
 
 userTagJunction = db.Table('userTagJunction',
                            db.Column('user_id', db.Integer,
@@ -65,8 +63,8 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(128), unique=True, nullable=False)
     password = db.Column(db.String(128), nullable=False)
-    first_name = db.Column(db.String(255),default="")
-    last_name = db.Column(db.String(255),default="")
+    first_name = db.Column(db.String(255), default="")
+    last_name = db.Column(db.String(255), default="")
     dob = db.Column(db.DateTime)
     email = db.Column(db.String(255), nullable=False)
     fb_handle = db.Column(db.String(255))
@@ -89,7 +87,6 @@ class User(db.Model, UserMixin):
                             backref=db.backref("savers", lazy=True))
 
     payments = db.relationship('Payment', backref='user', lazy=True)
-
 
     def __init__(self, username, password, email):
         self.username = username
@@ -147,22 +144,22 @@ class User(db.Model, UserMixin):
         s = userTagJunction.update().\
             values(priority=PriorityType(priority)).\
             where(and_(
-                userTagJunction.c.user_id==self.id,
-                userTagJunction.c.keyword_id==tag.id))
+                userTagJunction.c.user_id == self.id,
+                userTagJunction.c.keyword_id == tag.id))
 
         db.session.execute(s)
         db.session.commit()
-    
+
     def getTagPriority(self, tag):
         s = select([userTagJunction]).where(and_(
-                userTagJunction.c.user_id==self.id,
-                userTagJunction.c.keyword_id==tag.id))
+            userTagJunction.c.user_id == self.id,
+            userTagJunction.c.keyword_id == tag.id))
         result = list(db.session.execute(s))
         try:
             return result[0]["priority"]
         except IndexError:
             return None
-        
+
     def savePost(self, post):
         self.saves.append(post)
         db.session.commit()

@@ -3,17 +3,19 @@ import traceback
 from logging import getLogger
 
 from flask import current_app as app
+
 from app.main.models.issues import Issue
 
 LOG = getLogger(__name__)
 
+
 class IssueService:
-    
+
     @staticmethod
     def getAll():
         try:
             issues = Issue.query.all()
-            return issues,200
+            return issues, 200
 
         except:
             LOG.error("Couldn't fetch articles. Please try again later")
@@ -35,7 +37,7 @@ class IssueService:
                 }
                 LOG.info('Issue already present in databse. Redirecting to home page')
                 return response_object, 300
-            
+
             issue = Issue(data.get('cover'), data.get('month'), data.get('year'), data.get('link'))
             response_object = {
                 'status': 'Success',
@@ -51,6 +53,3 @@ class IssueService:
                 'message': 'Try again',
             }
             return response_object, 500
-
-
-

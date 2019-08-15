@@ -32,6 +32,7 @@ class TestingConfig(Config):
 class ProductionConfig(Config):
     DEBUG = False
 
+
 config_by_name = dict(
     dev=DevelopmentConfig,
     test=TestingConfig,

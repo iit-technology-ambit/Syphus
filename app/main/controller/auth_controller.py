@@ -1,6 +1,7 @@
 '''
 All Endpoints required for authentication
-operations such as login, logout and signup. 
+operations such as login, logout and signup.
+
 '''
 
 from flask import request
@@ -77,7 +78,7 @@ class ResetRequest(Resource):
     @api.expect(email, validate=True)
     def post(self):
         post_data = request.json
-        return Authentication.reset_password_mail(data = post_data)
+        return Authentication.reset_password_mail(data=post_data)
 
 
 @api.route('/reset/<token>', methods=["GET", "POST"])
@@ -86,6 +87,6 @@ class ResetTokenVerify(Resource):
     @api.doc('Endpoint to Confirm the token sent to change the password and set a new password')
     def get(self, token):
         return Authentication.confirm_reset_token_service(token)
-    
+
     def post(self, token):
         return Authentication.reset_password_with_token(token)

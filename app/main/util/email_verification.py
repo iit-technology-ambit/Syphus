@@ -8,6 +8,8 @@ def generate_confirmation_token(email):
 
 # expiration is in seconds
 # TODO: Change the expiration to 24 hours when resend email is implemented
+
+
 def confirm_token(token, expiration=180000000):
     serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
     try:

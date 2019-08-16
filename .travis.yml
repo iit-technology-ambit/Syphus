@@ -1,11 +1,14 @@
 dist: xenial
 language: python
-python: -"3.7"
+python:
+  - 3.7
+
+env:
+  - TESTING=True
 
 # install the dependencies
 install:
   - pip install -r requirements.txt
-
 # run the tests
 script:
   - bash sanity.sh

@@ -134,8 +134,8 @@ class UserService:
                 return response_object, 300
 
             current_user.addPayment(data)
-            response_object = {
-                'status': 'Success',
+            response_object ={
+                'status' : 'Success',
                 'message': 'Saved the payment into the users information.'
             }
             return response_object, 200

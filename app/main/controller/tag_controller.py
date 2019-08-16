@@ -7,6 +7,7 @@ from app.main import db
 from app.main.models.enums import PriorityType
 from app.main.models.tags import Tag
 from app.main.models.users import User
+from app.main.models.enums import PriorityType
 from app.main.util.dto import TagDto
 
 api = TagDto.api

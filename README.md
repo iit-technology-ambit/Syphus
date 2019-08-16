@@ -1,4 +1,6 @@
-# Common Backend for Ambit
+# Syphus [![Build Status](https://travis-ci.org/iit-technology-ambit/Syphus.svg?branch=master)](https://travis-ci.org/iit-technology-ambit/Syphus)
+
+## Common Backend for Ambit
 
 This is the common backend for Tech-Ambit web and android application.
 

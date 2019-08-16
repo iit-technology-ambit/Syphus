@@ -4,10 +4,8 @@ python: -"3.7"
 
 # install the dependencies
 install:
-  - pip install pipenv
-  - pipenv install
+  - pip install -r requirements.txt
 
 # run the tests
 script:
   - bash sanity.sh
-  

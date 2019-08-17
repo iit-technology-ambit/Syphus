@@ -58,7 +58,3 @@ class Issue:
             db.session.commit()
 
         LOG.info(f"Issue tag set for { tagName }")
-
-
-
-

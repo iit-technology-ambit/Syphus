@@ -1,8 +1,9 @@
 from logging import getLogger
 
-from flask import Blueprint, abort, request
+from flask import Blueprint, abort, request, current_app
 from flask_login import current_user, login_required
 from flask_restplus import Api, Resource
+from werkzeug.datastructures import FileStorage
 
 from app.main.models.errors import LoginError
 from app.main.models.imgLinks import ImgLink
@@ -13,7 +14,7 @@ from app.main.util.dto import PostDto
 LOG = getLogger(__name__)
 
 api = PostDto.api
-
+fileParser = PostDto.getFileParser()
 
 @api.route("/")
 class ArticleFetch(Resource):
@@ -51,9 +52,11 @@ class ArticleCreator(Resource):
 
 @api.route("/uploadImg")
 class ImageUploader(Resource):
-    @api.expect(PostDto.imgGen)
+    @api.expect(fileParser)
     def post(self):
-        img = ImgLink(request.form["image"].encode())
+        f = request.files['file']
+        # LOG.info(type(f))
+        img = ImgLink(f)
         return f"{ img.link }", 201
 
 

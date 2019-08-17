@@ -1,6 +1,7 @@
 # Data Transfer Object- Responsible for carrying data between processes
-from flask_restplus import Namespace, fields
-
+from flask_restplus import Namespace, fields, reqparse
+from werkzeug.datastructures import FileStorage
+from flask import current_app
 
 class AuthDto:
     api = Namespace('auth', description='Authentication Related operations')
@@ -26,7 +27,7 @@ class UserDto:
     userReq = api.model('user', {
         'id': fields.Integer(required=True, description="Id of the user")
     })
-    
+
     userInfo = api.model('userInfo', {
         'username': fields.String(required=True, description='user username'),
         'first_name': fields.String(description='first name', default=""),
@@ -77,10 +78,6 @@ class PostDto:
         'post_time': fields.DateTime(description="Time Created"),
     })
 
-    imgGen = api.model('imgGen', {
-        'image': fields.Raw(description="Raw Binary Data for images"),
-    })
-
     tagList = api.model('tagList', {
         'tags': fields.List(fields.String, description="Tags to searched"),
     })
@@ -88,6 +85,15 @@ class PostDto:
     rating = api.model('rating', {
         'score': fields.Integer(required=True, description="Rating of the post")
     })
+
+    @classmethod
+    def getFileParser(cls, loc='files'):
+        imgGen = reqparse.RequestParser()
+        
+        imgGen.add_argument('file', location=loc, required=True)
+
+        return imgGen
+
 
 
 class TagDto:

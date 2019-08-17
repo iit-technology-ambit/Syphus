@@ -33,7 +33,7 @@ class UserLogout(Resource):
     Logout Resource
     """
     @api.doc('Endpoint for User Logout')
-    def post(self):
+    def get(self):
         return Authentication.logout_user()
 
 

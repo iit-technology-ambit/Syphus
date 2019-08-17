@@ -9,6 +9,7 @@ from app.main.models.errors import LoginError
 from app.main.models.imgLinks import ImgLink
 from app.main.models.posts import Post
 from app.main.models.users import User
+from app.main.models.tags import Tag
 from app.main.util.dto import PostDto
 
 LOG = getLogger(__name__)
@@ -83,13 +84,26 @@ class ArticleRate(Resource):
 class ArticleByTag(Resource):
     @api.expect(PostDto.tagList)
     @api.marshal_list_with(PostDto.article)
-    def get(self):
-        tags = request.args.getlist("tags")
-        articles = Post.getArticlesByTags(tags, connector="OR")
+    def post(self):
+        # LOG.info(request.json)
+        # LOG.info(request.args.getlist("tags"))
+        
+        tags = request.json["tags"]
+        tagList = []
+        for tag in tags:
+            try:
+                tagList.append(Tag.query.filter_by(name=tag).first().id)
+            except:
+                pass
+
+        articles = Post.getArticlesByTags(tagList, connector="OR")
         data = list()
         for p in articles:
+            # print(p.post_id)
+
             article = {
-                "author": p.user.first_name + " " + p.user.last_name,
+                "post_id": p.post_id,
+                "author": p._author_id,
                 "title": p.title,
                 "body": p.body,
                 "post_time": p.post_time
@@ -97,3 +111,18 @@ class ArticleByTag(Resource):
             data.append(article)
 
         return data
+
+
+@api.route("/add_tag")
+class ArticleAddTag(Resource):
+    @api.expect(PostDto.addtaglist)
+    def put(self):
+        p = Post.getArticles(request.json['post_id'])
+        t = []
+        for tag in request.json['tags']:
+            t.append(Tag.query.filter_by(name=tag).first())
+
+        p.addTags(t)
+        return "Tags added sucessfully", 201
+
+

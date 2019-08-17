@@ -62,6 +62,8 @@ class PostDto:
     })
 
     article = api.model('article', {
+        'post_id': fields.Integer(required=True,
+                                description="Id of the post"),
         'author': fields.String(required=True,
                                 description="Author of the post"),
         'title': fields.String(required=True, description="Title of the post"),
@@ -84,6 +86,11 @@ class PostDto:
 
     rating = api.model('rating', {
         'score': fields.Integer(required=True, description="Rating of the post")
+    })
+
+    addtaglist = api.model('addtaglist', {
+        'tags': fields.List(fields.String, description="Tags to be added"),
+        'post_id': fields.Integer(required=True, description="Post id of the post")
     })
 
     @classmethod

@@ -66,10 +66,11 @@ class PostDto:
                                 description="Id of the post"),
         'author': fields.String(required=True,
                                 description="Author of the post"),
+        'author_id': fields.Integer(required=False),
         'title': fields.String(required=True, description="Title of the post"),
         'body': fields.String(required=True, description="Body of the post"),
         'post_time': fields.DateTime(description="Time Created"),
-        'imgLinks': fields.List(fields.String, description="ImgLinks"),
+        'imgLinks': fields.List(fields.String, description="ImgLinks")
     })
 
     articleGen = api.model('articleGen', {
@@ -92,6 +93,11 @@ class PostDto:
         'tags': fields.List(fields.String, description="Tags to be added"),
         'post_id': fields.Integer(required=True, description="Post id of the post")
     })
+
+    linkOfImage = api.model('linkOfImage', {
+       'link': fields.String(required=True)
+    })
+     
 
     @classmethod
     def getFileParser(cls, loc='files'):

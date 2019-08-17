@@ -20,15 +20,17 @@ fileParser = PostDto.getFileParser()
 @api.route("/")
 class ArticleFetch(Resource):
     @api.marshal_with(PostDto.article)
-    @api.expect(PostDto.articleReq)
+    @api.doc(params={'post_id': 'Id of the requested post'})
     def get(self):
         """
         Fetches the article given by the id.
         """
         post_id = request.args.get('post_id')
-        p = Post.getArticles(post_id)
+        p = Post.getArticles(int(post_id))
         if p is not None:
             article = {
+                "post_id": p.post_id,
+                "author_id": p.author.id,
                 "author": p.author.username,
                 "title": p.title,
                 "body": p.body,
@@ -53,12 +55,22 @@ class ArticleCreator(Resource):
 
 @api.route("/uploadImg")
 class ImageUploader(Resource):
+    """DISABLE CORS FOR THIS."""
     @api.expect(fileParser)
     def post(self):
         f = request.files['file']
         # LOG.info(type(f))
         img = ImgLink(f)
         return f"{ img.link }", 201
+
+@api.route("/addLink")
+class addImageLink(Resource):
+    """DISABLE CORS FOR THIS."""
+    @api.expect(PostDto.linkOfImage)
+    def post(self):
+        img = ImgLink(link=request.json['link'])
+        LOG.info("New link added without verification")
+        return f"{ img.id }", 201
 
 
 @api.route("/save/<int:post_id>")
@@ -100,10 +112,11 @@ class ArticleByTag(Resource):
         data = list()
         for p in articles:
             # print(p.post_id)
-
+            aid = User.query.filter_by(username=p._author_id).first().id
             article = {
                 "post_id": p.post_id,
                 "author": p._author_id,
+                "author_id": aid,
                 "title": p.title,
                 "body": p.body,
                 "post_time": p.post_time
@@ -124,5 +137,3 @@ class ArticleAddTag(Resource):
 
         p.addTags(t)
         return "Tags added sucessfully", 201
-
-

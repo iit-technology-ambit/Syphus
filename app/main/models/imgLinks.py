@@ -32,25 +32,32 @@ class ImgLink(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     link = db.Column(db.String(256), nullable=False)
 
-    def __init__(self, image):
+    def __init__(self, image=None, link=None):
         """
         Pass a werzeug fileStorage in image and it will be saved.
         Image Naming Convention: present utc timestamp.png
-        [Needs to be changed]
+        Or
+        Just pass the link and it will add it to database
         """
-        # LOG.info(image)
-        fname = os.path.join(current_app.config["IMGDIR"],
-            secure_filename(image.filename) + \
-                "_" + str(datetime.datetime.now()).replace(" ", "_"))
 
-        LOG.info("Writing new image to disk, %s", fname)
-        image.save(fname)
+        if image is not None:
+            # LOG.info(image)
+            fname = os.path.join(current_app.config["IMGDIR"],
+                secure_filename(image.filename) + \
+                    "_" + str(datetime.datetime.now()).replace(" ", "_"))
 
-        self.link = fname
+            LOG.info("Writing new image to disk, %s", fname)
+            image.save(fname)
 
-        LOG.info("New imgLink added to database.")
-        db.session.add(self)
-        db.session.commit()
+            self.link = fname
+
+            LOG.info("New imgLink added to database.")
+            db.session.add(self)
+            db.session.commit()
+        elif link is not None:
+            self.link = link
+            db.session.add(self)
+            db.session.commit()
 
     def delete(self):
         LOG.info("Removing image from disk")

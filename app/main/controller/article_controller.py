@@ -15,14 +15,15 @@ LOG = getLogger(__name__)
 api = PostDto.api
 
 
-@api.route("/<int:post_id>")
+@api.route("/")
 class ArticleFetch(Resource):
     @api.marshal_with(PostDto.article)
-    @api.doc(params={'post_id': 'Post Id'})
-    def get(self, post_id):
+    @api.expect(PostDto.articleReq)
+    def get(self):
         """
         Fetches the article given by the id.
         """
+        post_id = request.args.get('post_id')
         p = Post.getArticles(post_id)
         if p is not None:
             article = {

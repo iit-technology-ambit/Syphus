@@ -50,6 +50,12 @@ class UserDto:
 
 class PostDto:
     api = Namespace('article', description='article related operations')
+    
+    articleReq = api.model('articleReq', {
+        'post_id': fields.Integer(required=True,
+                                description="Post id of the required post")
+    })
+
     article = api.model('article', {
         'author': fields.String(required=True,
                                 description="Author of the post"),

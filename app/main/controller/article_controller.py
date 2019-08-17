@@ -49,11 +49,11 @@ class ArticleCreator(Resource):
         return "Post Created", 201
 
 
-@api.route("/uploadimg")
+@api.route("/uploadImg")
 class ImageUploader(Resource):
     @api.expect(PostDto.imgGen)
     def post(self):
-        img = ImgLink(request.form["image"])
+        img = ImgLink(request.form["image"].encode())
         return f"{ img.link }", 201
 
 

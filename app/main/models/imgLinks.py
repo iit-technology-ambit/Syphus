@@ -37,7 +37,7 @@ class ImgLink(db.Model):
         Image Naming Convention: present utc timestamp.png
         [Needs to be changed]
         """
-        fname = datetime.datetime.now() + ".png"
+        fname = str(datetime.datetime.now()) + ".jpg"
         file = open(os.path.join(current_app.config["IMGDIR"], fname), "wb")
         LOG.info("Writing new image to disk, %s", fname)
         file.write(imageBinary)

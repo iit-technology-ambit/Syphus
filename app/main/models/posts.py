@@ -13,6 +13,7 @@ from app.main.models.enums import PostType
 from app.main.models.errors import LoginError
 from app.main.models.imgLinks import imgPostJunction
 from app.main.models.tags import Tag
+from app.main.models.imgLinks import ImgLink
 
 postTagJunction = db.Table('postTagJunction',
                            db.Column('post_id', db.Integer,
@@ -122,3 +123,21 @@ class Post(db.Model):
     def addTags(self, list_of_tags):
         self.tags.extend(list_of_tags)
         db.session.commit()
+
+    def associateImage(self, imgId):
+        img = ImgLink.query.filter_by(id=imgId).first()
+        self.images.append(img)
+        db.session.commit()
+
+    def tagDump(self):
+        dump = []
+        for tag in self.tags:
+            dump.append(tag.name)
+        return dump
+    
+    def linkDump(self):
+        dump = []
+        for img in self.images:
+            dump.append(img.link)
+
+        return dump

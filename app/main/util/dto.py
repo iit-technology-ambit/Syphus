@@ -24,7 +24,7 @@ class UserDto:
         'email': fields.String(required=True, description='user email address'),
     })
 
-    userReq = api.model('user', {
+    userReq = api.model('userReq', {
         'id': fields.Integer(required=True, description="Id of the user")
     })
 
@@ -62,7 +62,7 @@ class PostDto:
     })
 
     article = api.model('article', {
-        'post_id': fields.Integer(required=True,
+        'post_id': fields.Integer(required=False,
                                 description="Id of the post"),
         'author': fields.String(required=True,
                                 description="Author of the post"),
@@ -70,7 +70,8 @@ class PostDto:
         'title': fields.String(required=True, description="Title of the post"),
         'body': fields.String(required=True, description="Body of the post"),
         'post_time': fields.DateTime(description="Time Created"),
-        'imgLinks': fields.List(fields.String, description="ImgLinks")
+        'imgLinks': fields.List(fields.String, description="ImgLinks"),
+        'tags': fields.List(fields.String, description="ImgLinks")
     })
 
     articleGen = api.model('articleGen', {
@@ -97,7 +98,11 @@ class PostDto:
     linkOfImage = api.model('linkOfImage', {
        'link': fields.String(required=True)
     })
-     
+
+    imgAs = api.model('imgAs', {
+        'post_id': fields.Integer(required=True),
+        'img_id': fields.Integer(required=True)
+    })
 
     @classmethod
     def getFileParser(cls, loc='files'):

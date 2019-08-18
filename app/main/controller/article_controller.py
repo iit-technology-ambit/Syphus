@@ -34,7 +34,9 @@ class ArticleFetch(Resource):
                 "author": p.author.username,
                 "title": p.title,
                 "body": p.body,
-                "post_time": p.post_time
+                "post_time": p.post_time,
+                "imgLinks": p.linkDump(),
+                "tags": p.tagDump()
             }
 
             return article
@@ -64,13 +66,22 @@ class ImageUploader(Resource):
         return f"{ img.link }", 201
 
 @api.route("/addLink")
-class addImageLink(Resource):
+class AddImageLink(Resource):
     """DISABLE CORS FOR THIS."""
     @api.expect(PostDto.linkOfImage)
     def post(self):
         img = ImgLink(link=request.json['link'])
         LOG.info("New link added without verification")
         return f"{ img.id }", 201
+
+@api.route("/associateImg")
+class ImgAssociator(Resource):
+    """DISABLE CORS FOR THIS."""
+    @api.expect(PostDto.imgAs)
+    def post(self):
+        p = Post.query.filter_by(post_id=request.json['post_id']).first()
+        p.associateImage(request.json['img_id'])
+        return "Image Associated", 201
 
 
 @api.route("/save/<int:post_id>")

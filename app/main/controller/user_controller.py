@@ -1,6 +1,6 @@
 # endpoint for user operations
 from flask import request
-from flask_login import login_required
+from flask_login import login_required, current_user
 from flask_restplus import Resource
 
 from app.main.service.user_service import UserService
@@ -71,3 +71,25 @@ class FollowedTags(Resource):
     @api.doc('Endpoint to get the tags followed by a user')
     def get(self):
         return UserService.get_user_tags()
+
+@api.route('/savedArticles')
+class GetSavedArticles(Resource):
+    """ Getting all articles saved by a user """
+    @login_required
+    @api.marshal_list_with(PostDto.article)
+    def get(self):
+        s = []
+        for save in current_user.saves:
+            article = dict()
+            article["author_id"] = save.author.id
+            article["author"] = save.author.username
+            article["tags"] = save.tagDump()
+            article["post_id"] = save.post_id
+            article["title"] = save.title
+            article["body"] = save.body
+            article["post_time"] = save.post_time
+            article["imgLinks"] = save.linkDump()
+            s.append(article)
+        
+        return s
+            

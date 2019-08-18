@@ -1,6 +1,7 @@
 # Data Transfer Object- Responsible for carrying data between processes
-from flask_restplus import Namespace, fields
-
+from flask_restplus import Namespace, fields, reqparse
+from werkzeug.datastructures import FileStorage
+from flask import current_app
 
 class AuthDto:
     api = Namespace('auth', description='Authentication Related operations')
@@ -21,6 +22,10 @@ class UserDto:
         'username': fields.String(required=True, description='user username'),
         'password': fields.String(required=True, description='user password'),
         'email': fields.String(required=True, description='user email address'),
+    })
+
+    userReq = api.model('userReq', {
+        'id': fields.Integer(required=True, description="Id of the user")
     })
 
     userInfo = api.model('userInfo', {
@@ -50,13 +55,23 @@ class UserDto:
 
 class PostDto:
     api = Namespace('article', description='article related operations')
+    
+    articleReq = api.model('articleReq', {
+        'post_id': fields.Integer(required=True,
+                                description="Post id of the required post")
+    })
+
     article = api.model('article', {
+        'post_id': fields.Integer(required=False,
+                                description="Id of the post"),
         'author': fields.String(required=True,
                                 description="Author of the post"),
+        'author_id': fields.Integer(required=False),
         'title': fields.String(required=True, description="Title of the post"),
         'body': fields.String(required=True, description="Body of the post"),
         'post_time': fields.DateTime(description="Time Created"),
         'imgLinks': fields.List(fields.String, description="ImgLinks"),
+        'tags': fields.List(fields.String, description="ImgLinks")
     })
 
     articleGen = api.model('articleGen', {
@@ -67,10 +82,6 @@ class PostDto:
         'post_time': fields.DateTime(description="Time Created"),
     })
 
-    imgGen = api.model('imgGen', {
-        'image': fields.Raw(description="Raw Binary Data for images"),
-    })
-
     tagList = api.model('tagList', {
         'tags': fields.List(fields.String, description="Tags to searched"),
     })
@@ -78,6 +89,29 @@ class PostDto:
     rating = api.model('rating', {
         'score': fields.Integer(required=True, description="Rating of the post")
     })
+
+    addtaglist = api.model('addtaglist', {
+        'tags': fields.List(fields.String, description="Tags to be added"),
+        'post_id': fields.Integer(required=True, description="Post id of the post")
+    })
+
+    linkOfImage = api.model('linkOfImage', {
+       'link': fields.String(required=True)
+    })
+
+    imgAs = api.model('imgAs', {
+        'post_id': fields.Integer(required=True),
+        'img_id': fields.Integer(required=True)
+    })
+
+    @classmethod
+    def getFileParser(cls, loc='files'):
+        imgGen = reqparse.RequestParser()
+        
+        imgGen.add_argument('file', location=loc, required=True)
+
+        return imgGen
+
 
 
 class TagDto:
@@ -95,7 +129,7 @@ class IssueDto:
     api = Namespace('issue', description="for issue related operations")
     issue = api.model('tag', {
         'id': fields.Integer(required=False, description="ID of the concerned issue"),
-        'cover': fields.Integer(required=True, description="Cover image of the concerned issue"),
+        'cover': fields.String(required=True, description="Cover image of the concerned issue"),
         'month': fields.String(required=True, description="Month of the concerned issue"),
         'year': fields.String(required=True, description="Year of the concerned issue"),
         'issue_tag': fields.String(required=True, description="Issue tag of the concerned issue"),

@@ -178,3 +178,4 @@ class User(db.Model, UserMixin):
             db.session.execute(s)
         finally:
             db.session.commit()
+

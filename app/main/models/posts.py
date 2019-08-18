@@ -5,13 +5,15 @@ import datetime
 from random import sample
 
 from sqlalchemy.ext.hybrid import hybrid_property
-
+from sqlalchemy.sql import select, and_, or_, join
 # from . import *
 from app.main import db
 from app.main.models.enums import PostType
 # from app.main.models.users import User
 from app.main.models.errors import LoginError
 from app.main.models.imgLinks import imgPostJunction
+from app.main.models.tags import Tag
+from app.main.models.imgLinks import ImgLink
 
 postTagJunction = db.Table('postTagJunction',
                            db.Column('post_id', db.Integer,
@@ -86,32 +88,29 @@ class Post(db.Model):
     #         # Stub to be handled later
     #         print("Get back to login page")
 
-    @classmethod
-    def getArticlesByTags(cls, tagList, connector='AND'):
+    @staticmethod
+    def getArticlesByTags(tagList, connector='OR'):
         """
         Get all articles that have a tag in tagList.
         If connector is AND intersection of all posts set for each tag will be
         returned. If it is OR, union will be returned
         """
-        if connector == 'AND':
-            posts = set()
-            for tag in tagList:
-                if len(posts) == 0:
-                    posts = set(cls.query.filter(tag in cls.tags).all())
-                else:
-                    posts.intersection(
-                        set(cls.query.filter(tag in cls.tags).all()))
-
-            return list(posts)
-        elif connector == 'OR':
-            posts = set()
-            for tag in tagList:
-                if len(posts) == 0:
-                    posts = set(cls.query.filter(tag in cls.tags).all())
-                else:
-                    posts.union(set(cls.query.filter(tag in cls.tags).all()))
-
-            return list(posts)
+        stmt = select([Post, 
+        postTagJunction.c.post_id.label("pid"), 
+        postTagJunction.c.tag_id]).distinct().where(and_(postTagJunction.c.post_id == Post.post_id,
+                                                    postTagJunction.c.tag_id.in_(tagList)))
+        result = db.session.execute(stmt)
+        results = result.fetchall()
+        # return results
+        # taking only unique values
+        unique_results = dict()
+        # print(results.c)
+        for result in results:
+            # print(dict(result))
+            if unique_results.get(result.post_id, 0) == 0:
+                unique_results[result.post_id] = result
+        # print(unique_results[1].post_id)
+        return unique_results.values()
 
     @staticmethod
     def getArticles(post_id):
@@ -120,3 +119,25 @@ class Post(db.Model):
     @staticmethod
     def getRandomizedArticles(size):
         return sample(Post.query.all(), size)
+
+    def addTags(self, list_of_tags):
+        self.tags.extend(list_of_tags)
+        db.session.commit()
+
+    def associateImage(self, imgId):
+        img = ImgLink.query.filter_by(id=imgId).first()
+        self.images.append(img)
+        db.session.commit()
+
+    def tagDump(self):
+        dump = []
+        for tag in self.tags:
+            dump.append(tag.name)
+        return dump
+    
+    def linkDump(self):
+        dump = []
+        for img in self.images:
+            dump.append(img.link)
+
+        return dump

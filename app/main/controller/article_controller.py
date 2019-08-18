@@ -1,35 +1,42 @@
 from logging import getLogger
 
-from flask import Blueprint, abort, request
+from flask import Blueprint, abort, request, current_app
 from flask_login import current_user, login_required
 from flask_restplus import Api, Resource
+from werkzeug.datastructures import FileStorage
 
 from app.main.models.errors import LoginError
 from app.main.models.imgLinks import ImgLink
 from app.main.models.posts import Post
 from app.main.models.users import User
+from app.main.models.tags import Tag
 from app.main.util.dto import PostDto
 
 LOG = getLogger(__name__)
 
 api = PostDto.api
+fileParser = PostDto.getFileParser()
 
-
-@api.route("/<int:post_id>")
+@api.route("/")
 class ArticleFetch(Resource):
     @api.marshal_with(PostDto.article)
-    @api.doc(params={'post_id': 'Post Id'})
-    def get(self, post_id):
+    @api.doc(params={'post_id': 'Id of the requested post'})
+    def get(self):
         """
         Fetches the article given by the id.
         """
-        p = Post.getArticles(post_id)
+        post_id = request.args.get('post_id')
+        p = Post.getArticles(int(post_id))
         if p is not None:
             article = {
+                "post_id": p.post_id,
+                "author_id": p.author.id,
                 "author": p.author.username,
                 "title": p.title,
                 "body": p.body,
-                "post_time": p.post_time
+                "post_time": p.post_time,
+                "imgLinks": p.linkDump(),
+                "tags": p.tagDump()
             }
 
             return article
@@ -48,12 +55,32 @@ class ArticleCreator(Resource):
         return "Post Created", 201
 
 
-@api.route("/uploadimg")
+@api.route("/uploadImg")
 class ImageUploader(Resource):
-    @api.expect(PostDto.imgGen)
+    """DISABLE CORS FOR THIS."""
+    @api.expect(fileParser)
     def post(self):
-        img = ImgLink(request.form["image"])
+        f = request.files['file']
+        img = ImgLink(f)
         return f"{ img.link }", 201
+
+@api.route("/addLink")
+class AddImageLink(Resource):
+    """DISABLE CORS FOR THIS."""
+    @api.expect(PostDto.linkOfImage)
+    def post(self):
+        img = ImgLink(link=request.json['link'])
+        LOG.info("New link added without verification")
+        return f"{ img.id }", 201
+
+@api.route("/associateImg")
+class ImgAssociator(Resource):
+    """DISABLE CORS FOR THIS."""
+    @api.expect(PostDto.imgAs)
+    def post(self):
+        p = Post.query.filter_by(post_id=request.json['post_id']).first()
+        p.associateImage(request.json['img_id'])
+        return "Image Associated", 201
 
 
 @api.route("/save/<int:post_id>")
@@ -79,13 +106,25 @@ class ArticleRate(Resource):
 class ArticleByTag(Resource):
     @api.expect(PostDto.tagList)
     @api.marshal_list_with(PostDto.article)
-    def get(self):
-        tags = request.args.getlist("tags")
-        articles = Post.getArticlesByTags(tags, connector="OR")
+    def post(self):
+        
+        tags = request.json["tags"]
+        tagList = []
+        for tag in tags:
+            try:
+                tagList.append(Tag.query.filter_by(name=tag).first().id)
+            except:
+                pass
+
+        articles = Post.getArticlesByTags(tagList, connector="OR")
         data = list()
         for p in articles:
+            # print(p.post_id)
+            aid = User.query.filter_by(username=p._author_id).first().id
             article = {
-                "author": p.user.first_name + " " + p.user.last_name,
+                "post_id": p.post_id,
+                "author": p._author_id,
+                "author_id": aid,
                 "title": p.title,
                 "body": p.body,
                 "post_time": p.post_time
@@ -93,3 +132,16 @@ class ArticleByTag(Resource):
             data.append(article)
 
         return data
+
+
+@api.route("/add_tag")
+class ArticleAddTag(Resource):
+    @api.expect(PostDto.addtaglist)
+    def put(self):
+        p = Post.getArticles(request.json['post_id'])
+        t = []
+        for tag in request.json['tags']:
+            t.append(Tag.query.filter_by(name=tag).first())
+
+        p.addTags(t)
+        return "Tags added sucessfully", 201

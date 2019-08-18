@@ -9,6 +9,7 @@ from flask_restplus import Resource
 
 from app.main.service.issue_service import IssueService
 from app.main.util.dto import IssueDto
+from app.main.models.imgLinks import ImgLink
 
 api = IssueDto.api
 issue = IssueDto.issue
@@ -20,7 +21,14 @@ class getAllIssues(Resource):
     @api.doc("Getting all issues")
     @api.marshal_with(issue, envelope='resource')
     def get(self):
-        return IssueService.getAll()
+        all_issues = IssueService.getAll()
+        
+        i = 0
+        while i < len(all_issues):
+            all_issues[i].cover = ImgLink.query.filter_by(id=all_issues[i].cover).first().link
+            i += 1
+
+        return all_issues
 
 
 @api.route('/add')

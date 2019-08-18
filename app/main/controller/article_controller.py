@@ -61,7 +61,6 @@ class ImageUploader(Resource):
     @api.expect(fileParser)
     def post(self):
         f = request.files['file']
-        # LOG.info(type(f))
         img = ImgLink(f)
         return f"{ img.link }", 201
 
@@ -108,8 +107,6 @@ class ArticleByTag(Resource):
     @api.expect(PostDto.tagList)
     @api.marshal_list_with(PostDto.article)
     def post(self):
-        # LOG.info(request.json)
-        # LOG.info(request.args.getlist("tags"))
         
         tags = request.json["tags"]
         tagList = []

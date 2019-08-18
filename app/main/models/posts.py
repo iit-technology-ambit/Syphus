@@ -53,8 +53,6 @@ class Post(db.Model):
     author = db.relationship('User', backref='posts', lazy=False)
     tags = db.relationship('Tag', secondary=postTagJunction, lazy='subquery',
                            backref=db.backref('posts', lazy=True))
-    # savers = db.relationship('User', secondary=postSaves, lazy=True,
-    #                          backref=db.backref('posts', lazy='subquery'))
     images = db.relationship('ImgLink', secondary=imgPostJunction,
                              lazy='subquery')
 
@@ -69,24 +67,6 @@ class Post(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
-
-    # Getters and Setters for the fields
-    # @hybrid_property
-    # def author_id(self):
-    #     return self.author
-
-    # @author_id.setter
-    # def author_id(self, authorId):
-    #     try:
-    #         user = User.query.filter_by(id=authorId).first()
-    #         if user.last_logout != None:
-    #             raise LoginError
-    #         else:
-    #             self._author_id = authorId
-
-    #     except:
-    #         # Stub to be handled later
-    #         print("Get back to login page")
 
     @staticmethod
     def getArticlesByTags(tagList, connector='OR'):

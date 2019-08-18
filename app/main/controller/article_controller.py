@@ -50,6 +50,8 @@ class ArticleCreator(Resource):
     @api.expect(PostDto.articleGen, validate=True)
     def post(self):
         user = User.query.filter_by(username=request.json['author']).first()
+        if user is None:
+            return {'message': 'Author not found!'}, 404
         p = Post(user, request.json['title'], request.json['body'])
         LOG.info("New Post Created")
         return "Post Created", 201

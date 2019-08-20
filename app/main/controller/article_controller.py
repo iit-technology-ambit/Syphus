@@ -3,6 +3,7 @@ from logging import getLogger
 from flask import Blueprint, abort, request, current_app
 from flask_login import current_user, login_required
 from flask_restplus import Api, Resource
+from sqlalchemy import desc
 from werkzeug.datastructures import FileStorage
 
 from app.main.models.errors import LoginError
@@ -43,6 +44,32 @@ class ArticleFetch(Resource):
         else:
             abort(404)
 
+@api.route("/getAll")
+class ArticleFetchAll(Resource):
+    @api.marshal_list_with(PostDto.article)
+    @api.doc(params={'num': 'Number of articles to fetch'})
+    def get(self):
+        if request.args.get('num') is None or int(request.args.get('num')) <= 0:
+            posts = Post.query.order_by(desc(Post.avg_rating)).all()
+        else:
+            posts = Post.query.order_by(desc(Post.avg_rating)).\
+                    limit(int(request.args.get('num'))).all()
+
+        articles = []
+        for p in posts:
+            article = {
+                "post_id": p.post_id,
+                "author_id": p.author.id,
+                "author": p.author.username,
+                "title": p.title,
+                "body": p.body,
+                "post_time": p.post_time,
+                "imgLinks": p.linkDump(),
+                "tags": p.tagDump()
+            }
+            articles.append(article)
+        
+        return articles
 
 @api.route("/create")
 class ArticleCreator(Resource):

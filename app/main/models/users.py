@@ -161,7 +161,10 @@ class User(db.Model, UserMixin):
             return None
 
     def savePost(self, post):
-        self.saves.append(post)
+        if post not in self.saves:
+            self.saves.append(post)
+        else:
+            self.saves.remove(post)
         db.session.commit()
 
     def ratePost(self, post, rating):

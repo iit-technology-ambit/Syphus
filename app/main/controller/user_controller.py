@@ -92,4 +92,3 @@ class GetSavedArticles(Resource):
             s.append(article)
         
         return s
-            

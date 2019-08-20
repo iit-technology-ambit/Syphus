@@ -77,6 +77,8 @@ class ArticleCreator(Resource):
     @api.expect(PostDto.articleGen, validate=True)
     def post(self):
         user = User.query.filter_by(username=request.json['author']).first()
+        if user is None:
+            return {'message': 'Author not found!'}, 404
         p = Post(user, request.json['title'], request.json['body'])
         LOG.info("New Post Created")
         return "Post Created", 201
@@ -88,7 +90,6 @@ class ImageUploader(Resource):
     @api.expect(fileParser)
     def post(self):
         f = request.files['file']
-        # LOG.info(type(f))
         img = ImgLink(f)
         return f"{ img.link }", 201
 
@@ -135,8 +136,6 @@ class ArticleByTag(Resource):
     @api.expect(PostDto.tagList)
     @api.marshal_list_with(PostDto.article)
     def post(self):
-        # LOG.info(request.json)
-        # LOG.info(request.args.getlist("tags"))
         
         tags = request.json["tags"]
         tagList = []

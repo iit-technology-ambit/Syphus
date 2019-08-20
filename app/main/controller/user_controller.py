@@ -80,7 +80,6 @@ class GetSavedArticles(Resource):
     @api.marshal_list_with(PostDto.article)
     def get(self):
         s = []
-        # print(current_user.saves[0].tagDump())
         for save in current_user.saves:
             article = dict()
             article["author_id"] = save.author.id
@@ -94,4 +93,3 @@ class GetSavedArticles(Resource):
             s.append(article)
         
         return s
-            

@@ -19,7 +19,7 @@ issue = IssueDto.issue
 class getAllIssues(Resource):
     """ Endpoint to get all issues """
     @api.doc("Getting all issues")
-    @api.marshal_with(issue, envelope='resource')
+    @api.marshal_list_with(issue, envelope='resource')
     def get(self):
         all_issues = IssueService.getAll()
         

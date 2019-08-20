@@ -2,7 +2,6 @@
 from flask import request
 from flask_login import login_required, current_user
 from flask_restplus import Resource
-from copy import copy
 
 from app.main.service.user_service import UserService
 from app.main.util.dto import AuthDto, PostDto, UserDto

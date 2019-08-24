@@ -42,8 +42,8 @@ class Authentication:
                         'message': 'Successfully logged in.',
                     }
                     login_info = {
-                        'id' : current_user.id,
-                        'username' : current_user.username,
+                        'id': current_user.id,
+                        'username': current_user.username,
                     }
                     return login_info, 200
                 else:
@@ -148,10 +148,12 @@ class Authentication:
             subject = "Hola! To hop onto IIT Tech Ambit, please confirm your email."
             confirm_url = url_for('api.auth_confirm_token',
                                   token=token, _external=True)
-            async_send_mail(app._get_current_object(), user.email, subject, confirm_url)
+            async_send_mail(app._get_current_object(),
+                            user.email, subject, confirm_url)
 
         except:
-            LOG.error('Verification Mail couldn\'t be sent to {}. Please try again'.format(user.email))
+            LOG.error(
+                'Verification Mail couldn\'t be sent to {}. Please try again'.format(user.email))
             LOG.debug(traceback.print_exc())
             response_object = {
                 'status': 'fail',
@@ -197,7 +199,8 @@ class Authentication:
                 subject = "Ah, Dementia! Here's a link to reset your password"
                 reset_url = url_for('api.auth_reset_token_verify',
                                     token=reset_token, _external=True)
-                async_send_mail(app._get_current_object(), data.get('email'), subject, reset_url)
+                async_send_mail(app._get_current_object(),
+                                data.get('email'), subject, reset_url)
 
             response_object = {
                 'status': 'Success',

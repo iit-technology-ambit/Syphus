@@ -8,4 +8,5 @@ class PasswordForm(Form):
         DataRequired(),
         EqualTo('confirmPassword', message="Passwords must match!")
     ])
-    confirmPassword = PasswordField('Repeat Password', validators=[DataRequired()])
+    confirmPassword = PasswordField(
+        'Repeat Password', validators=[DataRequired()])

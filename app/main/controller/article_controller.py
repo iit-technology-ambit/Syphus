@@ -18,6 +18,7 @@ LOG = getLogger(__name__)
 api = PostDto.api
 fileParser = PostDto.getFileParser()
 
+
 @api.route("/")
 class ArticleFetch(Resource):
     @api.marshal_with(PostDto.article)
@@ -44,6 +45,7 @@ class ArticleFetch(Resource):
         else:
             abort(404)
 
+
 @api.route("/getAll")
 class ArticleFetchAll(Resource):
     @api.marshal_list_with(PostDto.article)
@@ -53,7 +55,7 @@ class ArticleFetchAll(Resource):
             posts = Post.query.order_by(desc(Post.avg_rating)).all()
         else:
             posts = Post.query.order_by(desc(Post.avg_rating)).\
-                    limit(int(request.args.get('num'))).all()
+                limit(int(request.args.get('num'))).all()
 
         articles = []
         for p in posts:
@@ -68,8 +70,9 @@ class ArticleFetchAll(Resource):
                 "tags": p.tagDump()
             }
             articles.append(article)
-        
+
         return articles
+
 
 @api.route("/create")
 class ArticleCreator(Resource):
@@ -93,6 +96,7 @@ class ImageUploader(Resource):
         img = ImgLink(f)
         return f"{ img.link }", 201
 
+
 @api.route("/addLink")
 class AddImageLink(Resource):
     """DISABLE CORS FOR THIS."""
@@ -101,6 +105,7 @@ class AddImageLink(Resource):
         img = ImgLink(link=request.json['link'])
         LOG.info("New link added without verification")
         return f"{ img.id }", 201
+
 
 @api.route("/associateImg")
 class ImgAssociator(Resource):
@@ -136,7 +141,7 @@ class ArticleByTag(Resource):
     @api.expect(PostDto.tagList)
     @api.marshal_list_with(PostDto.article)
     def post(self):
-        
+
         tags = request.json["tags"]
         tagList = []
         for tag in tags:

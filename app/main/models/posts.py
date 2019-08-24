@@ -75,10 +75,10 @@ class Post(db.Model):
         If connector is AND intersection of all posts set for each tag will be
         returned. If it is OR, union will be returned
         """
-        stmt = select([Post, 
-        postTagJunction.c.post_id.label("pid"), 
-        postTagJunction.c.tag_id]).distinct().where(and_(postTagJunction.c.post_id == Post.post_id,
-                                                    postTagJunction.c.tag_id.in_(tagList)))
+        stmt = select([Post,
+                       postTagJunction.c.post_id.label("pid"),
+                       postTagJunction.c.tag_id]).distinct().where(and_(postTagJunction.c.post_id == Post.post_id,
+                                                                        postTagJunction.c.tag_id.in_(tagList)))
         result = db.session.execute(stmt)
         results = result.fetchall()
         # return results
@@ -114,7 +114,7 @@ class Post(db.Model):
         for tag in self.tags:
             dump.append(tag.name)
         return dump
-    
+
     def linkDump(self):
         dump = []
         for img in self.images:

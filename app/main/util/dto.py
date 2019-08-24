@@ -3,6 +3,7 @@ from flask_restplus import Namespace, fields, reqparse
 from werkzeug.datastructures import FileStorage
 from flask import current_app
 
+
 class AuthDto:
     api = Namespace('auth', description='Authentication Related operations')
     user_auth = api.model('auth_details', {
@@ -12,8 +13,8 @@ class AuthDto:
     })
 
     login_info = api.model('login_info', {
-        'id' : fields.Integer(required=True, description = "ID of the user."),
-        'username' : fields.String(required=True, description="username of the user.")
+        'id': fields.Integer(required=True, description="ID of the user."),
+        'username': fields.String(required=True, description="username of the user.")
     })
 
     reset_email = api.model('email_details', {
@@ -60,15 +61,15 @@ class UserDto:
 
 class PostDto:
     api = Namespace('article', description='article related operations')
-    
+
     articleReq = api.model('articleReq', {
         'post_id': fields.Integer(required=True,
-                                description="Post id of the required post")
+                                  description="Post id of the required post")
     })
 
     article = api.model('article', {
         'post_id': fields.Integer(required=False,
-                                description="Id of the post"),
+                                  description="Id of the post"),
         'author': fields.String(required=True,
                                 description="Author of the post"),
         'author_id': fields.Integer(required=False),
@@ -101,7 +102,7 @@ class PostDto:
     })
 
     linkOfImage = api.model('linkOfImage', {
-       'link': fields.String(required=True)
+        'link': fields.String(required=True)
     })
 
     imgAs = api.model('imgAs', {
@@ -112,11 +113,10 @@ class PostDto:
     @classmethod
     def getFileParser(cls, loc='files'):
         imgGen = reqparse.RequestParser()
-        
+
         imgGen.add_argument('file', location=loc, required=True)
 
         return imgGen
-
 
 
 class TagDto:

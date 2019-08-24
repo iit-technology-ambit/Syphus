@@ -26,7 +26,8 @@ class Message(db.Model):
     # Columns
     message_id = db.Column(db.Integer, primary_key=True)
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    receiver_id = db.Column(
+        db.Integer, db.ForeignKey('user.id'), nullable=False)
     message = db.Column(db.Text, nullable=False)
     sent_at = db.Column(
         db.DateTime, default=datetime.datetime.now(), nullable=False)

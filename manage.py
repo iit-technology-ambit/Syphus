@@ -38,7 +38,8 @@ manager.add_command('db', MigrateCommand)
 def run():
     """Run the flask app."""
     LOG.info('initiating app...')
-    app.run(host=current_app.config['HOST'], port=current_app.config['PORT'], debug=current_app.config['DEBUG'])
+    app.run(host=current_app.config['HOST'],
+            port=current_app.config['PORT'], debug=current_app.config['DEBUG'])
 
 
 @manager.command

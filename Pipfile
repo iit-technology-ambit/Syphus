@@ -41,6 +41,7 @@ isort = "*"
 pydocstyle = "*"
 pycodestyle = "*"
 autopep8 = "*"
+python-dotenv = "*"
 
 [requires]
 python_version = "3.7"

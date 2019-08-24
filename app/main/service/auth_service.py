@@ -41,7 +41,11 @@ class Authentication:
                         'status': 'Success',
                         'message': 'Successfully logged in.',
                     }
-                    return response_object, 200
+                    login_info = {
+                        'id' : current_user.id,
+                        'username' : current_user.username,
+                    }
+                    return login_info, 200
                 else:
                     response_object = {
                         'status': 'fail',

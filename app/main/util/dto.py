@@ -11,6 +11,11 @@ class AuthDto:
         'remember': fields.String(description='Stay Logged In'),
     })
 
+    login_info = api.model('login_info', {
+        'id' : fields.Integer(required=True, description = "ID of the user."),
+        'username' : fields.String(required=True, description="username of the user.")
+    })
+
     reset_email = api.model('email_details', {
         'email': fields.String(required=True, description='Login Email')
     })

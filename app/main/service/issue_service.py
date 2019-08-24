@@ -35,10 +35,12 @@ class IssueService:
                     'status': 'Invalid',
                     'message': 'Issue already present',
                 }
-                LOG.info('Issue already present in databse. Redirecting to home page')
+                LOG.info(
+                    'Issue already present in databse. Redirecting to home page')
                 return response_object, 300
 
-            issue = Issue(data.get('cover'), data.get('month'), data.get('year'), data.get('link'))
+            issue = Issue(data.get('cover'), data.get('month'),
+                          data.get('year'), data.get('link'))
             response_object = {
                 'status': 'Success',
                 'message': 'Issue added Successfully',

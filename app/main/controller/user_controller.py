@@ -72,6 +72,7 @@ class FollowedTags(Resource):
     def get(self):
         return UserService.get_user_tags()
 
+
 @api.route('/savedArticles')
 class GetSavedArticles(Resource):
     """ Getting all articles saved by a user """
@@ -90,5 +91,5 @@ class GetSavedArticles(Resource):
             article["post_time"] = save.post_time
             article["imgLinks"] = save.linkDump()
             s.append(article)
-        
+
         return s

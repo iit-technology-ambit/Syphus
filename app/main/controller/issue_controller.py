@@ -19,13 +19,14 @@ issue = IssueDto.issue
 class getAllIssues(Resource):
     """ Endpoint to get all issues """
     @api.doc("Getting all issues")
-    @api.marshal_with(issue, envelope='resource')
+    @api.marshal_list_with(issue, envelope='resource')
     def get(self):
         all_issues = IssueService.getAll()
-        
+
         i = 0
         while i < len(all_issues):
-            all_issues[i].cover = ImgLink.query.filter_by(id=all_issues[i].cover).first().link
+            all_issues[i].cover = ImgLink.query.filter_by(
+                id=all_issues[i].cover).first().link
             i += 1
 
         return all_issues

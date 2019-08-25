@@ -14,6 +14,7 @@ api = AuthDto.api
 user_auth = AuthDto.user_auth
 user = UserDto.user
 email = AuthDto.reset_email
+login_info = AuthDto.login_info
 
 
 @api.route('/login')
@@ -21,6 +22,7 @@ class UserLogin(Resource):
     """ User Login Resource """
     @api.doc('Endpoint for User Login')
     @api.expect(user_auth, validate=True)
+    @api.marshal_with(login_info)
     def post(self):
         # get the post data
         post_data = request.json

@@ -73,9 +73,12 @@ class UserService:
             response_list = []
 
             try:
-                response_list.append(sample(Post.getArticlesByTags(more, connector="OR"), 12))
-                response_list.append(sample(Post.getArticlesByTags(neutral, connector="OR"), 7))
-                response_list.append(sample(Post.getArticlesByTags(less, connector="OR"), 1))
+                response_list.append(
+                    sample(Post.getArticlesByTags(more, connector="OR"), 12))
+                response_list.append(
+                    sample(Post.getArticlesByTags(neutral, connector="OR"), 7))
+                response_list.append(
+                    sample(Post.getArticlesByTags(less, connector="OR"), 1))
             except:
                 response_list.append(Post.getRandomizedArticles(20))
 
@@ -113,7 +116,8 @@ class UserService:
             return response_object, 200
 
         except Exception as e:
-            LOG.error('Failed to update details for id :{}'.format(current_user.id))
+            LOG.error('Failed to update details for id :{}'.format(
+                current_user.id))
             LOG.debug(traceback.print_exc())
             response_object = {
                 'status': 'fail',
@@ -134,14 +138,15 @@ class UserService:
                 return response_object, 300
 
             current_user.addPayment(data)
-            response_object ={
-                'status' : 'Success',
+            response_object = {
+                'status': 'Success',
                 'message': 'Saved the payment into the users information.'
             }
             return response_object, 200
 
         except:
-            LOG.error('Failed to save payment details for id :{}'.format(current_user.id))
+            LOG.error('Failed to save payment details for id :{}'.format(
+                current_user.id))
             LOG.debug(traceback.print_exc())
             response_object = {
                 'status': 'fail',
@@ -164,7 +169,8 @@ class UserService:
             return current_user.payments, 200
 
         except:
-            LOG.error('Failed to get payment details for id :{}'.format(current_user.id))
+            LOG.error('Failed to get payment details for id :{}'.format(
+                current_user.id))
             LOG.debug(traceback.print_exc())
             response_object = {
                 'status': 'fail',
@@ -194,7 +200,8 @@ class UserService:
             return UserTags, 200
 
         except:
-            LOG.error('Failed to get tags for user id :{}'.format(current_user.id))
+            LOG.error('Failed to get tags for user id :{}'.format(
+                current_user.id))
             LOG.debug(traceback.print_exc())
             response_object = {
                 'status': 'fail',

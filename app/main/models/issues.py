@@ -7,6 +7,7 @@ from app.main.models.tags import Tag
 
 LOG = getLogger(__name__)
 
+
 class Issue:
     """
     Description of Issue Model
@@ -33,7 +34,7 @@ class Issue:
 
     def __init__(self, coverId, month, year, link):
         try:
-            tagName = str(month) + str(year[-2:]) 
+            tagName = str(month) + str(year[-2:])
             self.created_at = datetime.datetime.now()
             self.month = Month[month]
             self.year = year

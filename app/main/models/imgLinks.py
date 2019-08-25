@@ -43,8 +43,8 @@ class ImgLink(db.Model):
         if image is not None:
             # LOG.info(image)
             fname = os.path.join(current_app.config["IMGDIR"],
-                secure_filename(image.filename) + \
-                    "_" + str(datetime.datetime.now()).replace(" ", "_"))
+                                 secure_filename(image.filename) +
+                                 "_" + str(datetime.datetime.now()).replace(" ", "_"))
 
             LOG.info("Writing new image to disk, %s", fname)
             image.save(fname)

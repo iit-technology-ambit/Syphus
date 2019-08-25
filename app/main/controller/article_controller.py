@@ -18,6 +18,7 @@ LOG = getLogger(__name__)
 api = PostDto.api
 fileParser = PostDto.getFileParser()
 
+
 @api.route("/")
 class ArticleFetch(Resource):
     @api.marshal_with(PostDto.article)
@@ -71,6 +72,34 @@ class ArticleFetchAll(Resource):
         
         return articles
 
+@api.route("/getAll")
+class ArticleFetchAll(Resource):
+    @api.marshal_list_with(PostDto.article)
+    @api.doc(params={'num': 'Number of articles to fetch'})
+    def get(self):
+        if request.args.get('num') is None or int(request.args.get('num')) <= 0:
+            posts = Post.query.order_by(desc(Post.avg_rating)).all()
+        else:
+            posts = Post.query.order_by(desc(Post.avg_rating)).\
+                limit(int(request.args.get('num'))).all()
+
+        articles = []
+        for p in posts:
+            article = {
+                "post_id": p.post_id,
+                "author_id": p.author.id,
+                "author": p.author.username,
+                "title": p.title,
+                "body": p.body,
+                "post_time": p.post_time,
+                "imgLinks": p.linkDump(),
+                "tags": p.tagDump()
+            }
+            articles.append(article)
+
+        return articles
+
+
 @api.route("/create")
 class ArticleCreator(Resource):
     # TODO: protect the endpoint from outside access
@@ -93,6 +122,7 @@ class ImageUploader(Resource):
         img = ImgLink(f)
         return f"{ img.link }", 201
 
+
 @api.route("/addLink")
 class AddImageLink(Resource):
     """DISABLE CORS FOR THIS."""
@@ -101,6 +131,7 @@ class AddImageLink(Resource):
         img = ImgLink(link=request.json['link'])
         LOG.info("New link added without verification")
         return f"{ img.id }", 201
+
 
 @api.route("/associateImg")
 class ImgAssociator(Resource):
@@ -136,7 +167,7 @@ class ArticleByTag(Resource):
     @api.expect(PostDto.tagList)
     @api.marshal_list_with(PostDto.article)
     def post(self):
-        
+
         tags = request.json["tags"]
         tagList = []
         for tag in tags:

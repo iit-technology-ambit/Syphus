@@ -138,5 +138,6 @@ class IssueDto:
         'month': fields.String(required=True, description="Month of the concerned issue"),
         'year': fields.String(required=True, description="Year of the concerned issue"),
         'issue_tag': fields.String(required=True, description="Issue tag of the concerned issue"),
-        'link': fields.String(required=True, description="Link of the concerned issue")
+        'link': fields.String(required=True, description="Link of the concerned issue"),
+        'description': fields.String(required=False, description="Description of the issue")
     })

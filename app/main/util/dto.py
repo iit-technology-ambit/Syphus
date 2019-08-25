@@ -77,7 +77,9 @@ class PostDto:
         'body': fields.String(required=True, description="Body of the post"),
         'post_time': fields.DateTime(description="Time Created"),
         'imgLinks': fields.List(fields.String, description="ImgLinks"),
-        'tags': fields.List(fields.String, description="ImgLinks")
+        'tags': fields.List(fields.String, description="ImgLinks"),
+        'isSaved': fields.Boolean(default=False,
+            description="Checks if the article is saved by the current user.")
     })
 
     articleGen = api.model('articleGen', {

@@ -38,7 +38,8 @@ class ArticleFetch(Resource):
                 "body": p.body,
                 "post_time": p.post_time,
                 "imgLinks": p.linkDump(),
-                "tags": p.tagDump()
+                "tags": p.tagDump(),
+                "isSaved": p in current_user.saves if "saves" in current_user.__dict__ else False 
             }
 
             return article
@@ -66,39 +67,12 @@ class ArticleFetchAll(Resource):
                 "body": p.body,
                 "post_time": p.post_time,
                 "imgLinks": p.linkDump(),
-                "tags": p.tagDump()
+                "tags": p.tagDump(),
+                "isSaved": p in current_user.saves if "saves" in current_user.__dict__ else False
             }
             articles.append(article)
         
         return articles
-
-@api.route("/getAll")
-class ArticleFetchAll(Resource):
-    @api.marshal_list_with(PostDto.article)
-    @api.doc(params={'num': 'Number of articles to fetch'})
-    def get(self):
-        if request.args.get('num') is None or int(request.args.get('num')) <= 0:
-            posts = Post.query.order_by(desc(Post.avg_rating)).all()
-        else:
-            posts = Post.query.order_by(desc(Post.avg_rating)).\
-                limit(int(request.args.get('num'))).all()
-
-        articles = []
-        for p in posts:
-            article = {
-                "post_id": p.post_id,
-                "author_id": p.author.id,
-                "author": p.author.username,
-                "title": p.title,
-                "body": p.body,
-                "post_time": p.post_time,
-                "imgLinks": p.linkDump(),
-                "tags": p.tagDump()
-            }
-            articles.append(article)
-
-        return articles
-
 
 @api.route("/create")
 class ArticleCreator(Resource):

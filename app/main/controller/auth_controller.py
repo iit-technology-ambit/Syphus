@@ -6,7 +6,7 @@ operations such as login, logout and signup.
 
 from flask import request
 from flask_restplus import Resource
-
+from flask import abort
 from app.main.service.auth_service import Authentication
 from app.main.util.dto import AuthDto, UserDto
 
@@ -26,8 +26,12 @@ class UserLogin(Resource):
     def post(self):
         # get the post data
         post_data = request.json
-        return Authentication.login_user(data=post_data)
-
+        resp = Authentication.login_user(data=post_data)
+        
+        if resp[1] != 200:
+            return abort(403, resp[0])
+        else:
+            return resp
 
 @api.route('/logout')
 class UserLogout(Resource):

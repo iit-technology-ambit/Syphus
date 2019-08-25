@@ -77,7 +77,9 @@ class PostDto:
         'body': fields.String(required=True, description="Body of the post"),
         'post_time': fields.DateTime(description="Time Created"),
         'imgLinks': fields.List(fields.String, description="ImgLinks"),
-        'tags': fields.List(fields.String, description="ImgLinks")
+        'tags': fields.List(fields.String, description="ImgLinks"),
+        'isSaved': fields.Boolean(default=False,
+            description="Checks if the article is saved by the current user.")
     })
 
     articleGen = api.model('articleGen', {
@@ -138,5 +140,19 @@ class IssueDto:
         'month': fields.String(required=True, description="Month of the concerned issue"),
         'year': fields.String(required=True, description="Year of the concerned issue"),
         'issue_tag': fields.String(required=True, description="Issue tag of the concerned issue"),
-        'link': fields.String(required=True, description="Link of the concerned issue")
+        'link': fields.String(required=True, description="Link of the concerned issue"),
+        'description': fields.String(required=False, description="Description of the issue")
     })
+
+class ImageDto:
+    api = Namespace('image', description="For image related operations")
+    linkOfImage = api.model('linkOfImage', {
+        'link': fields.String(required=True)
+    })
+    @classmethod
+    def getFileParser(cls, loc='files'):
+        imgGen = reqparse.RequestParser()
+
+        imgGen.add_argument('file', location=loc, required=True)
+
+        return imgGen

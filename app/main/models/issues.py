@@ -28,6 +28,7 @@ class Issue:
     issue_tag = db.Column(db.String(20), db.ForeignKey('tag.name'))
     cover = db.Column(db.Integer, db.ForeignKey('imgLink.id'))
     link = db.Column(db.String(256))
+    description = db.Column(db.Text, nullable=True)
 
     tag = db.relationship('Tag', lazy=False)
     cover_img = db.relationship('ImgLink', lazy=False)
@@ -59,3 +60,7 @@ class Issue:
             db.session.commit()
 
         LOG.info(f"Issue tag set for { tagName }")
+
+    def setDescription(self, desc):
+        self.description = desc
+        db.session.commit()

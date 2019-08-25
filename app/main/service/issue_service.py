@@ -41,6 +41,9 @@ class IssueService:
 
             issue = Issue(data.get('cover'), data.get('month'),
                           data.get('year'), data.get('link'))
+            if data.get('description') is not None:
+                issue.setDescription(data.get('description'))
+                
             response_object = {
                 'status': 'Success',
                 'message': 'Issue added Successfully',

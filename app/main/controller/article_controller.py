@@ -16,8 +16,6 @@ from app.main.util.dto import PostDto
 LOG = getLogger(__name__)
 
 api = PostDto.api
-fileParser = PostDto.getFileParser()
-
 
 @api.route("/")
 class ArticleFetch(Resource):
@@ -38,13 +36,13 @@ class ArticleFetch(Resource):
                 "body": p.body,
                 "post_time": p.post_time,
                 "imgLinks": p.linkDump(),
-                "tags": p.tagDump()
+                "tags": p.tagDump(),
+                "isSaved": p in current_user.saves if "saves" in current_user.__dict__ else False 
             }
 
             return article
         else:
             abort(404)
-
 
 @api.route("/getAll")
 class ArticleFetchAll(Resource):
@@ -55,7 +53,7 @@ class ArticleFetchAll(Resource):
             posts = Post.query.order_by(desc(Post.avg_rating)).all()
         else:
             posts = Post.query.order_by(desc(Post.avg_rating)).\
-                limit(int(request.args.get('num'))).all()
+                    limit(int(request.args.get('num'))).all()
 
         articles = []
         for p in posts:
@@ -67,12 +65,12 @@ class ArticleFetchAll(Resource):
                 "body": p.body,
                 "post_time": p.post_time,
                 "imgLinks": p.linkDump(),
-                "tags": p.tagDump()
+                "tags": p.tagDump(),
+                "isSaved": p in current_user.saves if "saves" in current_user.__dict__ else False
             }
             articles.append(article)
-
+        
         return articles
-
 
 @api.route("/create")
 class ArticleCreator(Resource):
@@ -85,26 +83,6 @@ class ArticleCreator(Resource):
         p = Post(user, request.json['title'], request.json['body'])
         LOG.info("New Post Created")
         return "Post Created", 201
-
-
-@api.route("/uploadImg")
-class ImageUploader(Resource):
-    """DISABLE CORS FOR THIS."""
-    @api.expect(fileParser)
-    def post(self):
-        f = request.files['file']
-        img = ImgLink(f)
-        return f"{ img.link }", 201
-
-
-@api.route("/addLink")
-class AddImageLink(Resource):
-    """DISABLE CORS FOR THIS."""
-    @api.expect(PostDto.linkOfImage)
-    def post(self):
-        img = ImgLink(link=request.json['link'])
-        LOG.info("New link added without verification")
-        return f"{ img.id }", 201
 
 
 @api.route("/associateImg")

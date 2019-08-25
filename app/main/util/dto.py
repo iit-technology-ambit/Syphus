@@ -143,3 +143,16 @@ class IssueDto:
         'link': fields.String(required=True, description="Link of the concerned issue"),
         'description': fields.String(required=False, description="Description of the issue")
     })
+
+class ImageDto:
+    api = Namespace('image', description="For image related operations")
+    linkOfImage = api.model('linkOfImage', {
+        'link': fields.String(required=True)
+    })
+    @classmethod
+    def getFileParser(cls, loc='files'):
+        imgGen = reqparse.RequestParser()
+
+        imgGen.add_argument('file', location=loc, required=True)
+
+        return imgGen

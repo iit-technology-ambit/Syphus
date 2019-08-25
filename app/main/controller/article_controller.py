@@ -16,8 +16,6 @@ from app.main.util.dto import PostDto
 LOG = getLogger(__name__)
 
 api = PostDto.api
-fileParser = PostDto.getFileParser()
-
 
 @api.route("/")
 class ArticleFetch(Resource):
@@ -85,26 +83,6 @@ class ArticleCreator(Resource):
         p = Post(user, request.json['title'], request.json['body'])
         LOG.info("New Post Created")
         return "Post Created", 201
-
-
-@api.route("/uploadImg")
-class ImageUploader(Resource):
-    """DISABLE CORS FOR THIS."""
-    @api.expect(fileParser)
-    def post(self):
-        f = request.files['file']
-        img = ImgLink(f)
-        return f"{ img.link }", 201
-
-
-@api.route("/addLink")
-class AddImageLink(Resource):
-    """DISABLE CORS FOR THIS."""
-    @api.expect(PostDto.linkOfImage)
-    def post(self):
-        img = ImgLink(link=request.json['link'])
-        LOG.info("New link added without verification")
-        return f"{ img.id }", 201
 
 
 @api.route("/associateImg")

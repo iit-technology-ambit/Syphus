@@ -93,6 +93,7 @@ class User(db.Model, UserMixin):
         self.password = generate_password_hash(password)
         self.email = email
         self.is_verified = False
+        self.profile_picture = 1
 
         db.session.add(self)
         db.session.commit()

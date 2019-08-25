@@ -72,7 +72,7 @@ class User(db.Model, UserMixin):
     medium_handle = db.Column(db.String(255))
     twitter_handle = db.Column(db.String(255))
     linkedin_handle = db.Column(db.String(255))
-    profile_picture = db.Column(db.Integer, default=1)
+    profile_picture = db.Column(db.Integer)
     bio = db.Column(db.Text)
     occupation = db.Column(db.String(255))
     last_login = db.Column(db.DateTime)
@@ -93,6 +93,7 @@ class User(db.Model, UserMixin):
         self.password = generate_password_hash(password)
         self.email = email
         self.is_verified = False
+        self.profile_picture = 1
 
         db.session.add(self)
         db.session.commit()

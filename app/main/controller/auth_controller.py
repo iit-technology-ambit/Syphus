@@ -40,7 +40,6 @@ class UserLogout(Resource):
     """
     @api.doc('Endpoint for User Logout')
     def get(self):
-        print("here")
         return Authentication.logout_user()
 
 

@@ -8,7 +8,7 @@ from app.main.models.tags import Tag
 LOG = getLogger(__name__)
 
 
-class Issue:
+class Issue(db.Model):
     """
     Description of Issue Model
     Rows

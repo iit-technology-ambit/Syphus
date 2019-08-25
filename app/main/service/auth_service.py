@@ -76,7 +76,6 @@ class Authentication:
                     'status': 'Invalid',
                     'message': 'Not logged in',
                 }
-                print("here")
                 return response_object, 300
             logout()
             response_object = {

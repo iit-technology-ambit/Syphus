@@ -13,10 +13,8 @@ pytz==2019.1
 six==1.12.0
 sqlalchemy==1.3.5
 werkzeug==0.15.4
-mypy
 flask-bcrypt
 flask-migrate
-pyjwt
 flask-script
 flask-testing
 coloredlogs
@@ -25,11 +23,4 @@ flask-wtf
 requests
 sendgrid
 flask-cors
-dodgy
-isort
-pydocstyle
-pycodestyle
-autopep8
-pylint
-uuid
 flask-login

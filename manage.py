@@ -22,7 +22,7 @@ from app.main.models import users
 setup_logger()
 LOG = getLogger(__name__)
 
-app = create_app(os.getenv('BOILERPLATE_ENV') or 'dev')
+app = create_app(os.getenv('FLASK_ENV') or 'dev')
 app.register_blueprint(blueprint)
 
 app.app_context().push()

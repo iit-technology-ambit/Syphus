@@ -11,6 +11,7 @@ class Config:
     DEBUG = False
     # Path for images folder
     IMGDIR = os.path.join(os.path.expanduser("~"), "ambit-images")
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URI')
 
 
 class DevelopmentConfig(Config):
@@ -18,7 +19,6 @@ class DevelopmentConfig(Config):
     HOST = '0.0.0.0'
     PORT = 3000
     # database URI goes here
-    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URI')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
@@ -37,6 +37,8 @@ class ProductionConfig(Config):
     DEBUG = False
     HOST = '0.0.0.0'
     PORT = '443'
+    PRESERVE_CONTEXT_ON_EXCEPTION = True
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 
 config_by_name = dict(

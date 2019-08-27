@@ -158,11 +158,16 @@ class Authentication:
                 return response_object, 300
 
             token = generate_confirmation_token(user.email)
-            subject = "Hola! To hop onto IIT Tech Ambit, please confirm your email."
+            subject = "IIT Tech Ambit: Confirm Your Email Address"
             confirm_url = url_for('api.auth_confirm_token',
                                   token=token, _external=True)
             async_send_mail(app._get_current_object(),
-                            user.email, subject, confirm_url)
+                            user.email, subject,
+                            f"""Hey {user.username}<br/><br/>
+Please use the below link to confirm your email address.<br/></br>
+{confirm_url}<br/><br/><br/>
+DevOps Team<br/>
+IIT Tech Ambit""")
 
         except BaseException:
             LOG.error(
@@ -190,7 +195,7 @@ class Authentication:
             user.setVerified()
             response_object = {
                 'status': 'Success',
-                'message': 'Email Verified Successfully',
+                'message': 'Email Verified Successfully, head to https://iit-techambit.in',
             }
         else:
             response_object = {
@@ -208,11 +213,16 @@ class Authentication:
                     data.get('email')))
             else:
                 reset_token = generate_reset_token(data.get('email'))
-                subject = "Ah, Dementia! Here's a link to reset your password"
+                subject = "IIT Tech Ambit: Reset Password"
                 reset_url = url_for('api.auth_reset_token_verify',
                                     token=reset_token, _external=True)
                 async_send_mail(app._get_current_object(),
-                                data.get('email'), subject, reset_url)
+                                data.get('email'), subject, 
+                            f"""Hey {user.username}<br/><br/>
+Please use the below link to reset your password.<br/></br>
+{reset_url}<br/><br/><br/>
+DevOps Team<br/>
+IIT Tech Ambit""")
 
             response_object = {
                 'status': 'Success',

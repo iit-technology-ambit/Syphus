@@ -28,7 +28,6 @@ class UserLogin(Resource):
         # get the post data
         post_data = request.json
         resp = Authentication.login_user(data=post_data)
-
         if resp[1] != 200:
             return abort(403, resp[0])
         else:

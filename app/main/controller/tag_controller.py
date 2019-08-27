@@ -8,6 +8,7 @@ from app.main.models.enums import PriorityType
 from app.main.models.tags import Tag
 from app.main.models.users import User
 from app.main.util.dto import TagDto
+from app.main.service.auth_service import Authentication
 
 api = TagDto.api
 tag = TagDto.tag
@@ -24,6 +25,7 @@ class AllTags(Resource):
 
 @api.route('/remove/<int:id>')
 class DeleteTag(Resource):
+    @Authentication.isSuperUser
     def delete(self, id):
         tag = Tag.query.filter_by(id=id).first()
         if tag is not None:
@@ -37,6 +39,7 @@ class DeleteTag(Resource):
 class AddTags(Resource):
     @api.doc('Endpoint to add a particular tag')
     @api.expect(tag, validate=True)
+    @Authentication.isSuperUser
     def post(self):
         tag = request.json['name']
         new_tag = Tag(tag)

@@ -10,6 +10,8 @@ from flask_restplus import Resource
 from app.main.service.issue_service import IssueService
 from app.main.util.dto import IssueDto
 from app.main.models.imgLinks import ImgLink
+from app.main.service.auth_service import Authentication
+
 
 api = IssueDto.api
 issue = IssueDto.issue
@@ -37,6 +39,7 @@ class addIssue(Resource):
     """ Endpoint to add an issue """
     @api.doc("Adding a new issue")
     @api.expect(issue, validate=True)
+    @Authentication.isSuperUser
     def post(self):
         post_data = request.json
         return IssueService.addIssue(data=post_data)

@@ -13,6 +13,8 @@ from app.main.models.users import User
 from app.main.models.tags import Tag
 from app.main.util.dto import PostDto
 
+from app.main.service.auth_service import Authentication
+
 LOG = getLogger(__name__)
 
 api = PostDto.api
@@ -76,6 +78,7 @@ class ArticleFetchAll(Resource):
 class ArticleCreator(Resource):
     # TODO: protect the endpoint from outside access
     @api.expect(PostDto.articleGen, validate=True)
+    @Authentication.isSuperUser
     def post(self):
         user = User.query.filter_by(username=request.json['author']).first()
         if user is None:
@@ -89,6 +92,7 @@ class ArticleCreator(Resource):
 class ImgAssociator(Resource):
     """DISABLE CORS FOR THIS."""
     @api.expect(PostDto.imgAs)
+    @Authentication.isSuperUser
     def post(self):
         p = Post.query.filter_by(post_id=request.json['post_id']).first()
         p.associateImage(request.json['img_id'])
@@ -149,6 +153,7 @@ class ArticleByTag(Resource):
 @api.route("/add_tag")
 class ArticleAddTag(Resource):
     @api.expect(PostDto.addtaglist)
+    @Authentication.isSuperUser
     def put(self):
         p = Post.getArticles(request.json['post_id'])
         t = []

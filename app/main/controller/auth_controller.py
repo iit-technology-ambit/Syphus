@@ -64,6 +64,7 @@ class SignUp(Resource):
 
 
 # Verify the Email Token
+
 @api.route('/confirm/<token>', methods=['GET'])
 class ConfirmToken(Resource):
     """ Confirm the Email Verification Token Sent """

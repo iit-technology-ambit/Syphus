@@ -16,8 +16,9 @@ LOG = getLogger(__name__)
 api = ImageDto.api
 fileParser = ImageDto.getFileParser()
 
+
 @api.route("/uploadImg")
-#TODO Remove this later
+# TODO Remove this later
 class ImageUploader(Resource):
     """DISABLE CORS FOR THIS."""
     @api.expect(fileParser)

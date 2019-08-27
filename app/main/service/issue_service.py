@@ -17,7 +17,7 @@ class IssueService:
             issues = Issue.query.all()
             return issues, 200
 
-        except:
+        except BaseException:
             LOG.error("Couldn't fetch articles. Please try again later")
             LOG.debug(traceback.print_exc())
             response_object = {
@@ -43,14 +43,14 @@ class IssueService:
                           data.get('year'), data.get('link'))
             if data.get('description') is not None:
                 issue.setDescription(data.get('description'))
-                
+
             response_object = {
                 'status': 'Success',
                 'message': 'Issue added Successfully',
             }
             return response_object, 200
 
-        except:
+        except BaseException:
             LOG.error("Couldn't add new article. Please try again later")
             LOG.debug(traceback.print_exc())
             response_object = {

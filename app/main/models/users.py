@@ -174,7 +174,7 @@ class User(db.Model, UserMixin):
                 where(user_id=self.id, post_id=post.post_id).\
                 values(rating=rating)
             db.session.execute(s)
-        except:
+        except BaseException:
             # User has not yet saved the post so there is no entry here
             s = userPostInteraction.insert().\
                 values(save=False, rating=rating,

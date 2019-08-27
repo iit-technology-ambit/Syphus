@@ -47,6 +47,6 @@ class Message(db.Model):
             user = User.query.filter(id == senderId).fetchone()
             if user.last_logout is not None:
                 raise LoginError
-        except:
+        except BaseException:
             # Handle case when sender isn't logged in
             pass

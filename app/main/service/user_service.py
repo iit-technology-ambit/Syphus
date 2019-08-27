@@ -50,7 +50,9 @@ class UserService:
         try:
             user = User.query.filter_by(id=current_user.id).first()
             if user is None:
-                LOG.info('User with id: {} does not exit'.format(current_user.id))
+                LOG.info(
+                    'User with id: {} does not exit'.format(
+                        current_user.id))
                 response_object = {
                     'status': 'Invalid',
                     'message': 'User does not exist'
@@ -79,13 +81,15 @@ class UserService:
                     sample(Post.getArticlesByTags(neutral, connector="OR"), 7))
                 response_list.append(
                     sample(Post.getArticlesByTags(less, connector="OR"), 1))
-            except:
+            except BaseException:
                 response_list.append(Post.getRandomizedArticles(20))
 
             return response_list, 200
 
-        except:
-            LOG.error('Failed to fetch feed for id :{}'.format(current_user.id))
+        except BaseException:
+            LOG.error(
+                'Failed to fetch feed for id :{}'.format(
+                    current_user.id))
             LOG.debug(traceback.print_exc())
             response_object = {
                 'status': 'fail',
@@ -98,7 +102,9 @@ class UserService:
         try:
             user = User.query.filter_by(id=current_user.id).first()
             if user is None:
-                LOG.info('User with id: {} does not exit'.format(current_user.id))
+                LOG.info(
+                    'User with id: {} does not exit'.format(
+                        current_user.id))
                 response_object = {
                     'status': 'Invalid',
                     'message': 'User does not exist'
@@ -130,7 +136,9 @@ class UserService:
         try:
             user = User.query.filter_by(id=current_user.id).first()
             if user is None:
-                LOG.info('User with id: {} does not exit'.format(current_user.id))
+                LOG.info(
+                    'User with id: {} does not exit'.format(
+                        current_user.id))
                 response_object = {
                     'status': 'Invalid',
                     'message': 'User does not exist'
@@ -144,7 +152,7 @@ class UserService:
             }
             return response_object, 200
 
-        except:
+        except BaseException:
             LOG.error('Failed to save payment details for id :{}'.format(
                 current_user.id))
             LOG.debug(traceback.print_exc())
@@ -159,7 +167,9 @@ class UserService:
         try:
             user = User.query.filter_by(id=current_user.id).first()
             if user is None:
-                LOG.info('User with id: {} does not exit'.format(current_user.id))
+                LOG.info(
+                    'User with id: {} does not exit'.format(
+                        current_user.id))
                 response_object = {
                     'status': 'Invalid',
                     'message': 'User does not exist'
@@ -168,7 +178,7 @@ class UserService:
 
             return current_user.payments, 200
 
-        except:
+        except BaseException:
             LOG.error('Failed to get payment details for id :{}'.format(
                 current_user.id))
             LOG.debug(traceback.print_exc())
@@ -199,7 +209,7 @@ class UserService:
 
             return UserTags, 200
 
-        except:
+        except BaseException:
             LOG.error('Failed to get tags for user id :{}'.format(
                 current_user.id))
             LOG.debug(traceback.print_exc())

@@ -19,6 +19,7 @@ LOG = getLogger(__name__)
 
 api = PostDto.api
 
+
 @api.route("/")
 class ArticleFetch(Resource):
     @api.marshal_with(PostDto.article)
@@ -39,23 +40,25 @@ class ArticleFetch(Resource):
                 "post_time": p.post_time,
                 "imgLinks": p.linkDump(),
                 "tags": p.tagDump(),
-                "isSaved": p in current_user.saves if "saves" in current_user.__dict__ else False 
+                "isSaved": p in current_user.saves if "saves" in current_user.__dict__ else False
             }
 
             return article
         else:
             abort(404)
 
+
 @api.route("/getAll")
 class ArticleFetchAll(Resource):
     @api.marshal_list_with(PostDto.article)
     @api.doc(params={'num': 'Number of articles to fetch'})
     def get(self):
-        if request.args.get('num') is None or int(request.args.get('num')) <= 0:
+        if request.args.get('num') is None or int(
+                request.args.get('num')) <= 0:
             posts = Post.query.order_by(desc(Post.avg_rating)).all()
         else:
             posts = Post.query.order_by(desc(Post.avg_rating)).\
-                    limit(int(request.args.get('num'))).all()
+                limit(int(request.args.get('num'))).all()
 
         articles = []
         for p in posts:
@@ -71,8 +74,9 @@ class ArticleFetchAll(Resource):
                 "isSaved": p in current_user.saves if "saves" in current_user.__dict__ else False
             }
             articles.append(article)
-        
+
         return articles
+
 
 @api.route("/create")
 class ArticleCreator(Resource):
@@ -129,7 +133,7 @@ class ArticleByTag(Resource):
         for tag in tags:
             try:
                 tagList.append(Tag.query.filter_by(name=tag).first().id)
-            except:
+            except BaseException:
                 pass
 
         articles = Post.getArticlesByTags(tagList, connector="OR")

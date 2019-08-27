@@ -137,7 +137,7 @@ class IssueDto:
     api = Namespace('issue', description="for issue related operations")
     issue = api.model('issue', {
         'id': fields.Integer(required=False, description="ID of the concerned issue"),
-        'cover': fields.String(required=True, description="Cover image of the concerned issue"),
+        'cover_link': fields.String(required=True, description="Cover image of the concerned issue"),
         'month': fields.String(required=True, description="Month of the concerned issue"),
         'year': fields.String(required=True, description="Year of the concerned issue"),
         'issue_tag': fields.String(required=True, description="Issue tag of the concerned issue"),

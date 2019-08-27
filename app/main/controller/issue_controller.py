@@ -26,7 +26,7 @@ class getAllIssues(Resource):
         all_issues = IssueService.getAll()[0]
        
         for ind in range(len(all_issues)):
-            all_issues[ind].cover = ImgLink.query.filter_by(
+            all_issues[ind].cover_link = ImgLink.query.filter_by(
                 id=all_issues[ind].cover).first().link
 
         return all_issues

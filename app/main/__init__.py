@@ -22,6 +22,9 @@ def create_app(config_name):
     app.config.from_object(config_by_name[config_name])
     LOG.info('app loaded with configuration!')
 
+    app.app_context().push()
+    LOG.info('application context pushed')
+
     db.init_app(app)
     LOG.info('database initialized successfully!')
 

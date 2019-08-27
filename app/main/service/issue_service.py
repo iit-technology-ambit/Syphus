@@ -28,17 +28,17 @@ class IssueService:
     @staticmethod
     def addIssue(data):
         try:
-            issue = Issue.query.filter_by(id=data.get['id']).first()
+            issue = Issue.query.filter_by(link=data.get('link')).first()
             if issue is not None:
                 response_object = {
                     'status': 'Invalid',
                     'message': 'Issue already present',
                 }
                 LOG.info(
-                    'Issue already present in databse. Redirecting to home page')
+                    'Issue already present in database. Redirecting to home page')
                 return response_object, 300
 
-            issue = Issue(data.get('cover'), data.get('month'),
+            issue = Issue(data.get('coverId'), data.get('month'),
                           data.get('year'), data.get('link'))
             if data.get('description') is not None:
                 issue.setDescription(data.get('description'))

@@ -43,6 +43,7 @@ class Issue(db.Model):
             self.cover = coverId
 
             self.setIssueTag(tagName)
+            db.session.add(self)
             db.session.commit()
 
             LOG.info("New Issue Created")

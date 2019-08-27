@@ -14,6 +14,7 @@ from app.main.util.dto import IssueDto
 
 api = IssueDto.api
 issue = IssueDto.issue
+issue_new = IssueDto.issue_new
 
 
 @api.route('/getAll')
@@ -22,13 +23,11 @@ class getAllIssues(Resource):
     @api.doc("Getting all issues")
     @api.marshal_list_with(issue, envelope='resource')
     def get(self):
-        all_issues = IssueService.getAll()
-
-        i = 0
-        while i < len(all_issues):
-            all_issues[i].cover = ImgLink.query.filter_by(
-                id=all_issues[i].cover).first().link
-            i += 1
+        all_issues = IssueService.getAll()[0]
+       
+        for ind in range(len(all_issues)):
+            all_issues[ind].cover = ImgLink.query.filter_by(
+                id=all_issues[ind].cover).first().link
 
         return all_issues
 
@@ -37,7 +36,7 @@ class getAllIssues(Resource):
 class addIssue(Resource):
     """ Endpoint to add an issue """
     @api.doc("Adding a new issue")
-    @api.expect(issue, validate=True)
+    @api.expect(issue_new, validate=True)
     @Authentication.isSuperUser
     def post(self):
         post_data = request.json

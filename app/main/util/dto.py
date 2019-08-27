@@ -144,6 +144,14 @@ class IssueDto:
         'link': fields.String(required=True, description="Link of the concerned issue"),
         'description': fields.String(required=False, description="Description of the issue")
     })
+    
+    issue_new = api.model('issue_new', {
+        'coverId': fields.Integer(required=True, description="ID of the cover image"),
+        'month': fields.String(required=True, description="First three letters of the month in lowercase"),
+        'year': fields.String(required=True, description="Year of the issue in string"),
+        'link': fields.String(required=True, description="Link of the concerned issue"),
+        'description': fields.String(required=False, description="Description of the issue")
+    })
 
 
 class ImageDto:

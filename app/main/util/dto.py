@@ -1,7 +1,7 @@
 # Data Transfer Object- Responsible for carrying data between processes
+from flask import current_app
 from flask_restplus import Namespace, fields, reqparse
 from werkzeug.datastructures import FileStorage
-from flask import current_app
 
 
 class AuthDto:

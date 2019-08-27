@@ -7,11 +7,10 @@ adding new issues.
 from flask import request
 from flask_restplus import Resource
 
-from app.main.service.issue_service import IssueService
-from app.main.util.dto import IssueDto
 from app.main.models.imgLinks import ImgLink
 from app.main.service.auth_service import Authentication
-
+from app.main.service.issue_service import IssueService
+from app.main.util.dto import IssueDto
 
 api = IssueDto.api
 issue = IssueDto.issue

@@ -1,6 +1,6 @@
 # endpoint for user operations
 from flask import request
-from flask_login import login_required, current_user
+from flask_login import current_user, login_required
 from flask_restplus import Resource
 
 from app.main.service.user_service import UserService

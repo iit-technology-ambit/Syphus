@@ -1,10 +1,11 @@
 # for login/logout operations
 import traceback
+from functools import wraps
 from logging import getLogger
 
-from functools import wraps
+from flask import abort
 from flask import current_app as app
-from flask import make_response, redirect, render_template, url_for, request, abort, g
+from flask import g, make_response, redirect, render_template, request, url_for
 from flask_login import current_user
 from flask_login import login_user as flask_login_user
 from flask_login import logout_user as logout
@@ -313,5 +314,3 @@ class Authentication:
 				'message': 'Try again',
 			}
 			return response_object, 500
-			
-			

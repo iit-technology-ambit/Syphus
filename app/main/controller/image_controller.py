@@ -1,6 +1,6 @@
 from logging import getLogger
 
-from flask import Blueprint, abort, request, current_app
+from flask import Blueprint, abort, current_app, request
 from flask_login import current_user, login_required
 from flask_restplus import Api, Resource
 from sqlalchemy import desc
@@ -8,9 +8,8 @@ from werkzeug.datastructures import FileStorage
 
 from app.main.models.errors import LoginError
 from app.main.models.imgLinks import ImgLink
-from app.main.util.dto import ImageDto
-
 from app.main.service.auth_service import Authentication
+from app.main.util.dto import ImageDto
 
 LOG = getLogger(__name__)
 api = ImageDto.api

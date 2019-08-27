@@ -4,9 +4,9 @@ operations such as login, logout and signup.
 
 '''
 
-from flask import request
+from flask import abort, request
 from flask_restplus import Resource
-from flask import abort
+
 from app.main.service.auth_service import Authentication
 from app.main.util.dto import AuthDto, UserDto
 
@@ -15,6 +15,7 @@ user_auth = AuthDto.user_auth
 user = UserDto.user
 email = AuthDto.reset_email
 login_info = AuthDto.login_info
+change_password = AuthDto.change_password
 
 
 @api.route('/login')
@@ -27,11 +28,12 @@ class UserLogin(Resource):
         # get the post data
         post_data = request.json
         resp = Authentication.login_user(data=post_data)
-        
+
         if resp[1] != 200:
             return abort(403, resp[0])
         else:
             return resp
+
 
 @api.route('/logout')
 class UserLogout(Resource):
@@ -64,6 +66,7 @@ class SignUp(Resource):
 
 
 # Verify the Email Token
+
 @api.route('/confirm/<token>', methods=['GET'])
 class ConfirmToken(Resource):
     """ Confirm the Email Verification Token Sent """
@@ -90,9 +93,17 @@ class ResetRequest(Resource):
 @api.route('/reset/<token>', methods=["GET", "POST"])
 class ResetTokenVerify(Resource):
     """Confirm the token sent to change the password and set a new password."""
-    @api.doc('Endpoint to Confirm the token sent to change the password and set a new password')
+    @api.doc(
+        'Endpoint to Confirm the token sent to change the password and set a new password')
     def get(self, token):
         return Authentication.confirm_reset_token_service(token)
 
     def post(self, token):
         return Authentication.reset_password_with_token(token)
+
+@api.route('/changePassword')
+class changePassword(Resource):
+    @api.expect(change_password, validate=True)
+    def post(self):
+        post_data = request.json
+        return Authentication.change_user_password(post_data)

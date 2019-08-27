@@ -1,7 +1,7 @@
 # Data Transfer Object- Responsible for carrying data between processes
+from flask import current_app
 from flask_restplus import Namespace, fields, reqparse
 from werkzeug.datastructures import FileStorage
-from flask import current_app
 
 
 class AuthDto:
@@ -19,6 +19,11 @@ class AuthDto:
 
     reset_email = api.model('email_details', {
         'email': fields.String(required=True, description='Login Email')
+    })
+
+    change_password = api.model('change_password', {
+        'oldPassword' : fields.String(required=True, format='password'),
+        'newPassword' : fields.String(required=True, format='password')
     })
 
 
@@ -79,7 +84,7 @@ class PostDto:
         'imgLinks': fields.List(fields.String, description="ImgLinks"),
         'tags': fields.List(fields.String, description="ImgLinks"),
         'isSaved': fields.Boolean(default=False,
-            description="Checks if the article is saved by the current user.")
+                                  description="Checks if the article is saved by the current user.")
     })
 
     articleGen = api.model('articleGen', {
@@ -143,6 +148,7 @@ class IssueDto:
         'link': fields.String(required=True, description="Link of the concerned issue"),
         'description': fields.String(required=False, description="Description of the issue")
     })
+
 
 class ImageDto:
     api = Namespace('image', description="For image related operations")

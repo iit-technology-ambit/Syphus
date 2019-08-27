@@ -1,9 +1,11 @@
 # for login/logout operations
 import traceback
+from functools import wraps
 from logging import getLogger
 
+from flask import abort
 from flask import current_app as app
-from flask import make_response, redirect, render_template, url_for
+from flask import g, make_response, redirect, render_template, request, url_for
 from flask_login import current_user
 from flask_login import login_user as flask_login_user
 from flask_login import logout_user as logout
@@ -20,6 +22,20 @@ LOG = getLogger(__name__)
 class Authentication:
 
     @staticmethod
+    def isSuperUser(f):
+        @wraps(f)
+        def decorated(*args, **kwargs):
+            if not current_user.is_authenticated:
+                LOG.error("User isn't logged in.")
+                abort(403)
+
+            if current_user.username != app.config['SUPERUSER_NAME']:
+                LOG.error("The user doesn't have superuser access.")
+                abort(403)
+            return f(*args, **kwargs)
+        return decorated
+
+    @staticmethod
     def login_user(data):
         try:
             if current_user.is_authenticated:
@@ -32,7 +48,8 @@ class Authentication:
             if user and user.check_password(data.get('password')):
                 if user.is_verified:
                     # convert string to bool
-                    if data.get('remember').lower() == 'true' or data.get('remember').lower() == 'yes':
+                    if data.get('remember').lower() == 'true' or data.get(
+                            'remember').lower() == 'yes':
                         remem = True
                     else:
                         remem = False
@@ -59,7 +76,7 @@ class Authentication:
                 }
                 return response_object, 401
 
-        except Exception as e:
+        except BaseException:
             LOG.error('Login Failed')
             LOG.debug(traceback.print_exc())
             response_object = {
@@ -83,7 +100,7 @@ class Authentication:
                 'message': 'Logged Out Successfully',
             }
             return response_object, 200
-        except Exception as e:
+        except BaseException:
             LOG.error('Logout Failed')
             LOG.debug(traceback.print_exc())
             response_object = {
@@ -123,7 +140,7 @@ class Authentication:
             }
             return response_object, 300
 
-        except Exception as e:
+        except BaseException:
             LOG.error('User with email {} couldn\'t be Signed Up. Please try again'.format(
                 data.get('email')))
             LOG.debug(traceback.print_exc())
@@ -151,7 +168,7 @@ class Authentication:
             async_send_mail(app._get_current_object(),
                             user.email, subject, confirm_url)
 
-        except:
+        except BaseException:
             LOG.error(
                 'Verification Mail couldn\'t be sent to {}. Please try again'.format(user.email))
             LOG.debug(traceback.print_exc())
@@ -165,7 +182,7 @@ class Authentication:
     def confirm_token_service(token):
         try:
             email = confirm_token(token)
-        except:
+        except BaseException:
             LOG.info('The confirmation link has expired or is invalid')
             response_object = {
                 'status': 'Fail',
@@ -207,7 +224,7 @@ class Authentication:
                 'message': 'sent a password reset link on your registered email address.'
             }
             return response_object, 200
-        except:
+        except BaseException:
             LOG.error('Verification Mail couldn\'t be sent to {}. Please try again'.format(
                 data.get('email')))
             LOG.debug(traceback.print_exc())
@@ -221,7 +238,7 @@ class Authentication:
     def confirm_reset_token_service(token):
         try:
             email = confirm_reset_token(token)
-        except:
+        except BaseException:
             LOG.info('The password reset link has expired or is invalid')
             response_object = {
                 'status': 'Fail',
@@ -230,7 +247,8 @@ class Authentication:
             return response_object, 400
         form = PasswordForm()
         headers = {'Content-Type': 'text/html'}
-        return make_response(render_template('reset_password.html', form=form, token=token), 200, headers)
+        return make_response(render_template(
+            'reset_password.html', form=form, token=token), 200, headers)
 
     @staticmethod
     def reset_password_with_token(token):
@@ -242,7 +260,7 @@ class Authentication:
         """
         try:
             email = confirm_reset_token(token)
-        except:
+        except BaseException:
             LOG.info('The password reset link has expired or is invalid')
             response_object = {
                 'status': 'Fail',
@@ -261,3 +279,38 @@ class Authentication:
             return response_object, 200
 
         return redirect(url_for('api.auth_reset_token_verify'), token=token)
+    
+    @staticmethod
+    def change_user_password(data):
+        try:
+            user = User.query.filter_by(username=current_user.username).first()
+            if not current_user.is_authenticated:
+                response_object = {
+                    'status': 'Invalid',
+                    'message': 'Not logged in',
+                }
+                return response_object, 400
+            
+            if user.check_password(data.get('oldPassword')):
+                user.resetPassword(data.get('newPassword'))
+                response_object = {
+                    'status' : 'Success',
+                    'message' : 'Password changed successfully'
+                }
+                return response_object,200
+            
+            LOG.warning("Password couldn\'t be changed since old password doesn't match for user {}.".format(user.username))
+            response_object = {
+                'status' : 'Failed',
+                'message' : 'Password change failed.'
+            }
+            return response_object,400
+            
+        except BaseException:
+            LOG.error('Password couldn\'t be reset for user : {}'.format(current_user.username))
+            LOG.debug(traceback.print_exc())
+            response_object = {
+                'status': 'fail',
+                'message': 'Try again',
+            }
+            return response_object, 500

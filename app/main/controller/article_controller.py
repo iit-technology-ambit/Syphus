@@ -1,6 +1,6 @@
 from logging import getLogger
 
-from flask import Blueprint, abort, request, current_app
+from flask import Blueprint, abort, current_app, request
 from flask_login import current_user, login_required
 from flask_restplus import Api, Resource
 from sqlalchemy import desc
@@ -9,13 +9,15 @@ from werkzeug.datastructures import FileStorage
 from app.main.models.errors import LoginError
 from app.main.models.imgLinks import ImgLink
 from app.main.models.posts import Post
-from app.main.models.users import User
 from app.main.models.tags import Tag
+from app.main.models.users import User
+from app.main.service.auth_service import Authentication
 from app.main.util.dto import PostDto
 
 LOG = getLogger(__name__)
 
 api = PostDto.api
+
 
 @api.route("/")
 class ArticleFetch(Resource):
@@ -37,23 +39,25 @@ class ArticleFetch(Resource):
                 "post_time": p.post_time,
                 "imgLinks": p.linkDump(),
                 "tags": p.tagDump(),
-                "isSaved": p in current_user.saves if "saves" in current_user.__dict__ else False 
+                "isSaved": p in current_user.saves if "saves" in current_user.__dict__ else False
             }
 
             return article
         else:
             abort(404)
 
+
 @api.route("/getAll")
 class ArticleFetchAll(Resource):
     @api.marshal_list_with(PostDto.article)
     @api.doc(params={'num': 'Number of articles to fetch'})
     def get(self):
-        if request.args.get('num') is None or int(request.args.get('num')) <= 0:
+        if request.args.get('num') is None or int(
+                request.args.get('num')) <= 0:
             posts = Post.query.order_by(desc(Post.avg_rating)).all()
         else:
             posts = Post.query.order_by(desc(Post.avg_rating)).\
-                    limit(int(request.args.get('num'))).all()
+                limit(int(request.args.get('num'))).all()
 
         articles = []
         for p in posts:
@@ -69,13 +73,15 @@ class ArticleFetchAll(Resource):
                 "isSaved": p in current_user.saves if "saves" in current_user.__dict__ else False
             }
             articles.append(article)
-        
+
         return articles
+
 
 @api.route("/create")
 class ArticleCreator(Resource):
     # TODO: protect the endpoint from outside access
     @api.expect(PostDto.articleGen, validate=True)
+    @Authentication.isSuperUser
     def post(self):
         user = User.query.filter_by(username=request.json['author']).first()
         if user is None:
@@ -89,6 +95,7 @@ class ArticleCreator(Resource):
 class ImgAssociator(Resource):
     """DISABLE CORS FOR THIS."""
     @api.expect(PostDto.imgAs)
+    @Authentication.isSuperUser
     def post(self):
         p = Post.query.filter_by(post_id=request.json['post_id']).first()
         p.associateImage(request.json['img_id'])
@@ -125,7 +132,7 @@ class ArticleByTag(Resource):
         for tag in tags:
             try:
                 tagList.append(Tag.query.filter_by(name=tag).first().id)
-            except:
+            except BaseException:
                 pass
 
         articles = Post.getArticlesByTags(tagList, connector="OR")
@@ -149,6 +156,7 @@ class ArticleByTag(Resource):
 @api.route("/add_tag")
 class ArticleAddTag(Resource):
     @api.expect(PostDto.addtaglist)
+    @Authentication.isSuperUser
     def put(self):
         p = Post.getArticles(request.json['post_id'])
         t = []

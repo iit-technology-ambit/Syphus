@@ -2,9 +2,9 @@
 import datetime
 import os
 from logging import getLogger
-from werkzeug.utils import secure_filename
 
 from flask import current_app
+from werkzeug.utils import secure_filename
 
 from app.main import db
 

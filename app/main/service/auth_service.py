@@ -125,7 +125,7 @@ class Authentication:
                     'message': 'Username Already Taken',
                 }
                 LOG.info(
-                    'Username already present in database. Ask to choose different username')
+                    'Username %s already present in database. Ask to choose different username', data.get('username'))
                 return response_object, 300
 
             user = User(data.get('username'),

@@ -46,7 +46,7 @@ class Issue(db.Model):
             db.session.commit()
 
             LOG.info("New Issue Created")
-        except:
+        except BaseException:
             LOG.error("Cannot create Issue")
 
     def setIssueTag(self, tagName):

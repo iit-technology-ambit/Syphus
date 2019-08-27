@@ -12,6 +12,7 @@ class Config:
     # Path for images folder
     IMGDIR = os.path.join(os.path.expanduser("~"), "ambit-images")
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URI')
+    SUPERUSER_NAME = os.getenv('SUPERUSER_NAME', "admin")
 
 
 class DevelopmentConfig(Config):

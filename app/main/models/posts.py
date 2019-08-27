@@ -5,15 +5,15 @@ import datetime
 from random import sample
 
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.sql import select, and_, or_, join
+from sqlalchemy.sql import and_, join, or_, select
+
 # from . import *
 from app.main import db
 from app.main.models.enums import PostType
 # from app.main.models.users import User
 from app.main.models.errors import LoginError
-from app.main.models.imgLinks import imgPostJunction
+from app.main.models.imgLinks import ImgLink, imgPostJunction
 from app.main.models.tags import Tag
-from app.main.models.imgLinks import ImgLink
 
 postTagJunction = db.Table('postTagJunction',
                            db.Column('post_id', db.Integer,

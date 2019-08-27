@@ -40,8 +40,9 @@ class Post(db.Model):
     """
     # Columns
     post_id = db.Column(db.Integer, primary_key=True)
-    _author_id = db.Column(db.String(256), db.ForeignKey(
-        'user.username'), nullable=False)
+    # _author_id = db.Column(db.String(256), db.ForeignKey(
+    #     'user.username'), nullable=False)
+    author_name = db.Column(db.String(256), nullable=False)
     title = db.Column(db.String(128), nullable=False)
     body = db.Column(db.Text, nullable=False)
     post_time = db.Column(db.DateTime, default=datetime.datetime.now())
@@ -50,14 +51,14 @@ class Post(db.Model):
     num_rating = db.Column(db.Integer, default=0)
 
     # Relationships
-    author = db.relationship('User', backref='posts', lazy=False)
+    # author = db.relationship('User', backref='posts', lazy=False)
     tags = db.relationship('Tag', secondary=postTagJunction, lazy='subquery',
                            backref=db.backref('posts', lazy=True))
     images = db.relationship('ImgLink', secondary=imgPostJunction,
                              lazy='subquery')
 
     def __init__(self, author, title, body):
-        self.author = author
+        self.author_name = author
         self.title = title
         self.body = body
 

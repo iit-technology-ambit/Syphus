@@ -71,9 +71,9 @@ class PostDto:
     article = api.model('article', {
         'post_id': fields.Integer(required=False,
                                   description="Id of the post"),
-        'author': fields.String(required=True,
+        'author_name': fields.String(required=True,
                                 description="Author of the post"),
-        'author_id': fields.Integer(required=False),
+        # 'author_id': fields.Integer(required=False),
         'title': fields.String(required=True, description="Title of the post"),
         'body': fields.String(required=True, description="Body of the post"),
         'post_time': fields.DateTime(description="Time Created"),
@@ -85,7 +85,7 @@ class PostDto:
 
     articleGen = api.model('articleGen', {
         'author': fields.String(required=True,
-                                description="Username author of the post"),
+                                description="Name author of the post"),
         'title': fields.String(required=True, description="Title of the post"),
         'body': fields.String(required=True, description="Body of the post"),
         'post_time': fields.DateTime(description="Time Created"),

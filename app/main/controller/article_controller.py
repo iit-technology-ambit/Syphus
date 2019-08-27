@@ -32,8 +32,8 @@ class ArticleFetch(Resource):
         if p is not None:
             article = {
                 "post_id": p.post_id,
-                "author_id": p.author.id,
-                "author": p.author.username,
+                # "author_id": p.author.id,
+                "author": p.author_name,
                 "title": p.title,
                 "body": p.body,
                 "post_time": p.post_time,
@@ -63,8 +63,8 @@ class ArticleFetchAll(Resource):
         for p in posts:
             article = {
                 "post_id": p.post_id,
-                "author_id": p.author.id,
-                "author": p.author.username,
+                # "author_id": p.author.id,
+                "author_name": p.author_name,
                 "title": p.title,
                 "body": p.body,
                 "post_time": p.post_time,
@@ -83,10 +83,10 @@ class ArticleCreator(Resource):
     @api.expect(PostDto.articleGen, validate=True)
     @Authentication.isSuperUser
     def post(self):
-        user = User.query.filter_by(username=request.json['author']).first()
-        if user is None:
-            return {'message': 'Author not found!'}, 404
-        p = Post(user, request.json['title'], request.json['body'])
+        # user = User.query.filter_by(username=request.json['author']).first()
+        # if user is None:
+        #     return {'message': 'Author not found!'}, 404
+        p = Post(request.json['author'], request.json['title'], request.json['body'])
         LOG.info("New Post Created")
         return "Post Created", 201
 
@@ -142,11 +142,13 @@ class ArticleByTag(Resource):
             aid = User.query.filter_by(username=p._author_id).first().id
             article = {
                 "post_id": p.post_id,
-                "author": p._author_id,
+                "author_name": p._author_id,
                 "author_id": aid,
                 "title": p.title,
                 "body": p.body,
-                "post_time": p.post_time
+                "post_time": p.post_time,
+                "imgLinks": p.linkDump(),
+                "tags": p.tagDump(),
             }
             data.append(article)
 

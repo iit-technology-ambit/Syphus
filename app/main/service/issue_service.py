@@ -1,5 +1,5 @@
-# for issue operations
-import traceback
+"""for issue operations"""
+
 from logging import getLogger
 
 from flask import current_app as app
@@ -18,8 +18,7 @@ class IssueService:
             return issues, 200
 
         except BaseException:
-            LOG.error("Couldn't fetch articles. Please try again later")
-            LOG.debug(traceback.print_exc())
+            LOG.error("Couldn't fetch articles. Please try again later", exc_info=True)
             response_object = {
                 'status': 'fail',
                 'message': 'Try again',
@@ -51,8 +50,7 @@ class IssueService:
             return response_object, 200
 
         except BaseException:
-            LOG.error("Couldn't add new article. Please try again later")
-            LOG.debug(traceback.print_exc())
+            LOG.error("Couldn't add new article. Please try again later", exc_info=True)
             response_object = {
                 'status': 'fail',
                 'message': 'Try again',

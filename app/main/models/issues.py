@@ -47,7 +47,7 @@ class Issue(db.Model):
 
             LOG.info("New Issue Created")
         except BaseException:
-            LOG.error("Cannot create Issue")
+            LOG.error("Cannot create Issue", exc_info=True)
 
     def setIssueTag(self, tagName):
         existing_tags = Tag.query.filter_by(name=tagName).all()

@@ -1,4 +1,3 @@
-import traceback
 from logging import getLogger
 
 from flask import Flask, current_app
@@ -44,5 +43,4 @@ def send_mail(to_mail, mail_subject, mail_body):
         LOG.info(response.headers)
     except Exception as e:
         LOG.error("Mail to {} regarding {} failed. ".format(
-            to_mail, mail_subject))
-        LOG.debug(traceback.print_exc())
+            to_mail, mail_subject), exc_info=True)

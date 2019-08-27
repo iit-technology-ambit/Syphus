@@ -1,7 +1,6 @@
-# for user related operations
+"""for user related operations"""
 
 import datetime
-import traceback
 from logging import getLogger
 from random import sample
 
@@ -37,8 +36,7 @@ class UserService:
             return user, 200
 
         except Exception as e:
-            LOG.error('Failed to fetch details for id :{}'.format('id'))
-            LOG.debug(traceback.print_exc())
+            LOG.error('Failed to fetch details for id :{}'.format('id'), exc_info=True)
             response_object = {
                 'status': 'fail',
                 'message': 'Try again',
@@ -89,8 +87,7 @@ class UserService:
         except BaseException:
             LOG.error(
                 'Failed to fetch feed for id :{}'.format(
-                    current_user.id))
-            LOG.debug(traceback.print_exc())
+                    current_user.id), exc_info=True)
             response_object = {
                 'status': 'fail',
                 'message': 'Try again',
@@ -123,8 +120,7 @@ class UserService:
 
         except Exception as e:
             LOG.error('Failed to update details for id :{}'.format(
-                current_user.id))
-            LOG.debug(traceback.print_exc())
+                current_user.id), exc_info=True)
             response_object = {
                 'status': 'fail',
                 'message': 'Try again',
@@ -154,8 +150,7 @@ class UserService:
 
         except BaseException:
             LOG.error('Failed to save payment details for id :{}'.format(
-                current_user.id))
-            LOG.debug(traceback.print_exc())
+                current_user.id), exc_info=True)
             response_object = {
                 'status': 'fail',
                 'message': 'Try again',
@@ -180,8 +175,7 @@ class UserService:
 
         except BaseException:
             LOG.error('Failed to get payment details for id :{}'.format(
-                current_user.id))
-            LOG.debug(traceback.print_exc())
+                current_user.id), exc_info=True)
             response_object = {
                 'status': 'fail',
                 'message': 'Try again',
@@ -211,8 +205,7 @@ class UserService:
 
         except BaseException:
             LOG.error('Failed to get tags for user id :{}'.format(
-                current_user.id))
-            LOG.debug(traceback.print_exc())
+                current_user.id), exc_info=True)
             response_object = {
                 'status': 'fail',
                 'message': 'Try again',

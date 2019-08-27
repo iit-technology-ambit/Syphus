@@ -1,5 +1,4 @@
-# for login/logout operations
-import traceback
+""" for login/logout operations."""
 from functools import wraps
 from logging import getLogger
 
@@ -26,11 +25,11 @@ class Authentication:
         @wraps(f)
         def decorated(*args, **kwargs):
             if not current_user.is_authenticated:
-                LOG.error("User isn't logged in.")
+                LOG.error("User isn't logged in.", exc_info=True)
                 abort(403)
 
             if current_user.username != app.config['SUPERUSER_NAME']:
-                LOG.error("The user doesn't have superuser access.")
+                LOG.error("The user doesn't have superuser access.", exc_info=True)
                 abort(403)
             return f(*args, **kwargs)
         return decorated
@@ -77,8 +76,7 @@ class Authentication:
                 return response_object, 401
 
         except BaseException:
-            LOG.error('Login Failed')
-            LOG.debug(traceback.print_exc())
+            LOG.error('Login Failed', exc_info=True)
             response_object = {
                 'status': 'fail',
                 'message': 'Try again',
@@ -101,8 +99,7 @@ class Authentication:
             }
             return response_object, 200
         except BaseException:
-            LOG.error('Logout Failed')
-            LOG.debug(traceback.print_exc())
+            LOG.error('Logout Failed', exc_info=True)
             response_object = {
                 'status': 'fail',
                 'message': 'Try again',
@@ -142,8 +139,7 @@ class Authentication:
 
         except BaseException:
             LOG.error('User with email {} couldn\'t be Signed Up. Please try again'.format(
-                data.get('email')))
-            LOG.debug(traceback.print_exc())
+                data.get('email')), exc_info=True)
             response_object = {
                 'status': 'fail',
                 'message': 'Try again',
@@ -170,8 +166,7 @@ class Authentication:
 
         except BaseException:
             LOG.error(
-                'Verification Mail couldn\'t be sent to {}. Please try again'.format(user.email))
-            LOG.debug(traceback.print_exc())
+                'Verification Mail couldn\'t be sent to {}. Please try again'.format(user.email), exc_info=True)
             response_object = {
                 'status': 'fail',
                 'message': 'Try again',
@@ -226,8 +221,7 @@ class Authentication:
             return response_object, 200
         except BaseException:
             LOG.error('Verification Mail couldn\'t be sent to {}. Please try again'.format(
-                data.get('email')))
-            LOG.debug(traceback.print_exc())
+                data.get('email')), exc_info=True)
             response_object = {
                 'status': 'fail',
                 'message': 'Try again',
@@ -307,8 +301,7 @@ class Authentication:
             return response_object,400
             
         except BaseException:
-            LOG.error('Password couldn\'t be reset for user : {}'.format(current_user.username))
-            LOG.debug(traceback.print_exc())
+            LOG.error('Password couldn\'t be reset for user : {}'.format(current_user.username), exc_info=True)
             response_object = {
                 'status': 'fail',
                 'message': 'Try again',

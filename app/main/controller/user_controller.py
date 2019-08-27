@@ -30,7 +30,7 @@ class GetUserFeed(Resource):
     """ Get the user's feed based on priority of tags """
     @login_required
     @api.doc('Endpoint to get the user\'s feed based on tag priority')
-    @api.marshal_with(post, envelope='resource')
+    @api.marshal_list_with(post, envelope='resource')
     def get(self):
         return UserService.get_user_feed()
 
@@ -59,7 +59,7 @@ class GetPayment(Resource):
     """ Getting the payments of user """
     @login_required
     @api.doc('Endpoint to get the payments done by a user.')
-    @api.marshal_with(payment, envelope='resource')
+    @api.marshal_list_with(payment, envelope='resource')
     def get(self):
         return UserService.get_user_payment()
 

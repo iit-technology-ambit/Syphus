@@ -10,6 +10,7 @@ class Config:
     FROM_MAIL = os.getenv('FROM_MAIL')
     DEBUG = False
     # Path for images folder
+    # TODO: Remove this when integrating DO Spaces API
     IMGDIR = os.path.join(os.path.expanduser("~"), "ambit-images")
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URI')
 

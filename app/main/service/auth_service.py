@@ -138,7 +138,7 @@ class Authentication:
                 'status': 'Success',
                 'message': 'User added Successfully',
             }
-            return response_object, 300
+            return response_object, 201
 
         except BaseException:
             LOG.error('User with email {} couldn\'t be Signed Up. Please try again'.format(

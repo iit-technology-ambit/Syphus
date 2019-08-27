@@ -160,7 +160,9 @@ class ArticleAddTag(Resource):
     @api.expect(PostDto.addtaglist)
     @Authentication.isSuperUser
     def put(self):
-        p = Post.getArticles(request.json['post_id'])
+        p = Post.query.filter_by(post_id=request.json['post_id']).first()
+        if p is None:
+            return "Article with ID: {} not found!".format(request.json['post_id']), 400
         t = []
         for tag in request.json['tags']:
             t.append(Tag.query.filter_by(name=tag).first())

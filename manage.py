@@ -53,5 +53,11 @@ def test():
     return 1
 
 
+@manager.command
+def rollback():
+    """Roll back database to a previous state in case of exception."""
+    db.session.rollback()
+    LOG.warning('Last session rolled back!')
+
 if __name__ == '__main__':
     manager.run()

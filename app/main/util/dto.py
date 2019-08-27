@@ -35,10 +35,6 @@ class UserDto:
         'email': fields.String(required=True, description='user email address'),
     })
 
-    userReq = api.model('userReq', {
-        'id': fields.Integer(required=True, description="Id of the user")
-    })
-
     userInfo = api.model('userInfo', {
         'username': fields.String(required=True, description='user username'),
         'first_name': fields.String(description='first name', default=""),

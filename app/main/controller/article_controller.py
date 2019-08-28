@@ -70,7 +70,7 @@ class ArticleFetchAll(Resource):
                 "post_time": p.post_time,
                 "imgLinks": p.linkDump(),
                 "tags": p.tagDump(),
-                "isSaved": p in current_user.saves if "saves" in current_user.__dict__ else False
+                # "isSaved": p in current_user.saves if "saves" in current_user.__dict__ else False
             }
             articles.append(article)
 
@@ -139,11 +139,11 @@ class ArticleByTag(Resource):
         data = list()
         for p in articles:
             # print(p.post_id)
-            aid = User.query.filter_by(username=p._author_id).first().id
+            # aid = User.query.filter_by(username=p._author_id).first().id
             article = {
                 "post_id": p.post_id,
-                "author_name": p._author_id,
-                "author_id": aid,
+                "author_name": p.author_name,
+                # "author_id": aid,
                 "title": p.title,
                 "body": p.body,
                 "post_time": p.post_time,

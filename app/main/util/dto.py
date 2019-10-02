@@ -171,6 +171,7 @@ class StoryDto:
     story = api.model('story', {
         'title' : fields.String(required=True),
         'article_summary' : fields.String(required=True),
+        'image_link' : fields.String(required=True),
         'date' : fields.String(required=True),
         'reading_time' : fields.Integer(required=True)
     })

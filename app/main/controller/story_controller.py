@@ -4,6 +4,7 @@ from flask_login import current_user, login_required
 from flask_restplus import Resource
 
 from app.main.util.dto import StoryDto
+from app.main.service.auth_service import Authentication
 from app.main.service.story_service import StoryService as Story
 
 api = StoryDto.api
@@ -15,6 +16,7 @@ class AddNewStory(Resource):
     """ Add a new story """
     @api.doc('Endpoint to add a new story')
     @api.expect(story, validate=True)
+    @Authentication.isSuperUser
     def post(self):
         # Adding a new story
         post_data = request.jsosn

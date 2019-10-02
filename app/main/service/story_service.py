@@ -22,7 +22,7 @@ class StoryService:
                     'Story already present. Redirecting to home page')
                 return response_object, 300
             
-            storyCard = Story(data.get('title'), data.get('article_summary'),
+            storyCard = Story(data.get('title'), data.get('article_summary'), data.get('image_link'),
                           data.get('date'), data.get('reading_time'))
 
             response_object = {

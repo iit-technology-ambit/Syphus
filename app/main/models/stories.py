@@ -10,7 +10,6 @@ from flask_login import UserMixin
 from sqlalchemy.sql import and_, select
 
 from app.main import db, login_manager
-from app.main.models.imgLinks import ImgLink, imgStoryJunction
 
 
 class Story(db.Model, UserMixin):
@@ -20,9 +19,9 @@ class Story(db.Model, UserMixin):
     -----------
     :id: int [pk]
     :title : varchar(255)
-    :image : int
+    :image_link : varchar(255)
     :article_summary : text
-    :date : varchar(127)
+    :date : varchar(255)
     :reading_time : int
     """
 
@@ -30,18 +29,16 @@ class Story(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255))
     article_summary = db.Column(db.Text)
-    date = db.Column(db.String(127))
+    image_link = db.Column(db.String(255))
+    date = db.Column(db.String(255))
     reading_time = db.Column(db.Integer) 
-
-    # Relationships
-    image = db.relationship('ImgLink', secondary=imgStoryJunction,
-                             lazy='subquery')
 
     # Methods
 
-    def __init__(self, title, article_summary, date, reading_time):
+    def __init__(self, title, article_summary, image_link, date, reading_time):
         self.title =  title
         self.article_summary = article_summary
+        self.image_link = image_link
         self.date = date
         self.reading_time = reading_time
 

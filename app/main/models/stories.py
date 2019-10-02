@@ -31,12 +31,12 @@ class Story(db.Model, UserMixin):
     article_summary = db.Column(db.Text)
     image_link = db.Column(db.String(255))
     date = db.Column(db.String(255))
-    reading_time = db.Column(db.Integer) 
+    reading_time = db.Column(db.Integer)
 
     # Methods
 
     def __init__(self, title, article_summary, image_link, date, reading_time):
-        self.title =  title
+        self.title = title
         self.article_summary = article_summary
         self.image_link = image_link
         self.date = date
@@ -44,20 +44,20 @@ class Story(db.Model, UserMixin):
 
         db.session.add(self)
         db.session.commit()
-    
+
     def delete(self):
         db.session.delete(self)
         db.session.commit()
 
     @staticmethod
     def getStories(offset, limit):
-        stories = Story.query.all()
+        stories = Story.query.order_by(Story.date).all()
         if stories:
             stories = stories.limit(limit)
             if stories:
                 stories = stories.offset(offset)
                 return stories
-    
+
     @staticmethod
     def getNumberOfStories():
         stories = Story.query.all()

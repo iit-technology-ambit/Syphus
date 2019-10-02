@@ -59,5 +59,6 @@ def rollback():
     db.session.rollback()
     LOG.warning('Last session rolled back!')
 
+
 if __name__ == '__main__':
     manager.run()

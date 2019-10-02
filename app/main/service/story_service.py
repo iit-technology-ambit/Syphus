@@ -4,6 +4,7 @@ from flask import abort
 from flask import current_app as app
 
 from app.main.models.stories import Story
+
 LOG = getLogger(__name__)
 
 
@@ -21,24 +22,25 @@ class StoryService:
                 LOG.info(
                     'Story already present. Redirecting to home page')
                 return response_object, 300
-            
+
             storyCard = Story(data.get('title'), data.get('article_summary'), data.get('image_link'),
-                          data.get('date'), data.get('reading_time'))
+                              data.get('date'), data.get('reading_time'))
 
             response_object = {
-                'status' : 'Success',
-                'message' : 'Story Added Successfully'
+                'status': 'Success',
+                'message': 'Story Added Successfully'
             }
             return response_object, 201
 
         except BaseException:
-            LOG.error('Story couldn\'t be added. Please try again later',exc_info=True)
+            LOG.error(
+                'Story couldn\'t be added. Please try again later', exc_info=True)
             response_object = {
-                'status' : 'fail',
-                'message' : 'Try again',
+                'status': 'fail',
+                'message': 'Try again',
             }
             return response_object, 500
-        
+
     @staticmethod
     def retrieveStories(data):
         try:
@@ -49,19 +51,20 @@ class StoryService:
                 return stories, 200
             else:
                 response_object = {
-                    'status' : 'fail',
-                    'message' : 'Empty Respone'
+                    'status': 'fail',
+                    'message': 'Empty Respone'
                 }
                 return response_object, 400
-        
+
         except BaseException:
-            LOG.error('Stories couldn\'t be retrieved. Please try again later',exc_info=True)
+            LOG.error(
+                'Stories couldn\'t be retrieved. Please try again later', exc_info=True)
             response_object = {
-                'status' : 'fail',
-                'message' : 'Try again',
+                'status': 'fail',
+                'message': 'Try again',
             }
             return response_object, 500
-    
+
     @staticmethod
     def getTotalNumber():
         try:
@@ -70,23 +73,16 @@ class StoryService:
                 return number, 200
             else:
                 response_object = {
-                    'status' : 'fail',
-                    'message' : 'No stories in DB'
+                    'status': 'fail',
+                    'message': 'No stories in DB'
                 }
                 return response_object, 400
 
         except BaseException:
-            LOG.error('Stories couldn\'t be retrieved. Please try again later',exc_info=True)
+            LOG.error(
+                'Stories couldn\'t be retrieved. Please try again later', exc_info=True)
             response_object = {
-                'status' : 'fail',
-                'message' : 'Try again',
+                'status': 'fail',
+                'message': 'Try again',
             }
             return response_object, 500
-
-
-
-
-
-
-
-

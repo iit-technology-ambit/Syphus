@@ -29,7 +29,8 @@ class Authentication:
                 abort(403)
 
             if current_user.username != app.config['SUPERUSER_NAME']:
-                LOG.error("The user doesn't have superuser access.", exc_info=True)
+                LOG.error("The user doesn't have superuser access.",
+                          exc_info=True)
                 abort(403)
             return f(*args, **kwargs)
         return decorated
@@ -217,8 +218,8 @@ IIT Tech Ambit""")
                 reset_url = url_for('api.auth_reset_token_verify',
                                     token=reset_token, _external=True)
                 async_send_mail(app._get_current_object(),
-                                data.get('email'), subject, 
-                            f"""Hey {user.username}<br/><br/>
+                                data.get('email'), subject,
+                                f"""Hey {user.username}<br/><br/>
 Please use the below link to reset your password.<br/></br>
 {reset_url}<br/><br/><br/>
 DevOps Team<br/>
@@ -283,7 +284,7 @@ IIT Tech Ambit""")
             return response_object, 200
 
         return redirect(url_for('api.auth_reset_token_verify'), token=token)
-    
+
     @staticmethod
     def change_user_password(data):
         try:
@@ -294,24 +295,26 @@ IIT Tech Ambit""")
                     'message': 'Not logged in',
                 }
                 return response_object, 400
-            
+
             if user.check_password(data.get('oldPassword')):
                 user.resetPassword(data.get('newPassword'))
                 response_object = {
-                    'status' : 'Success',
-                    'message' : 'Password changed successfully'
+                    'status': 'Success',
+                    'message': 'Password changed successfully'
                 }
-                return response_object,200
-            
-            LOG.warning("Password couldn\'t be changed since old password doesn't match for user {}.".format(user.username))
+                return response_object, 200
+
+            LOG.warning("Password couldn\'t be changed since old password doesn't match for user {}.".format(
+                user.username))
             response_object = {
-                'status' : 'Failed',
-                'message' : 'Password change failed.'
+                'status': 'Failed',
+                'message': 'Password change failed.'
             }
-            return response_object,400
-            
+            return response_object, 400
+
         except BaseException:
-            LOG.error('Password couldn\'t be reset for user : {}'.format(current_user.username), exc_info=True)
+            LOG.error('Password couldn\'t be reset for user : {}'.format(
+                current_user.username), exc_info=True)
             response_object = {
                 'status': 'fail',
                 'message': 'Try again',

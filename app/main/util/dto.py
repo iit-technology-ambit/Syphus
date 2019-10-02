@@ -166,3 +166,16 @@ class ImageDto:
         imgGen.add_argument('file', location=loc, required=True)
 
         return imgGen
+class StoryDto:
+    api = Namespace('story', description='For story card related operations')
+    story = api.model('story', {
+        'title' : fields.String(required=True),
+        'article_summary' : fields.String(required=True),
+        'date' : fields.String(required=True),
+        'reading_time' : fields.Integer(required=True)
+    })
+
+    queryParams = api.model('queryParams', {
+        'offset' : fields.Integer(required=True),
+        'limit' : fields.Integer(required=True)
+    })

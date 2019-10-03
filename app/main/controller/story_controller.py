@@ -20,7 +20,7 @@ class AddNewStory(Resource):
     @Authentication.isSuperUser
     def post(self):
         # Adding a new story
-        post_data = request.jsosn
+        post_data = request.json
         return Story.createStory(data=post_data)
 
 
@@ -28,11 +28,20 @@ class AddNewStory(Resource):
 class GetStories(Resource):
     """ Get stories using given offset and limit """
     @api.doc('Endpoint to retrieve stories')
-    @api.expect(queryParams, validate=True)
+    # @api.expect(queryParams, validate=True)
     @api.marshal_list_with(story)
     def get(self):
-        data = request.json
-        resp = Story.retrieveStories(data=data)
+        if request.args['offset'] is not None:
+            offset = request.args['offset']
+        else:
+            offset = 0
+
+        if request.args['limit'] is not None:
+            limit = request.args['limit']
+        else:
+            limit = None
+
+        resp = Story.retrieveStories(offset=offset, limit=limit)
         if resp[1] != 200:
             return abort(403, resp[0])
         else:

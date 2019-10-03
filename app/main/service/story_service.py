@@ -42,10 +42,8 @@ class StoryService:
             return response_object, 500
 
     @staticmethod
-    def retrieveStories(data):
+    def retrieveStories(offset, limit):
         try:
-            offset = data.get('offset')
-            limit = data.get('limit')
             stories = Story.getStories(offset=offset, limit=limit)
             if stories is not None:
                 return stories, 200

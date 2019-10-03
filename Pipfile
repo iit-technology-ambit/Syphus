@@ -41,6 +41,7 @@ pydocstyle = "*"
 pycodestyle = "*"
 autopep8 = "*"
 flake8 = "*"
+python-dotenv = "*"
 
 [requires]
 python_version = "3.7"

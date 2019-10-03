@@ -51,13 +51,10 @@ class Story(db.Model, UserMixin):
 
     @staticmethod
     def getStories(offset, limit):
-        stories = Story.query.order_by(Story.date).all()
-        if stories:
-            stories = stories.limit(limit)
-            if stories:
-                stories = stories.offset(offset)
-                return stories
-
+        if limit is not None:
+            stories = Story.query.order_by(Story.date.desc()).limit(limit).offset(offset).all()
+            return stories
+        return Story.query.order_by(Story.date.desc()).offset().all()
     @staticmethod
     def getNumberOfStories():
         stories = Story.query.all()

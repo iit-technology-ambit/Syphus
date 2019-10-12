@@ -177,8 +177,3 @@ class StoryDto:
         'date': fields.String(required=True),
         'reading_time': fields.Integer(required=True)
     })
-
-    queryParams = api.model('queryParams', {
-        'offset': fields.Integer(required=True),
-        'limit': fields.Integer(required=True)
-    })

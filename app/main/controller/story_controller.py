@@ -9,8 +9,6 @@ from app.main.util.dto import StoryDto
 
 api = StoryDto.api
 story = StoryDto.story
-queryParams = StoryDto.queryParams
-
 
 @api.route('/addStory')
 class AddNewStory(Resource):
@@ -28,7 +26,6 @@ class AddNewStory(Resource):
 class GetStories(Resource):
     """ Get stories using given offset and limit """
     @api.doc('Endpoint to retrieve stories')
-    # @api.expect(queryParams, validate=True)
     @api.marshal_list_with(story)
     def get(self):
         if request.args['offset'] is not None:

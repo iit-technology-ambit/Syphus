@@ -18,7 +18,8 @@ class IssueService:
             return issues, 200
 
         except BaseException:
-            LOG.error("Couldn't fetch articles. Please try again later", exc_info=True)
+            LOG.error(
+                "Couldn't fetch articles. Please try again later", exc_info=True)
             response_object = {
                 'status': 'fail',
                 'message': 'Try again',
@@ -50,7 +51,8 @@ class IssueService:
             return response_object, 200
 
         except BaseException:
-            LOG.error("Couldn't add new article. Please try again later", exc_info=True)
+            LOG.error(
+                "Couldn't add new article. Please try again later", exc_info=True)
             response_object = {
                 'status': 'fail',
                 'message': 'Try again',

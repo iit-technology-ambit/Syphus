@@ -22,8 +22,8 @@ class AuthDto:
     })
 
     change_password = api.model('change_password', {
-        'oldPassword' : fields.String(required=True, format='password'),
-        'newPassword' : fields.String(required=True, format='password')
+        'oldPassword': fields.String(required=True, format='password'),
+        'newPassword': fields.String(required=True, format='password')
     })
 
 
@@ -72,7 +72,7 @@ class PostDto:
         'post_id': fields.Integer(required=False,
                                   description="Id of the post"),
         'author_name': fields.String(required=True,
-                                description="Author of the post"),
+                                     description="Author of the post"),
         # 'author_id': fields.Integer(required=False),
         'title': fields.String(required=True, description="Title of the post"),
         'body': fields.String(required=True, description="Body of the post"),
@@ -144,7 +144,7 @@ class IssueDto:
         'link': fields.String(required=True, description="Link of the concerned issue"),
         'description': fields.String(required=False, description="Description of the issue")
     })
-    
+
     issue_new = api.model('issue_new', {
         'coverId': fields.Integer(required=True, description="ID of the cover image"),
         'month': fields.String(required=True, description="First three letters of the month in lowercase"),
@@ -166,3 +166,14 @@ class ImageDto:
         imgGen.add_argument('file', location=loc, required=True)
 
         return imgGen
+
+
+class StoryDto:
+    api = Namespace('story', description='For story card related operations')
+    story = api.model('story', {
+        'title': fields.String(required=True),
+        'article_summary': fields.String(required=True),
+        'image_link': fields.String(required=True),
+        'date': fields.String(required=True),
+        'reading_time': fields.Integer(required=True)
+    })

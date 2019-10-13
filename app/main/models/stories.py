@@ -1,7 +1,6 @@
 """
-DB Model for Users table and
-Junction Table relating
-Users and Tags
+DB Model for stories and 
+relevant methods. 
 """
 import datetime
 

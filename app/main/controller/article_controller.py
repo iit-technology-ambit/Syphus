@@ -13,6 +13,7 @@ from app.main.models.tags import Tag
 from app.main.models.users import User
 from app.main.service.auth_service import Authentication
 from app.main.util.dto import PostDto
+from app.main.util.sendgrid import async_subscribe
 
 LOG = getLogger(__name__)
 
@@ -169,3 +170,12 @@ class ArticleAddTag(Resource):
 
         p.addTags(t)
         return "Tags added sucessfully", 201
+
+
+@api.route('/subscribe')
+class ArticleSubscribe(Resource):
+    @api.expect(PostDto.newsletter_sub)
+    def post(self):
+        async_subscribe(current_app._get_current_object(),
+                        request.json['email'])
+        return 201

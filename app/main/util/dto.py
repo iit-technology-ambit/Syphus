@@ -113,6 +113,10 @@ class PostDto:
         'img_id': fields.Integer(required=True)
     })
 
+    newsletter_sub = api.model('newsletter_sub', {
+        'email': fields.String(required=True, description="Email to be added to the newsletter contact list")
+    })
+
     @classmethod
     def getFileParser(cls, loc='files'):
         imgGen = reqparse.RequestParser()

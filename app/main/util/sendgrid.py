@@ -16,6 +16,12 @@ def async_send_mail(app, to_mail, mail_subject, mail_body):
         send_mail(to_mail, mail_subject, mail_body)
 
 
+@make_async
+def async_subscribe(app, email):
+    with app.app_context():
+        subscribe_newsletter(email)
+
+
 def send_mail(to_mail, mail_subject, mail_body):
     """
     Function to send a mail using Sendgrid API
@@ -44,3 +50,29 @@ def send_mail(to_mail, mail_subject, mail_body):
     except Exception as e:
         LOG.error("Mail to {} regarding {} failed. ".format(
             to_mail, mail_subject), exc_info=True)
+
+
+def subscribe_newsletter(email):
+    """
+    Add subscriber to the newsletter contact list.
+
+    :param email: email address
+    :return: None
+    """
+    # id of the newsletter_subs list
+    list_id = '3553b851-9c85-4190-9110-06b32a6158c7'
+    data = [
+        {
+            "email": email.lower()
+        }
+    ]
+    try:
+        sg = SendGridAPIClient(current_app.config['SENDGRID_API_KEY'])
+        response = sg.client.marketing.contacts.put(request_body={
+            "list_ids": [list_id],
+            "contacts": data
+        })
+        print(str(response.body))
+    except Exception as e:
+        LOG.error("Adding subscriber {} to newsletter failed".format(
+            email), exc_info=True)

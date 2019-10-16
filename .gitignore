@@ -21,3 +21,4 @@ build/
 
 syphus
 *.sock
+.idea/

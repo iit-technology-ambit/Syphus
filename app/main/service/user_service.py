@@ -36,7 +36,8 @@ class UserService:
             return user, 200
 
         except Exception as e:
-            LOG.error('Failed to fetch details for id :{}'.format('id'), exc_info=True)
+            LOG.error('Failed to fetch details for id :{}'.format(
+                'id'), exc_info=True)
             response_object = {
                 'status': 'fail',
                 'message': 'Try again',

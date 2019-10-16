@@ -100,6 +100,7 @@ class ResetTokenVerify(Resource):
     def post(self, token):
         return Authentication.reset_password_with_token(token)
 
+
 @api.route('/changePassword')
 class changePassword(Resource):
     @api.expect(change_password, validate=True)

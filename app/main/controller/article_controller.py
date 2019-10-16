@@ -87,7 +87,8 @@ class ArticleCreator(Resource):
         # user = User.query.filter_by(username=request.json['author']).first()
         # if user is None:
         #     return {'message': 'Author not found!'}, 404
-        p = Post(request.json['author'], request.json['title'], request.json['body'])
+        p = Post(request.json['author'],
+                 request.json['title'], request.json['body'])
         LOG.info("New Post Created")
         return "Post Created", 201
 
@@ -163,7 +164,8 @@ class ArticleAddTag(Resource):
     def put(self):
         p = Post.query.filter_by(post_id=request.json['post_id']).first()
         if p is None:
-            return "Article with ID: {} not found!".format(request.json['post_id']), 400
+            return "Article with ID: {} not found!".format(
+                request.json['post_id']), 400
         t = []
         for tag in request.json['tags']:
             t.append(Tag.query.filter_by(name=tag).first())

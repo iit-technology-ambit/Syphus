@@ -24,7 +24,7 @@ class getAllIssues(Resource):
     @api.marshal_list_with(issue, envelope='resource')
     def get(self):
         all_issues = IssueService.getAll()[0]
-       
+
         for ind in range(len(all_issues)):
             all_issues[ind].cover_link = ImgLink.query.filter_by(
                 id=all_issues[ind].cover).first().link

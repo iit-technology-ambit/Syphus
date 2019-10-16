@@ -28,12 +28,12 @@ class GetStories(Resource):
     @api.doc('Endpoint to retrieve stories')
     @api.marshal_list_with(story)
     def get(self):
-        if request.args['offset'] is not None:
+        if request.args.get('offset', False):
             offset = request.args['offset']
         else:
             offset = 0
 
-        if request.args['limit'] is not None:
+        if request.args.get('limit', False):
             limit = request.args['limit']
         else:
             limit = None

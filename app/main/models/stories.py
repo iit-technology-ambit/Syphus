@@ -53,7 +53,7 @@ class Story(db.Model, UserMixin):
         if limit is not None:
             stories = Story.query.order_by(Story.date.desc()).limit(limit).offset(offset).all()
             return stories
-        return Story.query.order_by(Story.date.desc()).offset().all()
+        return Story.query.order_by(Story.date.desc()).offset(offset).all()
     @staticmethod
     def getNumberOfStories():
         stories = Story.query.all()

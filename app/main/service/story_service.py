@@ -67,14 +67,14 @@ class StoryService:
     def getTotalNumber():
         try:
             number = Story.getNumberOfStories()
-            if number > 0:
+            if number >= 0:
                 return number, 200
             else:
                 response_object = {
                     'status': 'fail',
-                    'message': 'No stories in DB'
+                    'message': 'Internal Server Error'
                 }
-                return response_object, 400
+                return response_object, 500
 
         except BaseException:
             LOG.error(

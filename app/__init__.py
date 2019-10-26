@@ -13,7 +13,7 @@ from app.main.controller.user_controller import api as user_ns
 blueprint = Blueprint('api', __name__)
 
 api = Api(blueprint,
-          title='Flask-RESTPlus common backend for tech-ambit',
+          title='Flask-RESTPlus common backend for Tech-Ambit',
           version='1.0',
           description='a boilerplate for flask restplus web service'
           )

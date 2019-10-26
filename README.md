@@ -1,6 +1,12 @@
 # Syphus [![Build Status](https://travis-ci.org/iit-technology-ambit/Syphus.svg?branch=master)](https://travis-ci.org/iit-technology-ambit/Syphus)
 
->> `Master` branch is linked with the main server by [Midgard](https://midgard.iit-techambit.in). Any commits pushed to this branch will be instantly deployed in production
+## AutoDeployment
+
+`Master` branch is linked with the main server by [Midgard](https://midgard.iit-techambit.in). Any commits pushed to this branch will be instantly deployed in production.
+
+A manual deployment can also be triggered after going to the URL.
+
+NOTE: Any changes that require change in environment variables or require migration should be done manually after logging into the server.
 
 ## Common Backend for Ambit
 

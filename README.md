@@ -1,5 +1,7 @@
 # Syphus [![Build Status](https://travis-ci.org/iit-technology-ambit/Syphus.svg?branch=master)](https://travis-ci.org/iit-technology-ambit/Syphus)
 
+>> `Master` branch is linked with the main server by [Midgard](https://midgard.iit-techambit.in). Any commits pushed to this branch will be instantly deployed in production
+
 ## Common Backend for Ambit
 
 This is the common backend for Tech-Ambit web and android application.

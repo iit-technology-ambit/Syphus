@@ -5,12 +5,12 @@ adding new issues.
 '''
 
 from flask import request
-from flask_restplus import Resource
 
 from app.main.models.imgLinks import ImgLink
 from app.main.service.auth_service import Authentication
 from app.main.service.issue_service import IssueService
 from app.main.util.dto import IssueDto
+from flask_restplus import Resource
 
 api = IssueDto.api
 issue = IssueDto.issue
@@ -24,7 +24,6 @@ class getAllIssues(Resource):
     @api.marshal_list_with(issue, envelope='resource')
     def get(self):
         all_issues = IssueService.getAll()[0]
-
         for ind in range(len(all_issues)):
             all_issues[ind].cover_link = ImgLink.query.filter_by(
                 id=all_issues[ind].cover).first().link
@@ -41,3 +40,4 @@ class addIssue(Resource):
     def post(self):
         post_data = request.json
         return IssueService.addIssue(data=post_data)
+

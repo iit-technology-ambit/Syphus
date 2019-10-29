@@ -1,20 +1,36 @@
 """for issue operations"""
-
+from functools import cmp_to_key
 from logging import getLogger
 
 from flask import current_app as app
 
+from app.main.models.enums import Month
 from app.main.models.issues import Issue
 
 LOG = getLogger(__name__)
 
+def month_value(issue):
+    return issue.month.value
+
+def year_value(issue):
+    return issue.year
+
+def compare(a, b):
+    if a.year > b.year:
+        return -1
+    elif a.year == b.year:
+        if month_value(a) > month_value(b):
+            return -1
+    return 1
+
 
 class IssueService:
-
+        
     @staticmethod
     def getAll():
         try:
             issues = Issue.query.all()
+            issues = sorted(issues, key = cmp_to_key(compare))
             return issues, 200
 
         except BaseException:
@@ -44,6 +60,9 @@ class IssueService:
             if data.get('description') is not None:
                 issue.setDescription(data.get('description'))
 
+            issues = Issue.query.all()
+            issues = sorted(issues, key = cmp_to_key(compare))
+
             response_object = {
                 'status': 'Success',
                 'message': 'Issue added Successfully',
@@ -58,3 +77,4 @@ class IssueService:
                 'message': 'Try again',
             }
             return response_object, 500
+

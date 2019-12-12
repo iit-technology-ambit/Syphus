@@ -5,11 +5,11 @@ adding new newsletter.
 '''
 
 from flask import request
+from flask_restplus import Resource
 
 from app.main.controller.auth_controller import Authentication
 from app.main.service.newsletter_service import NewsletterService
 from app.main.util.dto import NewsletterDto
-from flask_restplus import Resource
 
 api = NewsletterDto.api
 newsletter = NewsletterDto.newsletter
@@ -31,4 +31,3 @@ class addNL(Resource):
     def post(self):
         post_data = request.json
         return NewsletterService.add_newsletter(post_data)
-

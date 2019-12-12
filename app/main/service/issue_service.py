@@ -77,4 +77,3 @@ class IssueService:
                 'message': 'Try again',
             }
             return response_object, 500
-

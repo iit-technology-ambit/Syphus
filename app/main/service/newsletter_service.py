@@ -55,4 +55,3 @@ class NewsletterService:
                 'message': 'Try again',
             }
             return response_object, 500
-

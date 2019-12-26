@@ -1,13 +1,17 @@
 aniso8601==7.0.0
 attrs==19.1.0
 click==7.0
+dodgy==0.1.9
 flask==1.0.3
 flask-restplus==0.12.1
 flask-sqlalchemy==2.4.0
+isort==4.3.21
 itsdangerous==1.1.0
 jinja2==2.10.1
 jsonschema==3.0.1
 markupsafe==1.1.1
+pycodestyle==2.5.0
+pydocstyle=4.0.1
 pyrsistent==0.15.2
 pytz==2019.1
 six==1.12.0

@@ -1,6 +1,6 @@
 """
-DB Model for stories and 
-relevant methods. 
+DB Model for stories and
+relevant methods.
 """
 import datetime
 
@@ -51,9 +51,11 @@ class Story(db.Model, UserMixin):
     @staticmethod
     def getStories(offset, limit):
         if limit is not None:
-            stories = Story.query.order_by(Story.date.desc()).limit(limit).offset(offset).all()
+            stories = Story.query.order_by(
+                Story.date.desc()).limit(limit).offset(offset).all()
             return stories
         return Story.query.order_by(Story.date.desc()).offset(offset).all()
+
     @staticmethod
     def getNumberOfStories():
         stories = Story.query.all()

@@ -15,7 +15,8 @@ class NewsletterService:
     @staticmethod
     def getLatest():
         try:
-            nl = Newsletter.query.order_by(Newsletter.upload_time.desc()).first()
+            nl = Newsletter.query.order_by(
+                Newsletter.upload_time.desc()).first()
             return nl, 200
 
         except BaseException:
@@ -25,11 +26,13 @@ class NewsletterService:
                 'status': 'fail',
                 'message': 'Try again',
             }
-            return response_object, 500        
+            return response_object, 500
+
     @staticmethod
     def add_newsletter(data):
         try:
-            nl = Newsletter.query.filter_by(description=data.get('publish_date')).first()
+            nl = Newsletter.query.filter_by(
+                description=data.get('publish_date')).first()
             if nl is not None:
                 response_object = {
                     'status': 'Invalid',
@@ -39,7 +42,7 @@ class NewsletterService:
                     'Newsletter already present in database.')
                 return response_object, 400
 
-            nl = Newsletter(data.get('description'), data.get('publish_date'), data.get('newsletter_content'), 
+            nl = Newsletter(data.get('description'), data.get('publish_date'), data.get('newsletter_content'),
                             data.get('cover_image_url'))
 
             response_object = {

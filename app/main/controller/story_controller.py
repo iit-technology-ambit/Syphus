@@ -10,6 +10,7 @@ from app.main.util.dto import StoryDto
 api = StoryDto.api
 story = StoryDto.story
 
+
 @api.route('/addStory')
 class AddNewStory(Resource):
     """ Add a new story """

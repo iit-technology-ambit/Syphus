@@ -184,7 +184,8 @@ class StoryDto:
 
 
 class NewsletterDto:
-    api = Namespace('newsletter', description='For news letter related operations')
+    api = Namespace(
+        'newsletter', description='For news letter related operations')
     newsletter = api.model('newsletter', {
         'description': fields.String(required=True),
         'newsletter_content': fields.String(required=True),

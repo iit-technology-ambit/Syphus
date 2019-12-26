@@ -14,6 +14,7 @@ from app.main.util.dto import NewsletterDto
 api = NewsletterDto.api
 newsletter = NewsletterDto.newsletter
 
+
 @api.route('/getLatest')
 class getLatestNL(Resource):
     """ Endpoint to fetch the latest newsletter"""
@@ -21,6 +22,7 @@ class getLatestNL(Resource):
     @api.marshal_with(newsletter, envelope='resource')
     def get(self):
         return NewsletterService.getLatest()
+
 
 @api.route('/add')
 class addNL(Resource):

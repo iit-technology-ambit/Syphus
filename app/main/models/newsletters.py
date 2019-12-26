@@ -6,6 +6,7 @@ from app.main.models.enums import Month
 
 LOG = getLogger(__name__)
 
+
 def convertDateString(publish_date):
     format_str = '%d-%m-%Y'
     datetime_object = datetime.datetime.strptime(publish_date, format_str)

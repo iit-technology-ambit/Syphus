@@ -11,7 +11,7 @@ jinja2==2.10.1
 jsonschema==3.0.1
 markupsafe==1.1.1
 pycodestyle==2.5.0
-pydocstyle=4.0.1
+pydocstyle==4.0.1
 pyrsistent==0.15.2
 pytz==2019.1
 six==1.12.0

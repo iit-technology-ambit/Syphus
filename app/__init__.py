@@ -6,6 +6,7 @@ from app.main.controller.article_controller import api as post_ns
 from app.main.controller.auth_controller import api as auth_ns
 from app.main.controller.image_controller import api as image_ns
 from app.main.controller.issue_controller import api as issue_ns
+from app.main.controller.newsletter_controller import api as newsletter_ns
 from app.main.controller.story_controller import api as story_ns
 from app.main.controller.tag_controller import api as tag_ns
 from app.main.controller.user_controller import api as user_ns
@@ -25,3 +26,4 @@ api.add_namespace(tag_ns, path='/tag')
 api.add_namespace(issue_ns, path='/issues')
 api.add_namespace(image_ns, path='/image')
 api.add_namespace(story_ns, path='/stories')
+api.add_namespace(newsletter_ns, path='/newsletter')

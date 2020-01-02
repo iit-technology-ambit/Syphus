@@ -9,11 +9,14 @@ from app.main.models.issues import Issue
 
 LOG = getLogger(__name__)
 
+
 def month_value(issue):
     return issue.month.value
 
+
 def year_value(issue):
     return issue.year
+
 
 def compare(a, b):
     if a.year > b.year:
@@ -25,12 +28,12 @@ def compare(a, b):
 
 
 class IssueService:
-        
+
     @staticmethod
     def getAll():
         try:
             issues = Issue.query.all()
-            issues = sorted(issues, key = cmp_to_key(compare))
+            issues = sorted(issues, key=cmp_to_key(compare))
             return issues, 200
 
         except BaseException:
@@ -61,7 +64,7 @@ class IssueService:
                 issue.setDescription(data.get('description'))
 
             issues = Issue.query.all()
-            issues = sorted(issues, key = cmp_to_key(compare))
+            issues = sorted(issues, key=cmp_to_key(compare))
 
             response_object = {
                 'status': 'Success',
@@ -77,4 +80,3 @@ class IssueService:
                 'message': 'Try again',
             }
             return response_object, 500
-

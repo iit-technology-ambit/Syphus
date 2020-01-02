@@ -181,3 +181,14 @@ class StoryDto:
         'date': fields.String(required=True),
         'reading_time': fields.Integer(required=True)
     })
+
+
+class NewsletterDto:
+    api = Namespace(
+        'newsletter', description='For news letter related operations')
+    newsletter = api.model('newsletter', {
+        'description': fields.String(required=True),
+        'newsletter_content': fields.String(required=True),
+        'publish_date': fields.String(required=True),
+        'cover_image_url': fields.String()
+    })

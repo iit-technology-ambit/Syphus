@@ -46,3 +46,4 @@ class Newsletter(db.Model):
             LOG.info("New Newsletter Created - {}".format(publish_date))
         except BaseException:
             LOG.error("Cannot create Newsletter", exc_info=True)
+            raise BaseException

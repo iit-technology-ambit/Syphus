@@ -4,6 +4,12 @@
 
 Please send your PRs to JWoC_Dev branch and NOT to `master`.
 
+## For Uploading To Backend
+
+Either visit backend API and use Swagger or use the scripts present in `scripts` folder.
+
+For using the scripts, set appropriate environment variables first.
+
 ## AutoDeployment
 
 `Master` branch is linked with the main server by [Midgard](https://midgard.iit-techambit.in). Any commits pushed to this branch will be instantly deployed in production.

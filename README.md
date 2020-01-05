@@ -1,5 +1,9 @@
 # Syphus [![Build Status](https://travis-ci.org/iit-technology-ambit/Syphus.svg?branch=master)](https://travis-ci.org/iit-technology-ambit/Syphus)
 
+## JWoC 2020
+
+Please send your PRs to JWoC_Dev branch and NOT to `master`.
+
 ## AutoDeployment
 
 `Master` branch is linked with the main server by [Midgard](https://midgard.iit-techambit.in). Any commits pushed to this branch will be instantly deployed in production.
